@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Subscription Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell" aria-labelledby="app-title">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Next 7 days</p>
+          <h1 id="app-title">Subscription Tracker</h1>
+        </div>
+        <button class="icon-button" type="button" aria-label="Add subscription" data-open-form>
+          +
+        </button>
+      </header>
+
+      <section class="summary-strip" aria-label="Summary">
+        <div>
+          <span class="summary-label">Due soon</span>
+          <strong data-due-soon-total>TRY 0</strong>
+        </div>
+        <div>
+          <span class="summary-label">Active</span>
+          <strong data-active-count>0</strong>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="upcoming-title">
+        <div class="section-heading">
+          <h2 id="upcoming-title">Upcoming payments</h2>
+          <span class="section-meta">Next 7 days</span>
+        </div>
+        <div class="empty-state" data-upcoming-empty>
+          <p>No upcoming payments yet.</p>
+          <span>Add subscriptions later to see what is due soon.</span>
+        </div>
+        <div class="upcoming-list" data-upcoming-list aria-live="polite"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="overview-title">
+        <div class="section-heading">
+          <h2 id="overview-title">Spending overview</h2>
+          <span class="section-meta" data-overview-currency>TRY</span>
+        </div>
+        <div class="overview-stats" data-overview-stats hidden>
+          <div>
+            <span class="summary-label">Monthly</span>
+            <strong data-monthly-total>TRY 0</strong>
+          </div>
+          <div>
+            <span class="summary-label">Yearly</span>
+            <strong data-yearly-total>TRY 0</strong>
+          </div>
+          <div>
+            <span class="summary-label">Active</span>
+            <strong data-overview-count>0</strong>
+          </div>
+        </div>
+        <p class="overview-note" data-overview-note hidden></p>
+        <div class="spending-bar" data-spending-bar hidden aria-label="Spending by payment method"></div>
+        <div class="payment-method-list" data-payment-method-list></div>
+        <div class="empty-state compact" data-overview-empty>
+          <p>No spending breakdown yet.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="list-title">
+        <div class="section-heading">
+          <h2 id="list-title">Subscriptions</h2>
+          <button class="text-button" type="button" data-open-form>Add</button>
+        </div>
+        <div class="empty-state" data-empty-state>
+          <p>Your subscription list is empty.</p>
+          <span>Add your first manual record to start tracking.</span>
+        </div>
+        <div class="subscription-list" data-subscription-list aria-live="polite"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="activity-title">
+        <div class="section-heading">
+          <h2 id="activity-title">Activity</h2>
+          <span class="section-meta">History</span>
+        </div>
+        <div class="empty-state compact" data-activity-empty>
+          <p>No activity yet.</p>
+        </div>
+        <div class="activity-list" data-activity-list aria-live="polite"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="export-title">
+        <div class="section-heading">
+          <h2 id="export-title">Export</h2>
+          <span class="section-meta">Text / CSV</span>
+        </div>
+        <div class="empty-state compact" data-export-empty>
+          <p>No subscription data to export.</p>
+        </div>
+        <div class="export-actions" data-export-actions hidden>
+          <button class="secondary-button" type="button" data-export-text>Export text</button>
+          <button class="primary-button" type="button" data-export-csv>Export CSV</button>
+        </div>
+      </section>
+
+      <p class="placeholder-note" data-status-message role="status" aria-live="polite"></p>
+    </main>
+
+    <div class="dialog-backdrop" data-dialog hidden>
+      <section
+        class="dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="form-title"
+        aria-describedby="form-help"
+      >
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Manual record</p>
+            <h2 id="form-title">Add subscription</h2>
+          </div>
+          <button class="close-button" type="button" aria-label="Close form" data-close-form>&times;</button>
+        </div>
+
+        <p id="form-help" class="form-help">
+          Required fields are marked with an asterisk.
+        </p>
+
+        <form class="subscription-form" data-subscription-form novalidate>
+          <input type="hidden" name="id">
+
+          <label>
+            <span>Name *</span>
+            <input name="name" type="text" autocomplete="off" required>
+          </label>
+
+          <div class="field-grid">
+            <label>
+              <span>Price *</span>
+              <input name="price" type="number" min="0" step="0.01" inputmode="decimal" required>
+            </label>
+
+            <label>
+              <span>Currency</span>
+              <input name="currency" type="text" maxlength="3" value="TRY">
+            </label>
+          </div>
+
+          <label>
+            <span>Billing date *</span>
+            <input name="billingDate" type="date" required>
+          </label>
+
+          <label>
+            <span>Payment occurrence *</span>
+            <select name="occurrence" required>
+              <option value="">Choose occurrence</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Payment method/account *</span>
+            <input name="paymentMethod" type="text" autocomplete="off" required>
+          </label>
+
+          <label>
+            <span>Category</span>
+            <input name="category" type="text" autocomplete="off">
+          </label>
+
+          <label>
+            <span>Notes</span>
+            <textarea name="notes" rows="3"></textarea>
+          </label>
+
+          <p class="form-error" data-form-error role="alert"></p>
+
+          <div class="form-actions">
+            <button class="secondary-button" type="button" data-close-form>Cancel</button>
+            <button class="primary-button" type="submit">Save subscription</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
