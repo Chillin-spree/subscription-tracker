@@ -1,8 +1,8 @@
 # Handoffs
 
-> Copy-paste prompt templates for moving work between ChatGPT, Codex, and review.
+> Copy-paste work templates for moving work between planning, implementation, and review.
 
-<!-- Keep templates concise. Add project-specific prompts only when they are reused. -->
+<!-- Keep templates concise. Add project-specific templates only when they are reused. -->
 
 ## Feature Brief
 
@@ -33,14 +33,14 @@ Acceptance:
 Report:
 - Proposed behavior
 - Open questions
-- Suggested Codex build prompt
+- Suggested build instructions
 ```
 
 ## Build Pass Plan
 
-Use this when a feature brief is too large for one focused Codex pass.
+Use this when a feature brief is too large for one focused implementation pass.
 
-Split the prompt if it includes multiple of:
+Split the work if it includes multiple of:
 
 - New navigation/app shell.
 - Provider/API abstraction.
@@ -75,7 +75,7 @@ Rules:
 - Use investigation-first when repo structure is unknown.
 ```
 
-## Codex Build Prompt
+## Build Instructions
 
 ```text
 Task:
@@ -110,7 +110,7 @@ Tests/checks:
 
 Stop and report if:
 - scope is ambiguous
-- implementation requires risky changes outside this prompt
+- implementation requires risky changes outside this scope
 - required context is missing
 - tests reveal unrelated failures
 
@@ -121,7 +121,7 @@ Report:
 - Anything blocked or risky
 ```
 
-## Bug Investigation Prompt
+## Bug Investigation
 
 ```text
 Task:
@@ -162,11 +162,11 @@ Report:
 
 ```text
 Task:
-Review Codex result for <feature/change>.
+Review implementation result for <feature/change>.
 
 Context:
 
-Codex summary:
+Implementation summary:
 
 Files changed:
 
@@ -217,7 +217,7 @@ Report:
 - Whether docs need updating
 ```
 
-## Fix Follow-up Prompt
+## Fix Follow-up
 
 ```text
 Task:
@@ -248,7 +248,7 @@ Tests/checks:
 
 Stop and report if:
 - scope is ambiguous
-- implementation requires risky changes outside this prompt
+- implementation requires risky changes outside this scope
 - required context is missing
 - tests reveal unrelated failures
 
@@ -259,7 +259,7 @@ Report:
 - Any remaining risk
 ```
 
-## Refactor Prompt
+## Refactor
 
 ```text
 Task:
@@ -293,7 +293,7 @@ Tests/checks:
 
 Stop and report if:
 - scope is ambiguous
-- implementation requires risky changes outside this prompt
+- implementation requires risky changes outside this scope
 - required context is missing
 - tests reveal unrelated failures
 

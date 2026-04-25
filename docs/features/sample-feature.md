@@ -7,7 +7,7 @@ Status: example | active | shipped | obsolete
 If obsolete, say why and link to the replacement.
 -->
 
-## Spec — ChatGPT Owns
+## Spec
 
 ### Purpose
 
@@ -37,7 +37,7 @@ TBD
 
 - TBD
 
-## Codex Build Handoff — ChatGPT Writes, Codex Reads
+## Build Handoff
 
 ### Goal
 
@@ -83,22 +83,22 @@ TBD
 
 - TBD
 
-<!-- Use docs/HANDOFFS.md for copy-paste Codex prompt templates. -->
+<!-- Use docs/HANDOFFS.md for copy-paste work templates. -->
 
-## Tasks — Codex Owns
+## Tasks
 
 - [ ] Inspect relevant files and existing patterns.
 - [ ] Implement the smallest safe change.
 - [ ] Run relevant checks.
 - [ ] Report changed files, checks, and risks.
 
-## Build Notes — Codex Owns
+## Build Notes
 
 <!-- Add concise implementation notes, important file paths, and check results. -->
 
 - TBD
 
-## Review Notes — ChatGPT Owns
+## Review Notes
 
 <!-- Add review outcomes, required fixes, and approval notes. -->
 
@@ -114,5 +114,5 @@ TBD
 - [ ] Review completed.
 - [ ] `docs/STATUS.md` updated if workflow state changed.
 - [ ] `docs/DECISIONS.md` updated if durable decisions were made.
-- [ ] `docs/BUGS.md` updated if meaningful bugs were fixed.
+- [ ] `docs/BUGS.md` updated if confirmed bugs were fixed.
 - [ ] Next step is clear.

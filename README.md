@@ -39,7 +39,7 @@ CSV exports keep the compatibility header `paymentMethod`, which means payment l
 
 ## Project Status
 
-`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. Future not-now ideas are tracked in `docs/BACKLOG.md`.
+`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. v1.3.1 fixes stale PWA app-shell behavior after the price input update. Future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 

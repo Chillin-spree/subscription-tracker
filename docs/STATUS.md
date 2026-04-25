@@ -1,6 +1,6 @@
 # Status
 
-> Live control tower for the current ChatGPT + Codex workflow. Keep this short.
+> Live control tower for the current project workflow. Keep this short.
 
 <!-- Maintenance rules:
 - Update when the active feature, owner, blocker, or next step changes.
@@ -10,9 +10,9 @@
 
 ## Architecture
 
-- ChatGPT designs, reviews, routes, and writes handoffs.
-- Codex implements, debugs, runs checks, and reports results.
-- The user carries prompts/results between systems.
+- Product/design review clarifies behavior, scope, safety, and release readiness.
+- Implementation work builds, debugs, runs checks, and reports results.
+- The user reviews outcomes and makes product decisions.
 - Repo docs are shared memory.
 
 ## Workflow State
@@ -21,26 +21,27 @@
 - **Active feature**: none
 - **Feature file**: `docs/features/subscription-tracker-v1.3-price-input-localization.md`
 - **Risk**: low
-- **Owned by**: User/ChatGPT
-- **Current step**: v1.3 price input localization implemented, QA checked, and documented.
-- **Waiting on**: Review/release decision.
+- **Owned by**: Project/user
+- **Current step**: v1.3.1 localized price form submission hotfix is live.
+- **Waiting on**: Next feature handoff.
 - **Blockers**: none
-- **Next recommended step**: Review and release `subscription-tracker-v1.3-price-input-localization`.
-- **Recent touch points**: v1.3 accepts prices like `799`, `799.99`, `799,99`, `1.299,99`, and `1,299.99`; stores prices as local numeric values; preserves CSV raw numeric price export, installed PWA continuity, manifest start/scope, root service worker registration, localStorage keys, saved records, offline shell behavior, and local-only privacy.
+- **Next recommended step**: Choose the next backlog item or start a new feature brief.
+- **Recent touch points**: v1.3.1 fixed a stale PWA/app-shell mix after localized price input; live users now get `app.js?v=1.3.1` through cache `subscription-tracker-v1.3.1-static`, preserving installed PWA continuity, manifest start/scope, root service worker registration, localStorage keys, saved records, CSV compatibility, offline shell behavior, and local-only privacy.
 
 ## Latest Handoff
 
 - **From**: User
-- **To**: Codex
+- **To**: Implementation
 - **Date**: 2026-04-25
 - **Handoff type**: Build pass
-- **Summary**: Document v1.3 price input localization after implementation and QA.
-- **Where full handoff lives**: Current Codex conversation; feature context in `docs/features/subscription-tracker-v1.3-price-input-localization.md`.
+- **Summary**: Document v1.3.1 localized price form submission hotfix.
+- **Where full handoff lives**: Current project handoff; feature context in `docs/features/subscription-tracker-v1.3-price-input-localization.md`.
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-04-25: Released v1.3.1 hotfix for stale PWA/app-shell mismatch; localized prices now save for cached users while home-screen continuity and local-only storage remain preserved.
 - 2026-04-25: Documented `subscription-tracker-v1.3-price-input-localization`; dot/comma price inputs are accepted, stored prices remain numeric and local-only, CSV export remains raw numeric, and PWA/home-screen continuity is preserved.
 - 2026-04-25: Documented installed PWA continuity guardrails and v1.3-v1.9 roadmap; next planned feature is `subscription-tracker-v1.3-price-input-localization`.
 - 2026-04-25: Released `subscription-tracker-v1.2-privacy-and-local-data-clarity` to GitHub Pages.

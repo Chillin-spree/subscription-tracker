@@ -22,7 +22,7 @@ Make the app installable from a phone browser, show a proper app name/icon, and 
 
 - Push notifications.
 - Background sync.
-- Update prompts.
+- In-app update messaging.
 - Account creation, auth, cloud sync, or remote backup.
 - Changes to CRUD, localStorage schema, export formats, spending overview, upcoming payments, or activity log behavior.
 

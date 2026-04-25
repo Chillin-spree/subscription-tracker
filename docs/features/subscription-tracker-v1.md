@@ -4,7 +4,7 @@
 
 Status: complete / approved
 
-## Spec — ChatGPT Owns
+## Spec
 
 ### Purpose
 
@@ -57,7 +57,7 @@ A user can keep a clear list of subscriptions on their phone, update it as servi
 ### Acceptance Criteria
 
 - [x] The v1 product scope is documented before implementation begins.
-- [x] Future build prompts can point to this file for shared context.
+- [x] Future build instructions can point to this file for shared context.
 - [x] Manual subscription entry, edit, delete, activity log history, next-7-days upcoming payments, chart summary, and export are all represented in scope.
 - [x] Auth, sync, automatic imports, OCR/email scanning, push notifications, and native wrappers are explicitly out of scope.
 - [x] No app code, framework choice, dependencies, storage, chart, notification, or export implementation is included in this documentation setup pass.
@@ -118,7 +118,7 @@ Rules:
 - Update this feature file when product behavior is clarified.
 ```
 
-## Codex Build Handoff — ChatGPT Writes, Codex Reads
+## Build Handoff
 
 ### Goal
 
@@ -154,7 +154,6 @@ Documentation setup only.
 
 - Existing template structure.
 - Existing workflow rules.
-- The ChatGPT, Codex, and user role split.
 - Build Pass Discipline.
 
 ### Must Not Do
@@ -176,16 +175,16 @@ Documentation setup only.
 - No framework will be used for the current v1 direction.
 - Storage and data behavior remain for later focused build passes.
 
-<!-- Use docs/HANDOFFS.md for copy-paste Codex prompt templates. -->
+<!-- Use docs/HANDOFFS.md for copy-paste work templates. -->
 
-## Tasks — Codex Owns
+## Tasks
 
 - [x] Inspect requested docs and existing template structure.
 - [x] Update project-specific docs for Subscription Tracker.
 - [x] Add this feature file.
 - [x] Verify markdown files are readable and internally consistent.
 
-## Build Notes — Codex Owns
+## Build Notes
 
 - Documentation setup completed; no app code was changed or created.
 - 2026-04-25 investigation: repo currently contains only `AGENTS.md` and `docs/`; no app code, package manager, framework config, lockfile, test command, or app entry point was found.
@@ -194,7 +193,7 @@ Documentation setup only.
 - 2026-04-25 final QA/polish complete: checked empty state, add/edit/delete, validation, refresh persistence, upcoming payments, spending overview, activity log, text export, CSV export, narrow viewport layout, and console errors.
 - 2026-04-25 closeout: user approved `subscription-tracker-v1`; feature marked complete.
 
-## Review Notes — ChatGPT Owns
+## Review Notes
 
 - User approved v1 closeout after final QA and polish.
 
@@ -208,5 +207,5 @@ Documentation setup only.
 - [x] Review completed.
 - [x] `docs/STATUS.md` updated if workflow state changed.
 - [x] `docs/DECISIONS.md` updated if durable decisions were made.
-- [x] `docs/BUGS.md` updated if meaningful bugs were fixed.
+- [x] `docs/BUGS.md` updated if confirmed bugs were fixed.
 - [x] Next step is clear.

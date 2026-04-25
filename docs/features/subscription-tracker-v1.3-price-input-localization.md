@@ -2,7 +2,7 @@
 
 > Accept common localized price input while preserving numeric storage, local-only privacy, CSV compatibility, and installed PWA continuity.
 
-Status: implemented / awaiting review
+Status: released with v1.3.1 hotfix
 
 ## Goal
 
@@ -27,3 +27,4 @@ Users can enter prices with dot or comma decimal styles:
 - 2026-04-25 pass 2: Changed the price field to text input with decimal input mode, added localized price parsing in `app.js`, and bumped the static service worker cache name for updated app shell files.
 - 2026-04-25 pass 3: QA checked valid and invalid parser examples; no code changes were needed.
 - 2026-04-25 docs pass: Updated project docs for v1.3 behavior and continuity notes.
+- 2026-04-25 v1.3.1 hotfix: Fixed stale PWA/app-shell behavior where cached users could see the new text price input while running old price parsing JavaScript. The fix uses `app.js?v=1.3.1`, cache `subscription-tracker-v1.3.1-static`, `skipWaiting()`, and `clients.claim()` while preserving home-screen/PWA continuity.

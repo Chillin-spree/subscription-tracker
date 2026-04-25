@@ -1,19 +1,19 @@
-# ChatGPT + Codex Operating Manual
+# Project Operating Manual
 
-> Shared operating rules for using ChatGPT and Codex together in this repository.
+> Shared operating rules for contributors and automation agents in this repository.
 
-## Role Split
+## Roles
 
-- **ChatGPT**: Designer / Architect / Router / Prompt-writer / Reviewer / Safety Gate.
-- **Codex**: Builder / Debugger / Implementer / Test runner.
-- **User**: Human-in-the-loop / courier between systems.
+- **Product/design review**: Clarifies behavior, scope, safety, and release readiness.
+- **Implementation**: Builds, debugs, runs checks, and reports results.
+- **User**: Human-in-the-loop for product decisions and approvals.
 - **Repo docs**: Shared memory.
 
 ## Core Loop
 
-1. Design here with ChatGPT.
-2. Build in Codex.
-3. Paste Codex result back to ChatGPT.
+1. Clarify product behavior and scope.
+2. Build the smallest safe implementation pass.
+3. Review results against the intended behavior.
 4. Review/fix until approved.
 
 ## Active Work Rules
@@ -22,23 +22,23 @@
 - Track the active feature in `docs/STATUS.md`.
 - Use a feature file in `docs/features/` for multi-step work.
 - A feature is approved only when design intent matches shipped behavior.
-- Tiny-task exception: for small, low-risk edits, Codex may implement directly and briefly report what changed.
+- Tiny-task exception: for small, low-risk edits, automation agents may implement directly and briefly report what changed.
 
 ## Build Pass Discipline
 
-- Large feature briefs are not Codex build prompts.
+- Large feature briefs are not build instructions.
 - Work should be split into small, reviewable build passes.
-- Each Codex prompt should target one clear implementation outcome.
-- Build prompts must name the current pass and what is not included in this pass.
+- Each build pass should target one clear implementation outcome.
+- Build instructions must name the current pass and what is not included in this pass.
 - Unknown repos or unclear features should start with investigation-only work.
-- Full feature details belong in the feature file; Codex build prompts should contain only the current pass.
+- Full feature details belong in the feature file; build instructions should contain only the current pass.
 - If a handoff feels too large for one focused session, stop and propose a smaller Build Pass Plan.
 
 Use `docs/HANDOFFS.md` for the full Build Pass Plan template.
 
 ## Risk Levels
 
-- **Low**: Local low-risk change. Codex may implement directly.
+- **Low**: Local low-risk change. Automation agents may implement directly.
 - **Medium**: Multi-file feature or bug. Inspect first, then implement the smallest safe change.
 - **High**: Auth, security, billing, data deletion, migrations, secrets, deployment, CI/CD, public APIs, broad refactors.
 
@@ -80,9 +80,9 @@ Stop and ask or report when:
 - `docs/STATUS.md`: Rotating current state.
 - `docs/VISION.md`: Product north star.
 - `docs/DECISIONS.md`: Durable decisions.
-- `docs/BUGS.md`: Bug and root-cause memory.
+- `docs/BUGS.md`: Bug and root-cause memory. For any confirmed bug, regression, production issue, PWA cache issue, data compatibility issue, or user-reported defect, update `docs/BUGS.md` in the same bugfix or follow-up docs pass.
 - `docs/BACKLOG.md`: Not-now work.
-- `docs/HANDOFFS.md`: Copy-paste prompt templates.
+- `docs/HANDOFFS.md`: Copy-paste work templates.
 - `docs/features/*.md`: Feature-specific design, build, and review history.
 
 ## Session Start
@@ -98,12 +98,13 @@ Stop and ask or report when:
 - Update `docs/STATUS.md` if state changed.
 - Update the active feature file if active feature changed.
 - Update `docs/DECISIONS.md` only for durable decisions.
-- Update `docs/BUGS.md` only for meaningful bug/root-cause info.
+- Update `docs/BUGS.md` for confirmed bugs and meaningful root-cause info. Entries should include symptom, affected version or context, root cause if known, fix, verification/regression checks, and status including fixed version or commit when available.
+- If a bugfix is urgent, the runtime fix may be committed first, but `docs/BUGS.md` must be updated before the release is considered complete.
 
 ## Handoffs
 
-- Use `docs/HANDOFFS.md` for copy-paste prompt templates.
-- Default Codex prompt fields: Task, Context, Read first, Risk, Build pass, Not in this pass, Scope, Must preserve, Must not do, Acceptance, Tests/checks, Stop and report if, Report.
+- Use `docs/HANDOFFS.md` for copy-paste work templates.
+- Default build instruction fields: Task, Context, Read first, Risk, Build pass, Not in this pass, Scope, Must preserve, Must not do, Acceptance, Tests/checks, Stop and report if, Report.
 
 ---
 
@@ -138,7 +139,7 @@ Stop and ask or report when:
 <!-- Add project-specific naming rules for files, branches, features, APIs, or tickets. -->
 
 - Active v1 feature file: `docs/features/subscription-tracker-v1.md`.
-- Use `subscription-tracker-v1` for the first app feature lifecycle unless ChatGPT explicitly renames it.
+- Use `subscription-tracker-v1` for the first app feature lifecycle unless explicitly renamed.
 
 ### Implementation Guardrails
 

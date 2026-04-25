@@ -27,7 +27,7 @@
 - **Product**: What the product is or is not.
 - **UX**: User-visible behavior, flow, copy, or interaction model.
 - **Technical**: Architecture, data, APIs, dependencies, or implementation direction.
-- **Workflow**: How ChatGPT, Codex, and the user collaborate.
+- **Workflow**: How contributors and automation agents collaborate.
 
 ## Log
 
