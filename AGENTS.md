@@ -128,10 +128,10 @@ Stop and ask or report when:
 
 <!-- List major app areas, services, packages, or domains. -->
 
-- Subscription records: user-entered subscriptions with name, price, billing date, payment occurrence, payment method/account label, optional category/notes/currency, activity log history, edit, and delete behavior.
+- Subscription records: user-entered subscriptions with name, price, billing date, payment occurrence, payment label/nickname, optional category/notes/currency, activity log history, edit, and delete behavior.
 - Upcoming payments: next-7-days view for near-term subscription charges.
 - Spending summary: small infographic/pie chart for subscription distribution.
-- Export: text, PDF, and Excel-compatible data output.
+- Export: text and CSV data output.
 
 ### Naming Conventions
 
@@ -147,6 +147,10 @@ Stop and ask or report when:
 - Phone-first, minimalist product direction.
 - Manual data entry is the v1 source of truth.
 - Default currency is TRY.
-- Payment occurrence values are weekly, monthly, quarterly, and yearly.
+- Billing cycle values are weekly, monthly, quarterly, and yearly.
+- Payment-related fields must be treated as labels/nicknames only, such as `Main card`, `Work card`, `Bank transfer`, or `Cash`.
+- Allowed user data is limited to subscription or bill name, price/amount, currency, billing date, billing cycle, payment label/nickname, and optional future category/notes.
+- Do not request, store, display, export, or imply that users should enter sensitive payment data: credit card numbers, CVV/CVC, bank account numbers, IBAN, passwords, payment provider login details, identity numbers, or any data needed to make, authorize, or process a payment.
+- Data should stay under user control in browser/device storage. Do not add upload, cloud sync, data sale, analytics, payment processing, or payment authorization without an explicit future feature brief and privacy/security review.
 - Do not add auth, cloud sync, bank/card import, OCR/email scanning, push notifications, native app-store wrappers, or paid services without an explicit future feature brief.
 - Do not claim product features are built until implementation and checks have actually happened.

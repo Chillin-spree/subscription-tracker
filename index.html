@@ -36,6 +36,10 @@
         </div>
       </section>
 
+      <p class="privacy-note">
+        Local only: your records stay in this browser's storage. Nothing is uploaded, synced, or used to process payments.
+      </p>
+
       <section class="panel" aria-labelledby="upcoming-title">
         <div class="section-heading">
           <h2 id="upcoming-title">Upcoming payments</h2>
@@ -68,7 +72,7 @@
           </div>
         </div>
         <p class="overview-note" data-overview-note hidden></p>
-        <div class="spending-bar" data-spending-bar hidden aria-label="Spending by payment method"></div>
+        <div class="spending-bar" data-spending-bar hidden aria-label="Spending by payment label"></div>
         <div class="payment-method-list" data-payment-method-list></div>
         <div class="empty-state compact" data-overview-empty>
           <p>No spending breakdown yet.</p>
@@ -121,7 +125,7 @@
         role="dialog"
         aria-modal="true"
         aria-labelledby="form-title"
-        aria-describedby="form-help"
+        aria-describedby="form-help form-safety"
       >
         <div class="dialog-header">
           <div>
@@ -133,6 +137,9 @@
 
         <p id="form-help" class="form-help">
           Required fields are marked with an asterisk.
+        </p>
+        <p id="form-safety" class="form-safety">
+          Use labels only. Do not enter card numbers, CVV/CVC, IBAN, bank account numbers, passwords, or payment login details.
         </p>
 
         <form class="subscription-form" data-subscription-form novalidate>
@@ -161,9 +168,9 @@
           </label>
 
           <label>
-            <span>Payment occurrence *</span>
+            <span>Billing cycle *</span>
             <select name="occurrence" required>
-              <option value="">Choose occurrence</option>
+              <option value="">Choose billing cycle</option>
               <option value="weekly">Weekly</option>
               <option value="monthly">Monthly</option>
               <option value="quarterly">Quarterly</option>
@@ -172,7 +179,7 @@
           </label>
 
           <label>
-            <span>Payment method/account *</span>
+            <span>Payment label *</span>
             <input name="paymentMethod" type="text" autocomplete="off" required>
           </label>
 

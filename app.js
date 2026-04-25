@@ -238,11 +238,11 @@ function validateSubscription(subscription) {
   }
 
   if (!OCCURRENCE_LABELS[subscription.occurrence]) {
-    return "Payment occurrence is required.";
+    return "Choose a billing cycle.";
   }
 
   if (!subscription.paymentMethod) {
-    return "Payment method/account is required.";
+    return "Enter a payment label.";
   }
 
   return "";
@@ -378,7 +378,7 @@ function renderUpcomingPayment({ subscription, nextPaymentDate }) {
 
 function getPaymentMethodGroups(overviewItems, totalMonthly) {
   const groupsByMethod = overviewItems.reduce((groups, item) => {
-    const method = item.subscription.paymentMethod || "Unlabeled account";
+    const method = item.subscription.paymentMethod || "Unlabeled payment label";
     groups[method] ||= {
       label: method,
       monthlyEquivalent: 0,
@@ -445,8 +445,8 @@ function buildTextExport() {
       `${index + 1}. ${subscription.name}`,
       `Price: ${formatPrice(subscription)}`,
       `Billing date: ${subscription.billingDate}`,
-      `Payment occurrence: ${OCCURRENCE_LABELS[subscription.occurrence] || subscription.occurrence}`,
-      `Payment method/account: ${subscription.paymentMethod}`,
+      `Billing cycle: ${OCCURRENCE_LABELS[subscription.occurrence] || subscription.occurrence}`,
+      `Payment label: ${subscription.paymentMethod}`,
       `Category: ${subscription.category || ""}`,
       `Notes: ${subscription.notes || ""}`,
     );

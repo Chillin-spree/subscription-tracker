@@ -8,7 +8,7 @@ A minimalist phone-first subscription tracker built with plain HTML, CSS, and Ja
 - Persist records in browser `localStorage`.
 - See payments due in the next 7 days.
 - Review an activity log for created, updated, and deleted subscriptions.
-- View monthly/yearly spending totals and a small payment-method infographic.
+- View monthly/yearly spending totals and a small payment-label infographic.
 - Export subscription data as plain text or CSV.
 - Install the app to a phone home screen with PWA metadata and app icons.
 - Reload the app shell offline after a first successful online visit.
@@ -27,7 +27,13 @@ Then open `http://127.0.0.1:8765/`.
 
 ## Privacy
 
-Subscription data is stored locally in the browser. PWA support caches only static app shell files so the app can reopen offline after the first visit; subscription records remain in local browser storage. This app does not include account creation, cloud sync, bank/card import, OCR/email scanning, notifications, or analytics.
+Subscription data stays in the user's browser/device storage through `localStorage`. PWA support caches only static app shell files so the app can reopen offline after the first visit; subscription records remain in local browser storage.
+
+The app has no account system, server, analytics, cloud sync, upload, data sale, payment processing, or payment authorization. Payment-related fields are labels/nicknames only, such as `Main card`, `Work card`, `Bank transfer`, or `Cash`.
+
+Do not enter sensitive payment details such as credit card numbers, CVV/CVC, bank account numbers, IBAN, passwords, payment provider login details, identity numbers, or any data needed to make, authorize, or process a payment.
+
+CSV exports keep the compatibility header `paymentMethod`, which means payment label/nickname only.
 
 ## Project Status
 

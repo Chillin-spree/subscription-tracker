@@ -55,9 +55,11 @@ Create a minimalist subscription tracker where users manually add, edit, delete,
 - Manual entry is slower than automatic import, but keeps v1 private, transparent, and buildable.
 - Minimal analytics are preferred over complex budgeting features.
 - Export matters because user-entered data should be easy to take elsewhere.
+- Local browser/device storage keeps user-entered records under user control.
 
 ## Principles
 
-<!-- Only add a principle after it appears in decisions 2-3 times. -->
+<!-- Keep this list durable and compact. -->
 
-- No durable principles recorded yet.
+- The app must never collect or imply that users should enter real payment authorization details.
+- Payment-related fields are labels/nicknames only, not card, bank, login, identity, or authorization details.

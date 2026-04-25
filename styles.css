@@ -194,6 +194,17 @@ h2 {
   font-size: 1.28rem;
 }
 
+.privacy-note {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 720;
+}
+
 .panel {
   margin-top: 12px;
   padding: 16px;
@@ -503,6 +514,15 @@ h2 {
   margin-top: 8px;
   color: var(--muted);
   font-size: 0.86rem;
+}
+
+.form-safety {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.83rem;
 }
 
 .subscription-form {

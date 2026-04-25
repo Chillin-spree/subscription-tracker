@@ -30,7 +30,7 @@
 ## Parked / Later
 
 - `subscription-tracker-cloud-sync`: Sync records across devices.
-- `subscription-tracker-bank-import`: Automatically import subscription charges from banks or cards.
+- `subscription-tracker-bank-import`: Automatically import subscription charges from banks or cards; remains out of scope unless explicitly redesigned with privacy/security review.
 - `subscription-tracker-auth`: Add accounts, sign-in, and user identity.
 - `subscription-tracker-native-wrapper`: Package the app for app-store distribution.
 - `subscription-tracker-ocr-email-scanning`: Detect subscriptions from screenshots, receipts, or email.

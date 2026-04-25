@@ -18,12 +18,12 @@ A user can keep a clear list of subscriptions on their phone, update it as servi
 
 - Users manually create subscription records.
 - Users can edit and delete existing subscriptions.
-- Subscription records require name, price, billing date, payment occurrence, and payment method/account label.
+- Subscription records require name, price, billing date, payment occurrence, and payment label/nickname.
 - Subscription records may optionally include category, notes, and currency.
 - Default currency is TRY.
-- Payment occurrence values are weekly, monthly, quarterly, and yearly.
+- Billing cycle values are weekly, monthly, quarterly, and yearly.
 - Historical records mean an activity log for subscription created, updated, and deleted events.
-- Payment occurrence history is not part of v1.
+- Billing cycle history is not part of v1.
 - Archived subscriptions are not part of v1 unless needed to keep deleted activity log entries readable.
 - Users can see upcoming payments due in the next 7 days.
 - Users can see a small infographic or pie chart summarizing subscription spending.
@@ -33,8 +33,8 @@ A user can keep a clear list of subscriptions on their phone, update it as servi
 ### User Flow
 
 1. User opens the app and sees the current subscription list plus payments due in the next 7 days.
-2. User adds a subscription with required details: name, price, billing date, payment occurrence, and payment method/account label.
-3. User edits a subscription when price, billing date, payment occurrence, payment method/account label, or notes change.
+2. User adds a subscription with required details: name, price, billing date, payment occurrence, and payment label/nickname.
+3. User edits a subscription when price, billing date, payment occurrence, payment label/nickname, or notes change.
 4. User deletes a subscription when it no longer applies.
 5. User reviews activity log entries for created, updated, and deleted subscriptions.
 6. User checks a small spending visual to understand distribution.
@@ -44,13 +44,13 @@ A user can keep a clear list of subscriptions on their phone, update it as servi
 
 - Static phone-first app using plain HTML, CSS, and JavaScript.
 - Manual subscription CRUD with localStorage persistence.
-- Required fields: name, price, billing date, payment occurrence, and payment method/account label.
+- Required fields: name, price, billing date, payment occurrence, and payment label/nickname.
 - Optional fields: category, notes, and currency.
 - Default currency: TRY.
 - Supported payment occurrences: weekly, monthly, quarterly, and yearly.
 - Upcoming payments view for charges due in the next 7 days.
 - Activity log history for subscription created, updated, and deleted events.
-- Spending overview with monthly/yearly equivalents, active count, and payment-method infographic.
+- Spending overview with monthly/yearly equivalents, active count, and payment-label infographic.
 - Text export and CSV export using browser-native downloads.
 - Phone-width polish, empty states, validation messaging, and no-dependency implementation.
 
@@ -77,7 +77,7 @@ A user can keep a clear list of subscriptions on their phone, update it as servi
 - Real `.xlsx` export.
 - Data import.
 - Billing, payments, subscriptions for this app, or monetization.
-- Payment occurrence history.
+- Billing cycle history.
 - Archived subscriptions, unless required to keep deleted activity log entries readable.
 
 ### Design Notes
@@ -85,6 +85,7 @@ A user can keep a clear list of subscriptions on their phone, update it as servi
 - Phone-first means the core view should work well on small screens before desktop layouts are considered.
 - Minimalist means fast data entry, low visual noise, and clear priority for records, upcoming payments, and export.
 - The product should be honest that records are manually maintained.
+- Payment labels are user nicknames only; users should not enter card, bank, login, identity, or authorization details.
 - Export is part of the product promise because user-entered data should remain portable.
 - The infographic should stay small and explanatory, not become a full analytics dashboard.
 - Historical records should be implemented as an activity log for create, update, and delete events.
