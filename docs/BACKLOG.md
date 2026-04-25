@@ -29,7 +29,6 @@
 
 ## Roadmap
 
-- `subscription-tracker-v1.4-json-backup-restore`: Manual backup/import for local-only data; preserve existing localStorage keys; include clear restore confirmation; backup files stay user-controlled and are not uploaded by the app.
 - `subscription-tracker-v1.5-custom-categories`: Add user-defined categories such as Rent, Music, Bills, Software, and Utilities; safely migrate existing records with a default/empty category.
 - `subscription-tracker-v1.6-spending-by-item-category`: Show spending by recurring item and category, not only payment label; keep old records visible even if they have no category.
 - `subscription-tracker-v1.7-custom-payment-labels`: Let users define reusable payment label nicknames; preserve existing free-text `paymentMethod` values.
@@ -46,4 +45,6 @@
 - `subscription-tracker-push-notifications`: Send reminders for upcoming payments.
 - `subscription-tracker-pdf-export`: Export subscription records as PDF.
 - `subscription-tracker-xlsx-export`: Export a real `.xlsx` workbook instead of CSV.
-- `subscription-tracker-data-import`: Import subscription records from portable files.
+- `subscription-tracker-merge-restore`: Add an explicit merge/deduplicate restore mode instead of full replacement only.
+- `subscription-tracker-empty-json-backup`: Allow downloading an empty JSON backup template when there is no subscription or activity data.
+- `subscription-tracker-data-import`: Import subscription records from portable files beyond the v1.4 JSON backup schema.

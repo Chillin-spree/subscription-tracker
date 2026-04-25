@@ -1,5 +1,8 @@
 const STORAGE_KEY = "subscription-tracker-v1-subscriptions";
 const ACTIVITY_STORAGE_KEY = "subscription-tracker-v1-activity-log";
+const BACKUP_SCHEMA = "subscription-tracker.backup";
+const BACKUP_SCHEMA_VERSION = 1;
+const BACKUP_APP_RELEASE = "v1.4";
 const OCCURRENCE_LABELS = {
   weekly: "Weekly",
   monthly: "Monthly",
@@ -38,13 +41,19 @@ const paymentMethodList = document.querySelector("[data-payment-method-list]");
 const overviewEmpty = document.querySelector("[data-overview-empty]");
 const exportActions = document.querySelector("[data-export-actions]");
 const exportEmpty = document.querySelector("[data-export-empty]");
+const exportNote = document.querySelector("[data-export-note]");
 const exportTextButton = document.querySelector("[data-export-text]");
 const exportCsvButton = document.querySelector("[data-export-csv]");
+const exportJsonButton = document.querySelector("[data-export-json]");
+const backupFileInput = document.querySelector("[data-backup-file]");
+const backupPreview = document.querySelector("[data-backup-preview]");
+const restoreBackupButton = document.querySelector("[data-restore-backup]");
 const SEGMENT_COLORS = ["#147d64", "#b85d2a", "#263a63", "#7c5c2e", "#5b6f63", "#8b4a62"];
 
 let subscriptions = loadSubscriptions();
 let activityLog = loadActivityLog();
 let editingId = null;
+let validatedBackup = null;
 
 renderSubscriptions();
 renderActivityLog();
@@ -84,6 +93,28 @@ exportCsvButton.addEventListener("click", () => {
   );
   setStatus("CSV export downloaded.");
 });
+
+exportJsonButton.addEventListener("click", () => {
+  if (!hasBackupData()) {
+    setStatus("Add a subscription before downloading a backup.");
+    return;
+  }
+
+  const exportedAt = new Date().toISOString();
+
+  downloadFile(
+    buildJsonBackupFilename(exportedAt),
+    "application/json;charset=utf-8",
+    JSON.stringify(buildJsonBackup(exportedAt), null, 2),
+  );
+  setStatus("JSON backup downloaded.");
+});
+
+backupFileInput.addEventListener("change", () => {
+  previewBackupFile(backupFileInput.files[0]);
+});
+
+restoreBackupButton.addEventListener("click", restoreValidatedBackup);
 
 openButtons.forEach((button) => {
   button.addEventListener("click", () => openForm());
@@ -311,8 +342,13 @@ function renderSubscriptions() {
 
 function renderExportControls() {
   const hasSubscriptions = subscriptions.length > 0;
-  exportEmpty.hidden = hasSubscriptions;
-  exportActions.hidden = !hasSubscriptions;
+  const hasExportData = hasBackupData();
+  exportEmpty.hidden = hasExportData;
+  exportActions.hidden = !hasExportData;
+  exportNote.hidden = !hasExportData;
+  exportTextButton.hidden = !hasSubscriptions;
+  exportCsvButton.hidden = !hasSubscriptions;
+  exportJsonButton.hidden = !hasExportData;
 }
 
 function renderSpendingOverview() {
@@ -471,6 +507,305 @@ function buildCsvExport() {
     headers.map(csvEscape).join(","),
     ...rows.map((row) => row.join(",")),
   ].join("\r\n");
+}
+
+function buildJsonBackup(exportedAt) {
+  return {
+    schema: BACKUP_SCHEMA,
+    schemaVersion: BACKUP_SCHEMA_VERSION,
+    app: {
+      name: "Subscription Tracker",
+      release: BACKUP_APP_RELEASE,
+    },
+    exportedAt,
+    data: {
+      subscriptions,
+      activityLog,
+    },
+  };
+}
+
+function buildJsonBackupFilename(exportedAt) {
+  const date = exportedAt.slice(0, 10);
+  return `subscription-tracker-backup-v1.4-${date}.json`;
+}
+
+function hasBackupData() {
+  return subscriptions.length > 0 || activityLog.length > 0;
+}
+
+async function previewBackupFile(file) {
+  clearValidatedBackup();
+
+  if (!file) {
+    clearBackupPreview();
+    return;
+  }
+
+  try {
+    let parsedBackup;
+
+    try {
+      parsedBackup = JSON.parse(await file.text());
+    } catch (error) {
+      throw new Error("Selected file must be valid JSON.");
+    }
+
+    const backup = validateBackupData(parsedBackup);
+    validatedBackup = backup;
+    renderBackupPreview(backup);
+  } catch (error) {
+    renderBackupPreviewError(error.message || "This backup file could not be checked.");
+  }
+}
+
+function restoreValidatedBackup() {
+  if (!validatedBackup) {
+    setStatus("Preview a valid backup before restoring.");
+    return;
+  }
+
+  const subscriptionCount = validatedBackup.data.subscriptions.length;
+  const activityCount = validatedBackup.data.activityLog.length;
+  const confirmed = window.confirm(
+    `Replace existing local subscriptions and activity log with this backup?\n\nThis will replace ${subscriptions.length} current subscriptions and ${activityLog.length} activity entries with ${subscriptionCount} backup subscriptions and ${activityCount} backup activity entries.`,
+  );
+
+  if (!confirmed) {
+    setStatus("Restore canceled. No local data was changed.");
+    return;
+  }
+
+  const nextSubscriptions = validatedBackup.data.subscriptions;
+  const nextActivityLog = validatedBackup.data.activityLog;
+  const previousSubscriptionsValue = localStorage.getItem(STORAGE_KEY);
+  const previousActivityLogValue = localStorage.getItem(ACTIVITY_STORAGE_KEY);
+
+  try {
+    const nextSubscriptionsValue = JSON.stringify(nextSubscriptions);
+    const nextActivityLogValue = JSON.stringify(nextActivityLog);
+
+    localStorage.setItem(STORAGE_KEY, nextSubscriptionsValue);
+    localStorage.setItem(ACTIVITY_STORAGE_KEY, nextActivityLogValue);
+
+    subscriptions = nextSubscriptions;
+    activityLog = nextActivityLog;
+    renderSubscriptions();
+    renderActivityLog();
+    resetBackupRestorePreview();
+    setStatus(`Backup restored: ${subscriptionCount} subscriptions and ${activityCount} activity entries.`);
+  } catch (error) {
+    try {
+      restoreStorageSnapshot(previousSubscriptionsValue, previousActivityLogValue);
+      setStatus("Restore failed. Existing local data was kept.");
+    } catch (rollbackError) {
+      setStatus("Restore failed. Please reload before making more changes.");
+      console.warn("Could not roll back failed restore.", rollbackError);
+    }
+    console.warn("Could not restore backup.", error);
+  }
+}
+
+function validateBackupData(backup) {
+  if (!isPlainObject(backup)) {
+    throw new Error("Backup must be a JSON object.");
+  }
+
+  if (backup.schema !== BACKUP_SCHEMA) {
+    throw new Error("This file is not a Subscription Tracker backup.");
+  }
+
+  if (backup.schemaVersion !== BACKUP_SCHEMA_VERSION) {
+    throw new Error("This backup version is not supported.");
+  }
+
+  if (!isValidTimestamp(backup.exportedAt)) {
+    throw new Error("Backup export date is missing or invalid.");
+  }
+
+  if (!isPlainObject(backup.data)) {
+    throw new Error("Backup data is missing.");
+  }
+
+  if (!Array.isArray(backup.data.subscriptions)) {
+    throw new Error("Backup subscriptions must be an array.");
+  }
+
+  if (!Array.isArray(backup.data.activityLog)) {
+    throw new Error("Backup activity log must be an array.");
+  }
+
+  backup.data.subscriptions.forEach(validateBackupSubscription);
+  backup.data.activityLog.forEach(validateBackupActivityEntry);
+
+  return backup;
+}
+
+function validateBackupSubscription(subscription, index) {
+  const label = `Subscription ${index + 1}`;
+
+  if (!isPlainObject(subscription)) {
+    throw new Error(`${label} must be an object.`);
+  }
+
+  requireNonEmptyString(subscription.id, `${label} id`);
+  requireNonEmptyString(subscription.name, `${label} name`);
+
+  if (!Number.isFinite(subscription.price) || subscription.price < 0) {
+    throw new Error(`${label} price must be a valid number.`);
+  }
+
+  requireValidDateString(subscription.billingDate, `${label} billing date`);
+  requireValidOccurrence(subscription.occurrence, `${label} billing cycle`);
+  requireNonEmptyString(subscription.paymentMethod, `${label} payment label`);
+  requireValidTimestamp(subscription.createdAt, `${label} created date`);
+  requireValidTimestamp(subscription.updatedAt, `${label} updated date`);
+  requireOptionalString(subscription.currency, `${label} currency`);
+  requireOptionalString(subscription.category, `${label} category`);
+  requireOptionalString(subscription.notes, `${label} notes`);
+}
+
+function validateBackupActivityEntry(entry, index) {
+  const label = `Activity entry ${index + 1}`;
+
+  if (!isPlainObject(entry)) {
+    throw new Error(`${label} must be an object.`);
+  }
+
+  requireNonEmptyString(entry.id, `${label} id`);
+
+  if (!EVENT_LABELS[entry.eventType]) {
+    throw new Error(`${label} event type is not supported.`);
+  }
+
+  requireNonEmptyString(entry.subscriptionId, `${label} subscription id`);
+  requireValidTimestamp(entry.createdAt, `${label} date`);
+  validateBackupActivitySnapshot(entry.subscriptionSnapshot, `${label} snapshot`);
+}
+
+function validateBackupActivitySnapshot(snapshot, label) {
+  if (!isPlainObject(snapshot)) {
+    throw new Error(`${label} must be an object.`);
+  }
+
+  requireNonEmptyString(snapshot.name, `${label} name`);
+
+  if (!Number.isFinite(snapshot.price) || snapshot.price < 0) {
+    throw new Error(`${label} price must be a valid number.`);
+  }
+
+  requireValidDateString(snapshot.billingDate, `${label} billing date`);
+  requireValidOccurrence(snapshot.occurrence, `${label} billing cycle`);
+  requireNonEmptyString(snapshot.paymentMethod, `${label} payment label`);
+  requireOptionalString(snapshot.currency, `${label} currency`);
+  requireOptionalString(snapshot.category, `${label} category`);
+}
+
+function renderBackupPreview(backup) {
+  backupPreview.hidden = false;
+  backupPreview.classList.remove("is-error");
+  restoreBackupButton.hidden = false;
+  backupPreview.innerHTML = `
+    <strong>Backup preview</strong>
+    <span>Exported: ${escapeHtml(formatTimestamp(backup.exportedAt))}</span>
+    <span>Schema version: ${backup.schemaVersion}</span>
+    <span>Subscriptions: ${backup.data.subscriptions.length}</span>
+    <span>Activity entries: ${backup.data.activityLog.length}</span>
+    <em>No data has been restored yet.</em>
+  `;
+}
+
+function renderBackupPreviewError(message) {
+  clearValidatedBackup();
+  backupPreview.hidden = false;
+  backupPreview.classList.add("is-error");
+  backupPreview.innerHTML = `
+    <strong>Backup could not be previewed</strong>
+    <span>${escapeHtml(message)}</span>
+    <em>No data has been restored.</em>
+  `;
+}
+
+function clearBackupPreview() {
+  backupPreview.hidden = true;
+  backupPreview.classList.remove("is-error");
+  backupPreview.textContent = "";
+}
+
+function clearValidatedBackup() {
+  validatedBackup = null;
+  restoreBackupButton.hidden = true;
+}
+
+function resetBackupRestorePreview() {
+  backupFileInput.value = "";
+  clearValidatedBackup();
+  clearBackupPreview();
+}
+
+function restoreStorageSnapshot(subscriptionsValue, activityLogValue) {
+  if (subscriptionsValue === null) {
+    localStorage.removeItem(STORAGE_KEY);
+  } else {
+    localStorage.setItem(STORAGE_KEY, subscriptionsValue);
+  }
+
+  if (activityLogValue === null) {
+    localStorage.removeItem(ACTIVITY_STORAGE_KEY);
+  } else {
+    localStorage.setItem(ACTIVITY_STORAGE_KEY, activityLogValue);
+  }
+}
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function requireNonEmptyString(value, label) {
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error(`${label} must be a non-empty string.`);
+  }
+}
+
+function requireOptionalString(value, label) {
+  if (value !== undefined && typeof value !== "string") {
+    throw new Error(`${label} must be a string.`);
+  }
+}
+
+function requireValidDateString(value, label) {
+  if (!isValidDateString(value)) {
+    throw new Error(`${label} must be a valid YYYY-MM-DD date.`);
+  }
+}
+
+function requireValidOccurrence(value, label) {
+  if (!OCCURRENCE_LABELS[value]) {
+    throw new Error(`${label} is not supported.`);
+  }
+}
+
+function requireValidTimestamp(value, label) {
+  if (!isValidTimestamp(value)) {
+    throw new Error(`${label} must be a valid date.`);
+  }
+}
+
+function isValidDateString(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  return date.getUTCFullYear() === year
+    && date.getUTCMonth() === month - 1
+    && date.getUTCDate() === day;
+}
+
+function isValidTimestamp(value) {
+  return typeof value === "string" && !Number.isNaN(new Date(value).getTime());
 }
 
 function renderActivityLog() {

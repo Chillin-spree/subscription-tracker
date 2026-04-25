@@ -255,7 +255,10 @@ h2 {
 .overview-stats[hidden],
 .overview-note[hidden],
 .spending-bar[hidden],
-.export-actions[hidden] {
+.export-actions[hidden],
+.restore-button[hidden],
+.backup-preview-result[hidden],
+.export-note[hidden] {
   display: none;
 }
 
@@ -482,6 +485,12 @@ h2 {
   font-weight: 700;
 }
 
+.export-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -562,6 +571,70 @@ h2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+}
+
+.backup-preview {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.file-field {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.83rem;
+  font-weight: 720;
+}
+
+.backup-preview-result {
+  display: grid;
+  gap: 5px;
+  margin-top: 2px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.backup-preview-result strong,
+.backup-preview-result span,
+.backup-preview-result em {
+  display: block;
+}
+
+.backup-preview-result strong {
+  color: var(--text);
+}
+
+.backup-preview-result em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 720;
+}
+
+.backup-preview-result.is-error em,
+.backup-preview-result.is-error strong {
+  color: #9d3e24;
+}
+
+.restore-button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: #9d3e24;
+  color: var(--surface);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 760;
+}
+
+.wide-button {
+  grid-column: 1 / -1;
 }
 
 @media (min-width: 720px) {
