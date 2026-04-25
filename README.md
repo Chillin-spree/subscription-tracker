@@ -5,6 +5,7 @@ A minimalist phone-first subscription tracker built with plain HTML, CSS, and Ja
 ## Features
 
 - Add, edit, and delete manual subscription records.
+- Enter prices with dot or comma decimal styles, such as `799`, `799.99`, `799,99`, `1.299,99`, or `1,299.99`.
 - Persist records in browser `localStorage`.
 - See payments due in the next 7 days.
 - Review an activity log for created, updated, and deleted subscriptions.
@@ -12,6 +13,7 @@ A minimalist phone-first subscription tracker built with plain HTML, CSS, and Ja
 - Export subscription data as plain text or CSV.
 - Install the app to a phone home screen with PWA metadata and app icons.
 - Reload the app shell offline after a first successful online visit.
+- Preserve installed/home-screen app continuity across updates.
 
 ## Run Locally
 
@@ -27,17 +29,17 @@ Then open `http://127.0.0.1:8765/`.
 
 ## Privacy
 
-Subscription data stays in the user's browser/device storage through `localStorage`. PWA support caches only static app shell files so the app can reopen offline after the first visit; subscription records remain in local browser storage.
+Subscription data stays in the user's browser/device storage through `localStorage`. Prices are stored as numeric values after entry. PWA support caches only static app shell files so the app can reopen offline after the first visit; subscription records remain in local browser storage.
 
 The app has no account system, server, analytics, cloud sync, upload, data sale, payment processing, or payment authorization. Payment-related fields are labels/nicknames only, such as `Main card`, `Work card`, `Bank transfer`, or `Cash`.
 
 Do not enter sensitive payment details such as credit card numbers, CVV/CVC, bank account numbers, IBAN, passwords, payment provider login details, identity numbers, or any data needed to make, authorize, or process a payment.
 
-CSV exports keep the compatibility header `paymentMethod`, which means payment label/nickname only.
+CSV exports keep the compatibility header `paymentMethod`, which means payment label/nickname only. Price values remain raw numeric values in CSV exports for compatibility.
 
 ## Project Status
 
-`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. Future not-now ideas are tracked in `docs/BACKLOG.md`.
+`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. Future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 

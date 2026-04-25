@@ -1,4 +1,4 @@
-const CACHE_NAME = "subscription-tracker-v1.2-static";
+const CACHE_NAME = "subscription-tracker-v1.3-static";
 const CACHE_PREFIX = "subscription-tracker-";
 const APP_SHELL_ASSETS = [
   "./",

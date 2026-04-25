@@ -27,6 +27,15 @@
 
 <!-- Empty. -->
 
+## Roadmap
+
+- `subscription-tracker-v1.4-json-backup-restore`: Manual backup/import for local-only data; preserve existing localStorage keys; include clear restore confirmation; backup files stay user-controlled and are not uploaded by the app.
+- `subscription-tracker-v1.5-custom-categories`: Add user-defined categories such as Rent, Music, Bills, AI, and Utilities; safely migrate existing records with a default/empty category.
+- `subscription-tracker-v1.6-spending-by-item-category`: Show spending by recurring item and category, not only payment label; keep old records visible even if they have no category.
+- `subscription-tracker-v1.7-custom-payment-labels`: Let users define reusable payment label nicknames; preserve existing free-text `paymentMethod` values.
+- `subscription-tracker-v1.8-bills-empty-wallet-rename`: Broaden identity from subscriptions to recurring bills with an empty wallet icon; preserve the same GitHub Pages URL and installed PWA continuity.
+- `subscription-tracker-v1.9-security-hardening-import-safety`: Review input rendering, imported JSON safety, local-only protections, and future data migrations; avoid breaking existing data or offline behavior.
+
 ## Parked / Later
 
 - `subscription-tracker-cloud-sync`: Sync records across devices.

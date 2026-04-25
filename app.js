@@ -210,11 +210,10 @@ function saveActivityLog() {
 
 function readForm() {
   const data = new FormData(form);
-  const priceValue = normalize(data.get("price"));
 
   return {
     name: normalize(data.get("name")),
-    price: priceValue ? Number(priceValue) : Number.NaN,
+    price: parseLocalizedPrice(data.get("price")),
     currency: normalize(data.get("currency")) || "TRY",
     billingDate: normalize(data.get("billingDate")),
     occurrence: normalize(data.get("occurrence")),
@@ -539,6 +538,46 @@ function renderSubscriptionCard(subscription) {
 
 function normalize(value) {
   return String(value || "").trim();
+}
+
+function parseLocalizedPrice(value) {
+  const normalizedValue = normalize(value);
+
+  if (!normalizedValue || !/^[0-9.,]+$/.test(normalizedValue)) {
+    return Number.NaN;
+  }
+
+  const lastDot = normalizedValue.lastIndexOf(".");
+  const lastComma = normalizedValue.lastIndexOf(",");
+
+  if (lastDot !== -1 && lastComma !== -1) {
+    const decimalSeparator = lastDot > lastComma ? "." : ",";
+    const groupingSeparator = decimalSeparator === "." ? "," : ".";
+    const decimalIndex = Math.max(lastDot, lastComma);
+    const integerPart = normalizedValue.slice(0, decimalIndex);
+    const fractionPart = normalizedValue.slice(decimalIndex + 1);
+    const groupingPattern = new RegExp(`^\\d{1,3}(\\${groupingSeparator}\\d{3})*$`);
+
+    if (!groupingPattern.test(integerPart) || !/^\d+$/.test(fractionPart)) {
+      return Number.NaN;
+    }
+
+    return Number(`${integerPart.replaceAll(groupingSeparator, "")}.${fractionPart}`);
+  }
+
+  const decimalSeparator = lastComma !== -1 ? "," : ".";
+
+  if (!normalizedValue.includes(decimalSeparator)) {
+    return Number(normalizedValue);
+  }
+
+  const parts = normalizedValue.split(decimalSeparator);
+
+  if (parts.length !== 2 || !/^\d+$/.test(parts[0]) || !/^\d+$/.test(parts[1])) {
+    return Number.NaN;
+  }
+
+  return Number(`${parts[0]}.${parts[1]}`);
 }
 
 function formatPrice(subscription) {
