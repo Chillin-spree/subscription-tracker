@@ -148,6 +148,11 @@ Stop and ask or report when:
 - Manual data entry is the v1 source of truth.
 - Default currency is TRY.
 - Billing cycle values are weekly, monthly, quarterly, and yearly.
+- Installed/home-screen users must remain supported across future updates. Preserve the live GitHub Pages URL, manifest `start_url: "./"`, manifest `scope: "./"`, root-level `service-worker.js` registration, offline app shell behavior after first visit, existing saved records, and the local-only privacy stance.
+- Preserve existing localStorage keys: `subscription-tracker-v1-subscriptions` and `subscription-tracker-v1-activity-log`.
+- Storage or data model changes require backward-compatible migration. Cached app shell asset changes require a static service worker cache name bump.
+- Preserve existing CSV compatibility unless an explicitly versioned export format is introduced.
+- If app naming or branding changes, preserve the same live URL and installed PWA continuity.
 - Payment-related fields must be treated as labels/nicknames only, such as `Main card`, `Work card`, `Bank transfer`, or `Cash`.
 - Allowed user data is limited to subscription or bill name, price/amount, currency, billing date, billing cycle, payment label/nickname, and optional future category/notes.
 - Do not request, store, display, export, or imply that users should enter sensitive payment data: credit card numbers, CVV/CVC, bank account numbers, IBAN, passwords, payment provider login details, identity numbers, or any data needed to make, authorize, or process a payment.

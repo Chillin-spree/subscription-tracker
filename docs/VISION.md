@@ -56,6 +56,7 @@ Create a minimalist subscription tracker where users manually add, edit, delete,
 - Minimal analytics are preferred over complex budgeting features.
 - Export matters because user-entered data should be easy to take elsewhere.
 - Local browser/device storage keeps user-entered records under user control.
+- People who installed the app to their phone home screen must be able to keep using it after updates.
 
 ## Principles
 
@@ -63,3 +64,5 @@ Create a minimalist subscription tracker where users manually add, edit, delete,
 
 - The app must never collect or imply that users should enter real payment authorization details.
 - Payment-related fields are labels/nicknames only, not card, bank, login, identity, or authorization details.
+- Preserve installed PWA continuity: same live URL, relative manifest start/scope, root service worker registration, offline shell behavior, saved local data, and CSV compatibility.
+- Storage changes require backward-compatible migration; cached app shell changes require a static cache name bump.
