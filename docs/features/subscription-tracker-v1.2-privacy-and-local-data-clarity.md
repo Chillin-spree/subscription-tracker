@@ -114,3 +114,4 @@ This app must never collect or imply that users should enter real payment inform
 - 2026-04-25 pass 2: Added local-only UI notice, form safety copy, safer visible payment-label/billing-cycle wording, and matching validation copy. Internal `paymentMethod` and localStorage keys remain unchanged.
 - 2026-04-25 pass 3: Updated human-readable text export labels to `Billing cycle` and `Payment label`; preserved CSV `paymentMethod`; ran final static checks and browser smoke checks.
 - 2026-04-25 release: Published v1.2 to GitHub Pages from `main`.
+- 2026-04-25 release fix: Bumped the static service worker cache name to refresh cached v1.2 app shell assets.

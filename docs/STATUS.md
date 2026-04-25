@@ -26,7 +26,7 @@
 - **Waiting on**: Post-release review or next feature selection.
 - **Blockers**: none
 - **Next recommended step**: Review live v1.2, then choose the next backlog item or start a new feature brief.
-- **Recent touch points**: v1.2 adds local-only privacy copy, safer payment-label/billing-cycle wording, and text export label cleanup while preserving internal `paymentMethod`, localStorage keys, and CSV headers.
+- **Recent touch points**: v1.2 adds local-only privacy copy, safer payment-label/billing-cycle wording, text export label cleanup, and a service worker cache bump for refreshed app shell assets while preserving internal `paymentMethod`, localStorage keys, and CSV headers.
 
 ## Latest Handoff
 
