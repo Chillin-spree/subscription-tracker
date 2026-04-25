@@ -1,10 +1,11 @@
-const CACHE_NAME = "subscription-tracker-v1.3-static";
+const CACHE_NAME = "subscription-tracker-v1.3.1-static";
 const CACHE_PREFIX = "subscription-tracker-";
 const APP_SHELL_ASSETS = [
   "./",
   "index.html",
   "styles.css",
   "app.js",
+  "app.js?v=1.3.1",
   "manifest.webmanifest",
   "icons/icon-192.png",
   "icons/icon-512.png",
@@ -17,6 +18,7 @@ const APP_SHELL_URLS = new Set(
 );
 
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL_ASSETS)),
   );
@@ -30,7 +32,8 @@ self.addEventListener("activate", (event) => {
         cacheNames
           .filter((cacheName) => cacheName.startsWith(CACHE_PREFIX) && cacheName !== CACHE_NAME)
           .map((cacheName) => caches.delete(cacheName)),
-      )),
+      ))
+      .then(() => self.clients.claim()),
   );
 });
 
