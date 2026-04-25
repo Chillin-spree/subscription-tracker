@@ -10,18 +10,28 @@ A minimalist phone-first subscription tracker built with plain HTML, CSS, and Ja
 - Review an activity log for created, updated, and deleted subscriptions.
 - View monthly/yearly spending totals and a small payment-method infographic.
 - Export subscription data as plain text or CSV.
+- Install the app to a phone home screen with PWA metadata and app icons.
+- Reload the app shell offline after a first successful online visit.
 
 ## Run Locally
 
 Open `index.html` in a browser. No build step, framework, backend, or dependencies are required.
 
+To test installability or offline shell caching, serve the folder over local HTTP first, for example:
+
+```sh
+python3 -m http.server 8765
+```
+
+Then open `http://127.0.0.1:8765/`.
+
 ## Privacy
 
-Subscription data is stored locally in the browser. This app does not include account creation, cloud sync, bank/card import, OCR/email scanning, notifications, or analytics.
+Subscription data is stored locally in the browser. PWA support caches only static app shell files so the app can reopen offline after the first visit; subscription records remain in local browser storage. This app does not include account creation, cloud sync, bank/card import, OCR/email scanning, notifications, or analytics.
 
 ## Project Status
 
-`subscription-tracker-v1` is complete and approved. Future not-now ideas are tracked in `docs/BACKLOG.md`.
+`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. Future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 

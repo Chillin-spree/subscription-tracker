@@ -49,6 +49,14 @@ let editingId = null;
 renderSubscriptions();
 renderActivityLog();
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch((error) => {
+      console.warn("Service worker registration failed.", error);
+    });
+  });
+}
+
 exportTextButton.addEventListener("click", () => {
   if (!subscriptions.length) {
     setStatus("Add a subscription before exporting.");
