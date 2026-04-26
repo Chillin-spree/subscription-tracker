@@ -32,17 +32,25 @@
 - `subscription-tracker-v1.5-custom-categories`: Add user-defined categories such as Rent, Music, Bills, Software, and Utilities; safely migrate existing records with a default/empty category.
 - `subscription-tracker-v1.6-spending-by-item-category`: Show spending by recurring item and category, not only payment label; keep old records visible even if they have no category.
 - `subscription-tracker-v1.7-custom-payment-labels`: Let users define reusable payment label nicknames; preserve existing free-text `paymentMethod` values.
-- `subscription-tracker-v1.8-bills-empty-wallet-rename`: Broaden identity from subscriptions to recurring bills with an empty wallet icon; preserve the same GitHub Pages URL and installed PWA continuity.
+- `subscription-tracker-v1.8-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
 - `subscription-tracker-v1.9-security-hardening-import-safety`: Review input rendering, imported JSON safety, local-only protections, and future data migrations; avoid breaking existing data or offline behavior.
 
 ## Parked / Later
 
+- `subscription-tracker-date-range-expenses`: Let users review expenses for a selected date range instead of only the next 7 days or normalized monthly/yearly totals.
+- `subscription-tracker-absolute-end-date`: Track subscriptions or recurring payments with a known final billing date.
+- `subscription-tracker-spending-by-category-date-range`: Expand spending overview filters to compare subscription, category, and date-range views.
+- `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
+- `subscription-tracker-local-only-privacy-modal`: Turn the local-only privacy message into an accessible modal or detail view using the current wording as the source of truth.
+- `subscription-tracker-general-customization`: Explore user customization for labels, display preferences, categories, and summary views.
+- `subscription-tracker-bills-rename`: Consider renaming the app to Bills after broader recurring-payment scope is designed; not decided.
+- `subscription-tracker-empty-wallet-icon`: Consider an empty wallet icon as part of any future visual identity change; not decided.
 - `subscription-tracker-cloud-sync`: Sync records across devices.
 - `subscription-tracker-bank-import`: Automatically import subscription charges from banks or cards; remains out of scope unless explicitly redesigned with privacy/security review.
 - `subscription-tracker-auth`: Add accounts, sign-in, and user identity.
 - `subscription-tracker-native-wrapper`: Package the app for app-store distribution.
 - `subscription-tracker-ocr-email-scanning`: Detect subscriptions from screenshots, receipts, or email.
-- `subscription-tracker-push-notifications`: Send reminders for upcoming payments.
+- `subscription-tracker-notifications`: Investigate browser/PWA notification feasibility, permission UX, and offline expectations before adding reminders.
 - `subscription-tracker-pdf-export`: Export subscription records as PDF.
 - `subscription-tracker-xlsx-export`: Export a real `.xlsx` workbook instead of CSV.
 - `subscription-tracker-merge-restore`: Add an explicit merge/deduplicate restore mode instead of full replacement only.

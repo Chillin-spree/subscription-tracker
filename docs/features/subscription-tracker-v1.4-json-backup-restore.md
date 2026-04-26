@@ -85,4 +85,4 @@ Restore writes are gated behind explicit user confirmation. If confirmed, the ap
 
 ## Release Status
 
-Implementation and focused QA are complete. Release is pending commit, push, and live GitHub Pages verification.
+Released to `main` in commit `8b50371` (`Add JSON backup and restore`). GitHub Pages deployment succeeded and live assets verified `app.js?v=1.4.2`, cache `subscription-tracker-v1.4.2-static`, manifest reachability, and unchanged manifest start/scope.

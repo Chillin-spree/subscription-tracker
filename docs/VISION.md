@@ -22,6 +22,10 @@ People often lose track of small recurring charges until they add up. Subscripti
 
 Create a minimalist subscription tracker where users manually add, edit, delete, review, summarize, and export subscription records.
 
+## Product Direction
+
+Subscription Tracker may broaden from subscriptions toward recurring bills and payments such as rent, utilities, software, and other regular commitments. That direction is exploratory: any rename, icon change, or broader bill-tracking identity should be decided in a future design pass, while preserving the existing live URL, installed-PWA continuity, local data, and local-only privacy stance.
+
 ## Out of Scope
 
 - Account creation, auth, and cloud sync.
@@ -43,6 +47,7 @@ Create a minimalist subscription tracker where users manually add, edit, delete,
 - Fast to scan on a phone.
 - Clear about manual records and historical changes.
 - Useful without accounts, integrations, or setup friction.
+- Flexible enough to track recurring subscriptions, bills, rent, and other predictable payments without becoming a full finance suite.
 
 ### Should Never Become
 

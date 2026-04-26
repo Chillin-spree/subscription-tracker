@@ -117,6 +117,7 @@ Stop and report if:
 Report:
 - Summary
 - Files changed
+- Documentation sweep: updated docs; inspected docs with no changes; key docs intentionally unchanged
 - Checks run
 - Anything blocked or risky
 ```
@@ -188,6 +189,7 @@ Report:
 - Approved or not approved
 - Required fixes
 - Optional follow-ups
+- Documentation sweep: updated docs; inspected docs with no changes; key docs intentionally unchanged
 ```
 
 ## Scope Question
@@ -215,6 +217,7 @@ Report:
 - Chosen direction
 - Any change to acceptance criteria
 - Whether docs need updating
+- Documentation sweep: updated docs; inspected docs with no changes; key docs intentionally unchanged
 ```
 
 ## Fix Follow-up
@@ -255,8 +258,30 @@ Stop and report if:
 Report:
 - What changed
 - Files changed
+- Documentation sweep: updated docs; inspected docs with no changes; key docs intentionally unchanged
 - Checks run
 - Any remaining risk
+```
+
+## Documentation Sweep Checklist
+
+Use this after any meaningful feature, bugfix, product decision, roadmap item, release state, workflow rule, or known risk changes.
+
+```text
+Documentation sweep:
+- README.md: public capabilities, setup, privacy notes, and current project summary.
+- docs/STATUS.md: current workflow state, blocker, and next step.
+- docs/DECISIONS.md: durable decisions only, not every idea.
+- docs/BACKLOG.md: future ideas and candidates.
+- docs/VISION.md: product direction and scope changes.
+- docs/BUGS.md: confirmed bugs, regressions, fixes, and regression checks.
+- docs/HANDOFFS.md: reusable workflow templates and checklists.
+- docs/features/*: per-feature scope, risks, QA, and release state.
+
+Report:
+- Docs updated:
+- Docs inspected with no changes:
+- Key docs intentionally unchanged and why:
 ```
 
 ## Refactor

@@ -84,6 +84,21 @@ Stop and ask or report when:
 - `docs/BACKLOG.md`: Not-now work.
 - `docs/HANDOFFS.md`: Copy-paste work templates.
 - `docs/features/*.md`: Feature-specific design, build, and review history.
+- `README.md`: Public user-facing capabilities, setup, privacy notes, and current project summary.
+
+## Documentation Sweep
+
+After any meaningful feature, bugfix, product decision, roadmap item, release state, workflow rule, or known risk changes, contributors and automation agents must inspect the relevant docs and update every affected file. Check whether updates are needed in `README.md`, `docs/STATUS.md`, `docs/DECISIONS.md`, `docs/BACKLOG.md`, `docs/VISION.md`, `docs/BUGS.md`, `docs/HANDOFFS.md`, and relevant `docs/features/*.md` files.
+
+- `docs/STATUS.md` reflects the current workflow state, blocker, and next step.
+- `docs/DECISIONS.md` records durable decisions, not every idea.
+- `docs/BACKLOG.md` records future ideas and candidates.
+- `docs/VISION.md` records product direction and scope changes.
+- `docs/BUGS.md` records confirmed bugs, regressions, fixes, and regression checks.
+- `docs/features/*.md` records detailed per-feature scope, risks, QA, and release state.
+- `README.md` records public user-facing capabilities and the current project summary.
+
+Every report after a meaningful change must list which docs were updated, which docs were inspected but did not need changes, and why key docs were not changed when that context matters.
 
 ## Session Start
 
@@ -99,6 +114,7 @@ Stop and ask or report when:
 - Update the active feature file if active feature changed.
 - Update `docs/DECISIONS.md` only for durable decisions.
 - Update `docs/BUGS.md` for confirmed bugs and meaningful root-cause info. Entries should include symptom, affected version or context, root cause if known, fix, verification/regression checks, and status including fixed version or commit when available.
+- Run the Documentation Sweep when any meaningful project state, product, workflow, roadmap, release, feature, risk, or bug information changed.
 - If a bugfix is urgent, the runtime fix may be committed first, but `docs/BUGS.md` must be updated before the release is considered complete.
 
 ## Handoffs
