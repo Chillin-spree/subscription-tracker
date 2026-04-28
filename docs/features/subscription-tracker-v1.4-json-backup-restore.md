@@ -86,3 +86,7 @@ Restore writes are gated behind explicit user confirmation. If confirmed, the ap
 ## Release Status
 
 Released to `main` in commit `8b50371` (`Add JSON backup and restore`). GitHub Pages deployment succeeded and live assets verified `app.js?v=1.4.2`, cache `subscription-tracker-v1.4.2-static`, manifest reachability, and unchanged manifest start/scope.
+
+## Forward Compatibility
+
+v1.4 backups use schema version 1 and include subscriptions plus activity log only. v1.5 restore keeps schema version 1 accepted as legacy input; restoring a v1.4 backup replaces subscriptions and activity log after confirmation while leaving v1.5 saved preset preferences unchanged.

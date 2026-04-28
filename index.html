@@ -159,6 +159,39 @@
           Use labels only. Do not enter card numbers, CVV/CVC, IBAN, bank account numbers, passwords, or payment login details.
         </p>
 
+        <details class="preset-manager">
+          <summary>Saved presets</summary>
+          <p class="preset-help">
+            Presets are shortcuts for suggestions. Removing one does not change existing records.
+          </p>
+
+          <div class="preset-group">
+            <h3>Payment labels</h3>
+            <div class="preset-add-row">
+              <label>
+                <span>Add payment label preset</span>
+                <input type="text" autocomplete="off" data-payment-preset-input>
+              </label>
+              <button class="secondary-button" type="button" data-add-payment-preset>Add</button>
+            </div>
+            <p class="preset-empty" data-payment-preset-empty>No saved payment label presets yet.</p>
+            <ul class="preset-list" data-payment-preset-list aria-live="polite"></ul>
+          </div>
+
+          <div class="preset-group">
+            <h3>Categories</h3>
+            <div class="preset-add-row">
+              <label>
+                <span>Add category preset</span>
+                <input type="text" autocomplete="off" data-category-preset-input>
+              </label>
+              <button class="secondary-button" type="button" data-add-category-preset>Add</button>
+            </div>
+            <p class="preset-empty" data-category-preset-empty>No saved category presets yet.</p>
+            <ul class="preset-list" data-category-preset-list aria-live="polite"></ul>
+          </div>
+        </details>
+
         <form class="subscription-form" data-subscription-form novalidate>
           <input type="hidden" name="id">
 
@@ -197,12 +230,14 @@
 
           <label>
             <span>Payment label *</span>
-            <input name="paymentMethod" type="text" autocomplete="off" required>
+            <input name="paymentMethod" type="text" autocomplete="off" list="payment-method-suggestions" required>
+            <datalist id="payment-method-suggestions" data-payment-method-suggestions></datalist>
           </label>
 
           <label>
             <span>Category</span>
-            <input name="category" type="text" autocomplete="off">
+            <input name="category" type="text" autocomplete="off" list="category-suggestions">
+            <datalist id="category-suggestions" data-category-suggestions></datalist>
           </label>
 
           <label>
@@ -220,6 +255,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.4.2"></script>
+    <script src="app.js?v=1.5.2"></script>
   </body>
 </html>

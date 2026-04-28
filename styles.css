@@ -534,6 +534,92 @@ h2 {
   font-size: 0.83rem;
 }
 
+.preset-manager {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+
+.preset-manager summary {
+  cursor: pointer;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 760;
+}
+
+.preset-help,
+.preset-empty {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.preset-group {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.preset-group h3 {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.preset-add-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.preset-add-row label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.83rem;
+  font-weight: 720;
+}
+
+.preset-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.preset-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.preset-item span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.86rem;
+  font-weight: 720;
+}
+
+.preset-remove {
+  min-height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: #9d3e24;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 760;
+}
+
 .subscription-form {
   display: grid;
   gap: 12px;
@@ -655,6 +741,7 @@ h2 {
 @media (max-width: 360px) {
   .summary-strip,
   .overview-stats,
+  .preset-add-row,
   .form-actions,
   .export-actions {
     grid-template-columns: 1fr;

@@ -29,9 +29,7 @@
 
 ## Roadmap
 
-- `subscription-tracker-v1.5-custom-categories`: Add user-defined categories such as Rent, Music, Bills, Software, and Utilities; safely migrate existing records with a default/empty category.
-- `subscription-tracker-v1.6-spending-by-item-category`: Show spending by recurring item and category, not only payment label; keep old records visible even if they have no category.
-- `subscription-tracker-v1.7-custom-payment-labels`: Let users define reusable payment label nicknames; preserve existing free-text `paymentMethod` values.
+- `subscription-tracker-v1.6-spending-by-item-category`: Next planned feature. Show spending by recurring item, category, and payment method; keep old records visible even if they have no category.
 - `subscription-tracker-v1.8-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
 - `subscription-tracker-v1.9-security-hardening-import-safety`: Review input rendering, imported JSON safety, local-only protections, and future data migrations; avoid breaking existing data or offline behavior.
 

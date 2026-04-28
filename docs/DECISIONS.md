@@ -33,6 +33,26 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-04-26 — Add backup schema version 2 for preset preferences
+
+- **Type**: Technical
+- **Status**: active
+- **Context**: v1.5 adds saved payment method and category preset preferences, while v1.4 JSON backups contain only subscriptions and activity log under schema version 1.
+- **Decision**: New JSON backups use schema version 2 and include normalized `data.paymentMethodPresets` and `data.categoryPresets`. Restore accepts schema versions 1 and 2. Schema version 1 restores subscriptions and activity log while keeping current presets unchanged; schema version 2 restores subscriptions, activity log, and saved presets after confirmation.
+- **Why**: A versioned schema makes preset backup behavior explicit without breaking existing v1.4 backups.
+- **Consequences**: Future backup schema changes must preserve clear restore semantics for older versions or provide a documented migration path.
+- **Related**: `docs/features/subscription-tracker-v1.5-presets.md`, `docs/features/subscription-tracker-v1.4-json-backup-restore.md`
+
+### 2026-04-26 — Use separate local preset preferences for v1.5
+
+- **Type**: Technical
+- **Status**: active
+- **Context**: v1.5 will add reusable payment method and category presets, but existing subscription records, CSV exports, v1.4 JSON backups, and installed-PWA continuity must remain compatible.
+- **Decision**: Store preset preferences in new localStorage keys, `subscription-tracker-v1-payment-method-presets` and `subscription-tracker-v1-category-presets`, while keeping subscription records unchanged. Keep existing `paymentMethod` and `category` fields, derive suggestions from both saved presets and existing records, and keep free-text values valid even when they are not presets.
+- **Why**: Separate preference storage avoids destructive migration, preserves current records and exports, and lets existing user-entered labels become useful suggestions without forcing schema changes.
+- **Consequences**: Future implementation must handle missing preset keys, dedupe suggestions, avoid editing subscription values when presets change, and preserve v1.4 JSON restore compatibility before release.
+- **Related**: `docs/features/subscription-tracker-v1.5-presets.md`
+
 ### 2026-04-26 — Require documentation sweep after meaningful changes
 
 - **Type**: Workflow

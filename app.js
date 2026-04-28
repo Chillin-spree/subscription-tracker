@@ -1,8 +1,10 @@
 const STORAGE_KEY = "subscription-tracker-v1-subscriptions";
 const ACTIVITY_STORAGE_KEY = "subscription-tracker-v1-activity-log";
+const PAYMENT_METHOD_PRESETS_STORAGE_KEY = "subscription-tracker-v1-payment-method-presets";
+const CATEGORY_PRESETS_STORAGE_KEY = "subscription-tracker-v1-category-presets";
 const BACKUP_SCHEMA = "subscription-tracker.backup";
-const BACKUP_SCHEMA_VERSION = 1;
-const BACKUP_APP_RELEASE = "v1.4";
+const BACKUP_SCHEMA_VERSION = 2;
+const BACKUP_APP_RELEASE = "v1.5";
 const OCCURRENCE_LABELS = {
   weekly: "Weekly",
   monthly: "Monthly",
@@ -48,15 +50,29 @@ const exportJsonButton = document.querySelector("[data-export-json]");
 const backupFileInput = document.querySelector("[data-backup-file]");
 const backupPreview = document.querySelector("[data-backup-preview]");
 const restoreBackupButton = document.querySelector("[data-restore-backup]");
+const paymentMethodSuggestions = document.querySelector("[data-payment-method-suggestions]");
+const categorySuggestions = document.querySelector("[data-category-suggestions]");
+const paymentPresetInput = document.querySelector("[data-payment-preset-input]");
+const categoryPresetInput = document.querySelector("[data-category-preset-input]");
+const addPaymentPresetButton = document.querySelector("[data-add-payment-preset]");
+const addCategoryPresetButton = document.querySelector("[data-add-category-preset]");
+const paymentPresetList = document.querySelector("[data-payment-preset-list]");
+const categoryPresetList = document.querySelector("[data-category-preset-list]");
+const paymentPresetEmpty = document.querySelector("[data-payment-preset-empty]");
+const categoryPresetEmpty = document.querySelector("[data-category-preset-empty]");
 const SEGMENT_COLORS = ["#147d64", "#b85d2a", "#263a63", "#7c5c2e", "#5b6f63", "#8b4a62"];
 
 let subscriptions = loadSubscriptions();
 let activityLog = loadActivityLog();
+let paymentMethodPresets = loadPresetList(PAYMENT_METHOD_PRESETS_STORAGE_KEY);
+let categoryPresets = loadPresetList(CATEGORY_PRESETS_STORAGE_KEY);
 let editingId = null;
 let validatedBackup = null;
 
 renderSubscriptions();
 renderActivityLog();
+renderPresetSuggestions();
+renderPresetManager();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -115,6 +131,42 @@ backupFileInput.addEventListener("change", () => {
 });
 
 restoreBackupButton.addEventListener("click", restoreValidatedBackup);
+
+addPaymentPresetButton.addEventListener("click", () => {
+  addPreset("paymentMethod", paymentPresetInput.value);
+});
+
+addCategoryPresetButton.addEventListener("click", () => {
+  addPreset("category", categoryPresetInput.value);
+});
+
+[paymentPresetInput, categoryPresetInput].forEach((input) => {
+  input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (input === paymentPresetInput) {
+      addPreset("paymentMethod", input.value);
+    } else {
+      addPreset("category", input.value);
+    }
+  });
+});
+
+[paymentPresetList, categoryPresetList].forEach((list) => {
+  list.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-remove-preset]");
+
+    if (!button) {
+      return;
+    }
+
+    removePreset(button.dataset.presetType, button.dataset.presetValue);
+  });
+});
 
 openButtons.forEach((button) => {
   button.addEventListener("click", () => openForm());
@@ -185,6 +237,7 @@ form.addEventListener("submit", (event) => {
   saveActivityLog();
   renderSubscriptions();
   renderActivityLog();
+  renderPresetSuggestions();
   closeForm();
 });
 
@@ -237,6 +290,184 @@ function saveSubscriptions() {
 
 function saveActivityLog() {
   localStorage.setItem(ACTIVITY_STORAGE_KEY, JSON.stringify(activityLog));
+}
+
+function loadPresetList(storageKey) {
+  try {
+    const storedValue = localStorage.getItem(storageKey);
+    const parsedValue = storedValue ? JSON.parse(storedValue) : [];
+    return normalizePresetList(Array.isArray(parsedValue) ? parsedValue : []);
+  } catch (error) {
+    console.warn("Could not read saved preset values.", error);
+    return [];
+  }
+}
+
+function savePresetList(storageKey, presets) {
+  const normalizedPresets = normalizePresetList(presets);
+
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(normalizedPresets));
+  } catch (error) {
+    console.warn("Could not save preset values.", error);
+  }
+
+  return normalizedPresets;
+}
+
+function normalizePresetList(values) {
+  const readableValues = Array.isArray(values) ? values : [];
+  const labelsByKey = new Map();
+
+  readableValues.forEach((value) => {
+    if (typeof value !== "string") {
+      return;
+    }
+
+    const label = normalize(value);
+    const key = label.toLocaleLowerCase();
+
+    if (label && !labelsByKey.has(key)) {
+      labelsByKey.set(key, label);
+    }
+  });
+
+  return [...labelsByKey.values()].sort(comparePresetLabels);
+}
+
+function comparePresetLabels(a, b) {
+  return a.localeCompare(b, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
+
+function getPaymentMethodSuggestions() {
+  return combinePresetSuggestions(
+    paymentMethodPresets,
+    subscriptions.map((subscription) => subscription.paymentMethod),
+  );
+}
+
+function getCategorySuggestions() {
+  return combinePresetSuggestions(
+    categoryPresets,
+    subscriptions.map((subscription) => subscription.category),
+  );
+}
+
+function combinePresetSuggestions(savedPresets, recordValues) {
+  return normalizePresetList([
+    ...normalizePresetList(savedPresets),
+    ...normalizePresetList(recordValues),
+  ]);
+}
+
+function renderPresetSuggestions() {
+  renderDatalistOptions(paymentMethodSuggestions, getPaymentMethodSuggestions());
+  renderDatalistOptions(categorySuggestions, getCategorySuggestions());
+}
+
+function renderPresetManager() {
+  renderPresetList(paymentPresetList, paymentPresetEmpty, paymentMethodPresets, "paymentMethod");
+  renderPresetList(categoryPresetList, categoryPresetEmpty, categoryPresets, "category");
+}
+
+function renderPresetList(list, emptyState, presets, presetType) {
+  if (!list || !emptyState) {
+    return;
+  }
+
+  const hasPresets = presets.length > 0;
+  emptyState.hidden = hasPresets;
+  list.innerHTML = presets.map((preset) => renderPresetItem(preset, presetType)).join("");
+}
+
+function renderPresetItem(preset, presetType) {
+  return `
+    <li class="preset-item">
+      <span>${escapeHtml(preset)}</span>
+      <button
+        class="preset-remove"
+        type="button"
+        data-remove-preset
+        data-preset-type="${escapeHtml(presetType)}"
+        data-preset-value="${escapeHtml(preset)}"
+      >
+        Remove
+      </button>
+    </li>
+  `;
+}
+
+function addPreset(presetType, value) {
+  const label = normalize(value);
+
+  if (!label) {
+    setStatus("Enter a preset label before saving.");
+    return;
+  }
+
+  const currentPresets = getSavedPresetList(presetType);
+  const nextPresets = normalizePresetList([
+    ...currentPresets,
+    label,
+  ]);
+
+  if (nextPresets.length === currentPresets.length) {
+    setStatus("That preset is already saved.");
+    clearPresetInput(presetType);
+    return;
+  }
+
+  setSavedPresetList(presetType, nextPresets);
+  clearPresetInput(presetType);
+  renderPresetSuggestions();
+  renderPresetManager();
+  setStatus("Preset saved.");
+}
+
+function removePreset(presetType, value) {
+  const currentPresets = getSavedPresetList(presetType);
+  const valueKey = normalize(value).toLocaleLowerCase();
+  const nextPresets = normalizePresetList(
+    currentPresets.filter((preset) => preset.toLocaleLowerCase() !== valueKey),
+  );
+
+  setSavedPresetList(presetType, nextPresets);
+  renderPresetSuggestions();
+  renderPresetManager();
+  setStatus("Preset removed. Existing records were not changed.");
+}
+
+function getSavedPresetList(presetType) {
+  return presetType === "paymentMethod" ? paymentMethodPresets : categoryPresets;
+}
+
+function setSavedPresetList(presetType, presets) {
+  if (presetType === "paymentMethod") {
+    paymentMethodPresets = savePresetList(PAYMENT_METHOD_PRESETS_STORAGE_KEY, presets);
+  } else {
+    categoryPresets = savePresetList(CATEGORY_PRESETS_STORAGE_KEY, presets);
+  }
+}
+
+function clearPresetInput(presetType) {
+  if (presetType === "paymentMethod") {
+    paymentPresetInput.value = "";
+  } else {
+    categoryPresetInput.value = "";
+  }
+}
+
+function renderDatalistOptions(datalist, suggestions) {
+  if (!datalist) {
+    return;
+  }
+
+  datalist.innerHTML = suggestions.map((suggestion) => (
+    `<option value="${escapeHtml(suggestion)}"></option>`
+  )).join("");
 }
 
 function readForm() {
@@ -328,6 +559,7 @@ function deleteSubscription(id) {
   saveActivityLog();
   renderSubscriptions();
   renderActivityLog();
+  renderPresetSuggestions();
   setStatus("Subscription deleted.");
 }
 
@@ -521,17 +753,22 @@ function buildJsonBackup(exportedAt) {
     data: {
       subscriptions,
       activityLog,
+      paymentMethodPresets: normalizePresetList(paymentMethodPresets),
+      categoryPresets: normalizePresetList(categoryPresets),
     },
   };
 }
 
 function buildJsonBackupFilename(exportedAt) {
   const date = exportedAt.slice(0, 10);
-  return `subscription-tracker-backup-v1.4-${date}.json`;
+  return `subscription-tracker-backup-v1.5-${date}.json`;
 }
 
 function hasBackupData() {
-  return subscriptions.length > 0 || activityLog.length > 0;
+  return subscriptions.length > 0
+    || activityLog.length > 0
+    || paymentMethodPresets.length > 0
+    || categoryPresets.length > 0;
 }
 
 async function previewBackupFile(file) {
@@ -567,8 +804,14 @@ function restoreValidatedBackup() {
 
   const subscriptionCount = validatedBackup.data.subscriptions.length;
   const activityCount = validatedBackup.data.activityLog.length;
+  const includesPresets = backupIncludesPresets(validatedBackup);
+  const paymentPresetCount = includesPresets ? validatedBackup.data.paymentMethodPresets.length : 0;
+  const categoryPresetCount = includesPresets ? validatedBackup.data.categoryPresets.length : 0;
+  const presetReplacementText = includesPresets
+    ? `, ${paymentPresetCount} payment label presets, and ${categoryPresetCount} category presets.`
+    : ". Current saved presets will be kept because this is a schema version 1 backup.";
   const confirmed = window.confirm(
-    `Replace existing local subscriptions and activity log with this backup?\n\nThis will replace ${subscriptions.length} current subscriptions and ${activityLog.length} activity entries with ${subscriptionCount} backup subscriptions and ${activityCount} backup activity entries.`,
+    `Replace local data with this backup?\n\nThis will replace ${subscriptions.length} current subscriptions and ${activityLog.length} activity entries with ${subscriptionCount} backup subscriptions and ${activityCount} backup activity entries${presetReplacementText}`,
   );
 
   if (!confirmed) {
@@ -578,8 +821,12 @@ function restoreValidatedBackup() {
 
   const nextSubscriptions = validatedBackup.data.subscriptions;
   const nextActivityLog = validatedBackup.data.activityLog;
+  const nextPaymentMethodPresets = validatedBackup.data.paymentMethodPresets;
+  const nextCategoryPresets = validatedBackup.data.categoryPresets;
   const previousSubscriptionsValue = localStorage.getItem(STORAGE_KEY);
   const previousActivityLogValue = localStorage.getItem(ACTIVITY_STORAGE_KEY);
+  const previousPaymentMethodPresetsValue = localStorage.getItem(PAYMENT_METHOD_PRESETS_STORAGE_KEY);
+  const previousCategoryPresetsValue = localStorage.getItem(CATEGORY_PRESETS_STORAGE_KEY);
 
   try {
     const nextSubscriptionsValue = JSON.stringify(nextSubscriptions);
@@ -588,15 +835,33 @@ function restoreValidatedBackup() {
     localStorage.setItem(STORAGE_KEY, nextSubscriptionsValue);
     localStorage.setItem(ACTIVITY_STORAGE_KEY, nextActivityLogValue);
 
+    if (includesPresets) {
+      localStorage.setItem(PAYMENT_METHOD_PRESETS_STORAGE_KEY, JSON.stringify(nextPaymentMethodPresets));
+      localStorage.setItem(CATEGORY_PRESETS_STORAGE_KEY, JSON.stringify(nextCategoryPresets));
+    }
+
     subscriptions = nextSubscriptions;
     activityLog = nextActivityLog;
+
+    if (includesPresets) {
+      paymentMethodPresets = nextPaymentMethodPresets;
+      categoryPresets = nextCategoryPresets;
+    }
+
     renderSubscriptions();
     renderActivityLog();
+    renderPresetSuggestions();
+    renderPresetManager();
     resetBackupRestorePreview();
-    setStatus(`Backup restored: ${subscriptionCount} subscriptions and ${activityCount} activity entries.`);
+    setStatus(`Backup restored: ${subscriptionCount} subscriptions and ${activityCount} activity entries${includesPresets ? ", plus saved presets" : ""}.`);
   } catch (error) {
     try {
-      restoreStorageSnapshot(previousSubscriptionsValue, previousActivityLogValue);
+      restoreStorageSnapshot(
+        previousSubscriptionsValue,
+        previousActivityLogValue,
+        previousPaymentMethodPresetsValue,
+        previousCategoryPresetsValue,
+      );
       setStatus("Restore failed. Existing local data was kept.");
     } catch (rollbackError) {
       setStatus("Restore failed. Please reload before making more changes.");
@@ -615,8 +880,8 @@ function validateBackupData(backup) {
     throw new Error("This file is not a Subscription Tracker backup.");
   }
 
-  if (backup.schemaVersion !== BACKUP_SCHEMA_VERSION) {
-    throw new Error("This backup version is not supported.");
+  if (![1, 2].includes(backup.schemaVersion)) {
+    throw new Error("This backup version is not supported. Supported versions are 1 and 2.");
   }
 
   if (!isValidTimestamp(backup.exportedAt)) {
@@ -638,7 +903,43 @@ function validateBackupData(backup) {
   backup.data.subscriptions.forEach(validateBackupSubscription);
   backup.data.activityLog.forEach(validateBackupActivityEntry);
 
-  return backup;
+  if (backup.schemaVersion === 1) {
+    return {
+      ...backup,
+      data: {
+        ...backup.data,
+        paymentMethodPresets: [],
+        categoryPresets: [],
+      },
+    };
+  }
+
+  return {
+    ...backup,
+    data: {
+      ...backup.data,
+      paymentMethodPresets: normalizePresetList(backup.data.paymentMethodPresets),
+      categoryPresets: normalizePresetList(backup.data.categoryPresets),
+    },
+  };
+}
+
+function backupIncludesPresets(backup) {
+  return backup.schemaVersion === 2;
+}
+
+function describeBackupPresetBehavior(backup) {
+  if (!backupIncludesPresets(backup)) {
+    return "Saved presets: not included; current saved presets will be kept if restored.";
+  }
+
+  return `Saved presets: ${backup.data.paymentMethodPresets.length} payment labels and ${backup.data.categoryPresets.length} categories; these will replace current saved presets if restored.`;
+}
+
+function describeBackupRestoreScope(backup) {
+  return backupIncludesPresets(backup)
+    ? "Restoring will replace local subscriptions, activity log, and saved presets after confirmation."
+    : "Restoring will replace local subscriptions and activity log after confirmation; saved presets are not changed.";
 }
 
 function validateBackupSubscription(subscription, index) {
@@ -711,6 +1012,8 @@ function renderBackupPreview(backup) {
     <span>Schema version: ${backup.schemaVersion}</span>
     <span>Subscriptions: ${backup.data.subscriptions.length}</span>
     <span>Activity entries: ${backup.data.activityLog.length}</span>
+    <span>${escapeHtml(describeBackupPresetBehavior(backup))}</span>
+    <span>${escapeHtml(describeBackupRestoreScope(backup))}</span>
     <em>No data has been restored yet.</em>
   `;
 }
@@ -743,17 +1046,27 @@ function resetBackupRestorePreview() {
   clearBackupPreview();
 }
 
-function restoreStorageSnapshot(subscriptionsValue, activityLogValue) {
-  if (subscriptionsValue === null) {
-    localStorage.removeItem(STORAGE_KEY);
-  } else {
-    localStorage.setItem(STORAGE_KEY, subscriptionsValue);
+function restoreStorageSnapshot(
+  subscriptionsValue,
+  activityLogValue,
+  paymentMethodPresetsValue,
+  categoryPresetsValue,
+) {
+  restoreStorageValue(STORAGE_KEY, subscriptionsValue);
+  restoreStorageValue(ACTIVITY_STORAGE_KEY, activityLogValue);
+  restoreStorageValue(PAYMENT_METHOD_PRESETS_STORAGE_KEY, paymentMethodPresetsValue);
+  restoreStorageValue(CATEGORY_PRESETS_STORAGE_KEY, categoryPresetsValue);
+}
+
+function restoreStorageValue(storageKey, value) {
+  if (value === undefined) {
+    return;
   }
 
-  if (activityLogValue === null) {
-    localStorage.removeItem(ACTIVITY_STORAGE_KEY);
+  if (value === null) {
+    localStorage.removeItem(storageKey);
   } else {
-    localStorage.setItem(ACTIVITY_STORAGE_KEY, activityLogValue);
+    localStorage.setItem(storageKey, value);
   }
 }
 

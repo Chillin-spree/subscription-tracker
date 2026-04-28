@@ -17,34 +17,34 @@
 
 ## Workflow State
 
-- **Mode**: docs/process update
-- **Active feature**: roadmap and product-memory sweep
-- **Feature file**: none
-- **Risk**: low
-- **Owned by**: Project/user
-- **Current step**: Capture outstanding roadmap and product-direction ideas using the documentation sweep rule.
-- **Waiting on**: Review and commit decision for the docs-only process and roadmap updates.
+- **Mode**: v1.5 release-ready
+- **Active feature**: user-defined payment method and category presets
+- **Feature file**: `docs/features/subscription-tracker-v1.5-presets.md`
+- **Risk**: medium once implementation begins
+- **Owned by**: Product/design review and implementation
+- **Current step**: v1.5 final QA and release documentation completed locally.
+- **Waiting on**: Review, commit, push, and live GitHub Pages verification.
 - **Blockers**: none
-- **Next recommended step**: Review and commit the documentation sweep process update together with the roadmap/product-memory update, or split into two docs commits if preferred.
-- **Recent touch points**: v1.4 JSON backup/restore was committed and pushed to `main`; live GitHub Pages verification passed. Current docs-only work strengthens the documentation sweep process and records outstanding roadmap/product ideas.
+- **Next recommended step**: Commit and release v1.5, verify GitHub Pages, then start v1.6 spending overview by item/category/payment method.
+- **Recent touch points**: v1.5 is release-ready locally. Final QA passed for static syntax, preset add/remove behavior, malformed preset storage tolerance, CSV compatibility, JSON schema version 1 and 2 restore behavior, local-only privacy, and PWA consistency with `app.js?v=1.5.2` plus cache `subscription-tracker-v1.5.2-static`. v1.4 remains the current live release until v1.5 is committed, pushed, and verified on GitHub Pages.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-04-26
-- **Handoff type**: Docs/process update
-- **Summary**: Add a documentation sweep rule and capture outstanding roadmap/product ideas in shared docs.
-- **Where full handoff lives**: Current project handoff; process details in `AGENTS.md` and `docs/HANDOFFS.md`, roadmap in `docs/BACKLOG.md`, product direction in `docs/VISION.md`.
+- **Handoff type**: v1.5 final QA and release docs
+- **Summary**: Finalize v1.5 release readiness for local payment label/category presets and JSON backup compatibility.
+- **Where full handoff lives**: `docs/features/subscription-tracker-v1.5-presets.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-04-26: Completed v1.5 final QA and release documentation. Checks passed: `node --check app.js`, `node --check service-worker.js`, `git diff --check`, runtime preset/backup harness, PWA version scan, CSV header scan, manifest start/scope scan, and local-only/privacy scan.
+- 2026-04-26: Implemented v1.5 pass 4 JSON backup compatibility: new exports use schema version 2 with saved presets, schema version 1 backups still restore subscriptions/activity and keep current presets, and app-shell versioning moved to `1.5.2`.
+- 2026-04-26: Implemented v1.5 pass 3 lightweight preset management UI for adding/removing saved payment label and category presets; subscription records, CSV, and JSON backup schema remain unchanged.
+- 2026-04-26: Implemented v1.5 pass 2 preset storage foundation, derived form suggestions, and PWA app-shell version updates; no preset management UI or backup schema changes.
+- 2026-04-26: Started v1.5 presets planning with a docs-only pass for reusable payment method and category presets; no runtime code changes.
 - 2026-04-26: Captured outstanding roadmap and product-memory ideas: payment presets, categories, spending views, date ranges, end dates, privacy modal, customization, notifications investigation, and broader recurring-bills direction.
 - 2026-04-26: Added documentation sweep discipline so meaningful feature, bugfix, roadmap, release, risk, decision, and workflow changes require checking affected docs.
-- 2026-04-26: Pushed v1.4 JSON backup/restore to `main`; GitHub Pages deployment succeeded and live assets verified `app.js?v=1.4.2` plus cache `subscription-tracker-v1.4.2-static`.
-- 2026-04-26: Documented v1.4 JSON backup/restore release readiness; implementation and focused QA are complete, pending commit/push/live verification.
-- 2026-04-26: Completed focused QA for v1.4 backup export, restore preview/validation, confirmed replace restore, PWA continuity, and export compatibility with no release-blocking issues.
-- 2026-04-26: Implemented confirmed JSON restore write; valid backups can replace local subscriptions and activity log only after explicit user confirmation.
-- 2026-04-26: Implemented JSON backup restore preview and validation with local-only file handling and no restore writes.
