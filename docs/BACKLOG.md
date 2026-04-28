@@ -29,14 +29,12 @@
 
 ## Roadmap
 
-- `subscription-tracker-v1.6-spending-by-item-category`: Next planned feature. Show spending by recurring item, category, and payment method; keep old records visible even if they have no category.
+- `subscription-tracker-v1.7-date-ranges-end-dates`: Next planned feature. Explore selected date ranges for spending review plus absolute end dates for subscriptions or recurring payments, while preserving existing records, exports, backups, PWA continuity, and local-only privacy.
 - `subscription-tracker-v1.8-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
 - `subscription-tracker-v1.9-security-hardening-import-safety`: Review input rendering, imported JSON safety, local-only protections, and future data migrations; avoid breaking existing data or offline behavior.
 
 ## Parked / Later
 
-- `subscription-tracker-date-range-expenses`: Let users review expenses for a selected date range instead of only the next 7 days or normalized monthly/yearly totals.
-- `subscription-tracker-absolute-end-date`: Track subscriptions or recurring payments with a known final billing date.
 - `subscription-tracker-spending-by-category-date-range`: Expand spending overview filters to compare subscription, category, and date-range views.
 - `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
 - `subscription-tracker-local-only-privacy-modal`: Turn the local-only privacy message into an accessible modal or detail view using the current wording as the source of truth.

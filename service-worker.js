@@ -1,11 +1,11 @@
-const CACHE_NAME = "subscription-tracker-v1.5.2-static";
+const CACHE_NAME = "subscription-tracker-v1.6.2-static";
 const CACHE_PREFIX = "subscription-tracker-";
 const APP_SHELL_ASSETS = [
   "./",
   "index.html",
   "styles.css",
   "app.js",
-  "app.js?v=1.5.2",
+  "app.js?v=1.6.2",
   "manifest.webmanifest",
   "icons/icon-192.png",
   "icons/icon-512.png",

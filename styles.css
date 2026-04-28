@@ -291,6 +291,44 @@ h2 {
   font-size: 0.84rem;
 }
 
+.overview-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 12px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+
+.overview-tabs[hidden] {
+  display: none;
+}
+
+.overview-tab {
+  min-height: 34px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.overview-tab.is-active {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 4px rgba(28, 36, 32, 0.08);
+}
+
+.overview-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .spending-bar {
   display: flex;
   height: 22px;
@@ -353,6 +391,10 @@ h2 {
 .payment-method-percent {
   font-weight: 800;
   white-space: nowrap;
+}
+
+.payment-method-percent:empty {
+  display: none;
 }
 
 .subscription-list,

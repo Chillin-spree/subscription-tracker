@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-04-28 — Use monthly normalized spending overview comparisons
+
+- **Type**: UX
+- **Status**: active
+- **Context**: v1.6 will expand Spending overview from payment-label grouping to item, category, and payment-label breakdowns.
+- **Decision**: Spending overview uses monthly normalized totals as the primary comparison basis, keeps yearly equivalent as supporting context, displays multiple currencies separately without conversion, and leaves next-payment timing and next-7-days totals in Upcoming payments.
+- **Why**: Monthly normalization lets weekly, monthly, quarterly, and yearly recurring records be compared in one compact overview without mixing that purpose with due-date timing.
+- **Consequences**: Future overview features should avoid silently combining currencies, should not use Upcoming payments totals as spending distribution data, and should document any future date-range spending mode as a separate feature.
+- **Related**: `docs/features/subscription-tracker-v1.6-spending-overview.md`
+
 ### 2026-04-26 — Add backup schema version 2 for preset preferences
 
 - **Type**: Technical

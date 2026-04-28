@@ -38,6 +38,8 @@ const monthlyTotal = document.querySelector("[data-monthly-total]");
 const yearlyTotal = document.querySelector("[data-yearly-total]");
 const overviewCount = document.querySelector("[data-overview-count]");
 const overviewNote = document.querySelector("[data-overview-note]");
+const overviewTabs = document.querySelector("[data-overview-tabs]");
+const overviewTabButtons = document.querySelectorAll("[data-overview-tab]");
 const spendingBar = document.querySelector("[data-spending-bar]");
 const paymentMethodList = document.querySelector("[data-payment-method-list]");
 const overviewEmpty = document.querySelector("[data-overview-empty]");
@@ -68,6 +70,7 @@ let paymentMethodPresets = loadPresetList(PAYMENT_METHOD_PRESETS_STORAGE_KEY);
 let categoryPresets = loadPresetList(CATEGORY_PRESETS_STORAGE_KEY);
 let editingId = null;
 let validatedBackup = null;
+let selectedOverviewMode = "items";
 
 renderSubscriptions();
 renderActivityLog();
@@ -166,6 +169,17 @@ addCategoryPresetButton.addEventListener("click", () => {
 
     removePreset(button.dataset.presetType, button.dataset.presetValue);
   });
+});
+
+overviewTabs.addEventListener("click", (event) => {
+  const tab = event.target.closest("[data-overview-tab]");
+
+  if (!tab) {
+    return;
+  }
+
+  selectedOverviewMode = tab.dataset.overviewTab;
+  renderSpendingOverview();
 });
 
 openButtons.forEach((button) => {
@@ -584,19 +598,19 @@ function renderExportControls() {
 }
 
 function renderSpendingOverview() {
-  const overviewItems = subscriptions.map((subscription) => ({
-    subscription,
-    monthlyEquivalent: getMonthlyEquivalent(subscription),
-  }));
-  const hasSubscriptions = overviewItems.length > 0;
+  const hasSubscriptions = subscriptions.length > 0;
   const currencies = [...new Set(subscriptions.map((subscription) => subscription.currency || "TRY"))];
   const hasSingleCurrency = currencies.length === 1;
-  const totalMonthly = overviewItems.reduce((total, item) => total + item.monthlyEquivalent, 0);
-  const groups = getPaymentMethodGroups(overviewItems, totalMonthly);
+  const totalMonthly = subscriptions.reduce(
+    (total, subscription) => total + getMonthlyEquivalent(subscription),
+    0,
+  );
+  const breakdownRows = getOverviewBreakdownRows(selectedOverviewMode);
 
   overviewEmpty.hidden = hasSubscriptions;
   overviewStats.hidden = !hasSubscriptions;
-  spendingBar.hidden = !hasSubscriptions;
+  overviewTabs.hidden = !hasSubscriptions;
+  spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency;
   overviewCurrency.textContent = hasSingleCurrency ? currencies[0] || "TRY" : "Multiple currencies";
   monthlyTotal.textContent = hasSingleCurrency
     ? `${currencies[0] || "TRY"} ${totalMonthly.toFixed(2)}`
@@ -607,8 +621,10 @@ function renderSpendingOverview() {
   overviewCount.textContent = String(subscriptions.length);
   overviewNote.hidden = hasSingleCurrency || !hasSubscriptions;
   overviewNote.textContent = "Multiple currencies are shown separately instead of combined into one total.";
-  spendingBar.innerHTML = groups.map(renderSpendingSegment).join("");
-  paymentMethodList.innerHTML = groups.map(renderPaymentMethodGroup).join("");
+  renderOverviewTabs();
+  spendingBar.setAttribute("aria-label", getOverviewBreakdownLabel());
+  spendingBar.innerHTML = hasSingleCurrency ? breakdownRows.map(renderSpendingSegment).join("") : "";
+  paymentMethodList.innerHTML = breakdownRows.map(renderOverviewBreakdownRow).join("");
 }
 
 function renderUpcomingPayments() {
@@ -669,27 +685,242 @@ function getPaymentMethodGroups(overviewItems, totalMonthly) {
     .sort((a, b) => b.monthlyEquivalent - a.monthlyEquivalent);
 }
 
+function getOverviewBreakdownRows(mode) {
+  if (mode === "categories") {
+    return getSpendingBreakdownByCategory(subscriptions).map(addBreakdownColor);
+  }
+
+  if (mode === "payment") {
+    return getSpendingBreakdownByPaymentMethod(subscriptions).map(addBreakdownColor);
+  }
+
+  return getSpendingBreakdownByItem(subscriptions).map(addBreakdownColor);
+}
+
+function addBreakdownColor(row, index) {
+  return {
+    ...row,
+    color: SEGMENT_COLORS[index % SEGMENT_COLORS.length],
+  };
+}
+
+function renderOverviewTabs() {
+  overviewTabButtons.forEach((button) => {
+    const isSelected = button.dataset.overviewTab === selectedOverviewMode;
+
+    button.classList.toggle("is-active", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+}
+
+function getOverviewBreakdownLabel() {
+  if (selectedOverviewMode === "categories") {
+    return "Spending by category";
+  }
+
+  return selectedOverviewMode === "payment"
+    ? "Spending by payment label"
+    : "Spending by item";
+}
+
 function renderSpendingSegment(group) {
+  const percentage = getBreakdownPercentage(group);
+
   return `
     <span
       class="spending-segment"
-      style="--segment-color: ${group.color}; width: ${Math.max(group.percentage, 2).toFixed(2)}%;"
-      title="${escapeHtml(group.label)} ${group.percentage.toFixed(0)}%"
+      style="--segment-color: ${group.color}; width: ${Math.max(percentage, 2).toFixed(2)}%;"
+      title="${escapeHtml(group.label)} ${percentage.toFixed(0)}%"
     ></span>
   `;
 }
 
-function renderPaymentMethodGroup(group) {
+function renderOverviewBreakdownRow(group) {
+  const secondaryLabel = getOverviewRowSecondaryLabel(group);
+  const percentage = getBreakdownPercentage(group);
+  const percentText = Number.isFinite(percentage) ? `${percentage.toFixed(0)}%` : "";
+
   return `
     <div class="payment-method-row">
       <span class="payment-method-dot" style="--segment-color: ${group.color};"></span>
       <div class="payment-method-main">
         <strong>${escapeHtml(group.label)}</strong>
+        <span>${escapeHtml(secondaryLabel)}</span>
         <span>${escapeHtml(formatCurrencyBreakdown(group.currencyTotals))} / month</span>
       </div>
-      <span class="payment-method-percent">${group.percentage.toFixed(0)}%</span>
+      <span class="payment-method-percent">${percentText}</span>
     </div>
   `;
+}
+
+function getOverviewRowSecondaryLabel(group) {
+  if (selectedOverviewMode === "categories") {
+    return `${group.itemCount} ${group.itemCount === 1 ? "item" : "items"}`;
+  }
+
+  if (selectedOverviewMode === "payment") {
+    return `${group.itemCount} ${group.itemCount === 1 ? "item" : "items"}`;
+  }
+
+  return group.secondaryLabel || "Subscription";
+}
+
+function getBreakdownPercentage(group) {
+  const [currencyEntry] = group.currencyBreakdown || [];
+
+  return currencyEntry?.percentage ?? Number.NaN;
+}
+
+function getSpendingBreakdownByItem(subscriptionRecords) {
+  const rows = normalizeSpendingItems(subscriptionRecords)
+    .map((item) => ({
+      type: "item",
+      id: item.subscription.id || "",
+      label: item.subscription.name || "Unnamed subscription",
+      secondaryLabel: getItemBreakdownSecondaryLabel(item.subscription),
+      subscription: item.subscription,
+      paymentMethod: item.subscription.paymentMethod || "",
+      category: item.subscription.category || "",
+      occurrence: item.subscription.occurrence || "",
+      currency: item.currency,
+      monthlyEquivalent: item.monthlyEquivalent,
+      currencyTotals: {
+        [item.currency]: item.monthlyEquivalent,
+      },
+      currencyBreakdown: [
+        {
+          currency: item.currency,
+          monthlyEquivalent: item.monthlyEquivalent,
+          percentage: null,
+        },
+      ],
+      itemCount: 1,
+      sortAmount: item.monthlyEquivalent,
+    }))
+    .sort(sortBreakdownRows);
+
+  return applySingleCurrencyPercentages(rows);
+}
+
+function getSpendingBreakdownByCategory(subscriptionRecords) {
+  return applySingleCurrencyPercentages(getGroupedSpendingBreakdown(
+    subscriptionRecords,
+    (subscription) => normalize(subscription.category) || "Uncategorized",
+    "category",
+  ));
+}
+
+function getSpendingBreakdownByPaymentMethod(subscriptionRecords) {
+  return applySingleCurrencyPercentages(getGroupedSpendingBreakdown(
+    subscriptionRecords,
+    (subscription) => subscription.paymentMethod || "Unlabeled payment label",
+    "paymentMethod",
+  ));
+}
+
+function getGroupedSpendingBreakdown(subscriptionRecords, getLabel, type) {
+  const groups = normalizeSpendingItems(subscriptionRecords).reduce((result, item) => {
+    const label = getLabel(item.subscription);
+
+    result[label] ||= {
+      type,
+      id: label,
+      label,
+      itemCount: 0,
+      subscriptions: [],
+      currencyTotals: {},
+    };
+
+    result[label].itemCount += 1;
+    result[label].subscriptions.push(item.subscription);
+    result[label].currencyTotals[item.currency] =
+      (result[label].currencyTotals[item.currency] || 0) + item.monthlyEquivalent;
+
+    return result;
+  }, {});
+
+  return Object.values(groups)
+    .map((group) => {
+      const currencyBreakdown = buildCurrencyBreakdown(group.currencyTotals);
+
+      return {
+        ...group,
+        currencyBreakdown,
+        sortAmount: getBreakdownSortAmount(currencyBreakdown),
+      };
+    })
+    .sort(sortBreakdownRows);
+}
+
+function normalizeSpendingItems(subscriptionRecords) {
+  if (!Array.isArray(subscriptionRecords)) {
+    return [];
+  }
+
+  return subscriptionRecords.map((subscription) => {
+    const normalizedSubscription = { ...subscription };
+
+    return {
+      subscription: normalizedSubscription,
+      currency: normalizedSubscription.currency || "TRY",
+      monthlyEquivalent: getMonthlyEquivalent(normalizedSubscription),
+    };
+  });
+}
+
+function buildCurrencyBreakdown(currencyTotals) {
+  return Object.entries(currencyTotals)
+    .map(([currency, monthlyEquivalent]) => ({
+      currency,
+      monthlyEquivalent,
+      percentage: null,
+    }))
+    .sort((a, b) => b.monthlyEquivalent - a.monthlyEquivalent);
+}
+
+function applySingleCurrencyPercentages(breakdownRows) {
+  const currencies = new Set();
+
+  breakdownRows.forEach((row) => {
+    row.currencyBreakdown.forEach(({ currency }) => currencies.add(currency));
+  });
+
+  if (currencies.size !== 1) {
+    return breakdownRows;
+  }
+
+  const [currency] = currencies;
+  const denominator = breakdownRows.reduce(
+    (total, row) => total + (row.currencyTotals[currency] || 0),
+    0,
+  );
+
+  return breakdownRows.map((row) => ({
+    ...row,
+    currencyBreakdown: row.currencyBreakdown.map((entry) => ({
+      ...entry,
+      percentage: denominator > 0 ? (entry.monthlyEquivalent / denominator) * 100 : 0,
+    })),
+  }));
+}
+
+function getItemBreakdownSecondaryLabel(subscription) {
+  return [
+    subscription.paymentMethod,
+    OCCURRENCE_LABELS[subscription.occurrence] || subscription.occurrence,
+    subscription.category,
+  ].filter(Boolean).join(" · ");
+}
+
+function getBreakdownSortAmount(currencyBreakdown) {
+  return currencyBreakdown.reduce(
+    (highestAmount, entry) => Math.max(highestAmount, entry.monthlyEquivalent),
+    0,
+  );
+}
+
+function sortBreakdownRows(a, b) {
+  return b.sortAmount - a.sortAmount || a.label.localeCompare(b.label);
 }
 
 function buildTextExport() {

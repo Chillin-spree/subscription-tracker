@@ -72,8 +72,19 @@
           </div>
         </div>
         <p class="overview-note" data-overview-note hidden></p>
-        <div class="spending-bar" data-spending-bar hidden aria-label="Spending by payment label"></div>
-        <div class="payment-method-list" data-payment-method-list></div>
+        <div class="overview-tabs" data-overview-tabs hidden role="group" aria-label="Spending breakdown">
+          <button class="overview-tab is-active" type="button" data-overview-tab="items" aria-pressed="true">
+            Items
+          </button>
+          <button class="overview-tab" type="button" data-overview-tab="categories" aria-pressed="false">
+            Categories
+          </button>
+          <button class="overview-tab" type="button" data-overview-tab="payment" aria-pressed="false">
+            Payment
+          </button>
+        </div>
+        <div class="spending-bar" data-spending-bar hidden aria-label="Spending breakdown"></div>
+        <div class="payment-method-list" data-payment-method-list aria-live="polite"></div>
         <div class="empty-state compact" data-overview-empty>
           <p>No spending breakdown yet.</p>
         </div>
@@ -255,6 +266,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.5.2"></script>
+    <script src="app.js?v=1.6.2"></script>
   </body>
 </html>
