@@ -13,16 +13,17 @@ Introduce optional absolute subscription end dates as a safe model foundation, t
 - Suppress Upcoming payments after an optional end date while keeping the end date inclusive.
 - Provide pure date-range helpers for future Spending overview work without changing the current UI.
 - Provide internal range breakdown adapters that match the existing overview row shape without changing the current UI.
-- Add a fixed `This month` Spending overview tab that shows actual current-month scheduled item totals.
-- Show a compact actual current-month total and occurrence summary on the `This month` tab.
+- Add a fixed current-month Spending overview range tab that shows actual current-month scheduled item totals.
+- Show a compact actual current-month total and occurrence summary on the range tab.
 - Add non-persisted custom start/end date controls to the existing item-only range tab.
+- Label the selected-range tab as `Range` while keeping `This month` for the reset-to-current-month control, adding clearer accessible names to range controls, and hiding normalized stat cards in Range mode.
 
 ## Non-Goals
 
 - No date-range spending overview in passes 1, 2, 3, or 4.
 - No custom date range inputs in passes 5 or 6.
-- No persisted custom date range state in pass 7.
-- No category or payment-label range tabs in passes 5, 6, or 7.
+- No persisted custom date range state in passes 7 or 8.
+- No category or payment-label range tabs in passes 5, 6, 7, or 8.
 - No visible occurrence totals by selected custom range in passes 3, 4, 5, or 6.
 - No CSV end-date export.
 - No JSON schema version 3.
@@ -42,8 +43,8 @@ Introduce optional absolute subscription end dates as a safe model foundation, t
 - Weekly occurrences repeat every 7 days from `billingDate`; monthly, quarterly, and yearly occurrences use calendar increments from the original billing date and clamp shorter months.
 - Range breakdown adapters reuse the existing overview row shape with `currencyTotals`, `currencyBreakdown`, `sortAmount`, and row metadata, while adding occurrence count, total amount, and occurrence dates for future UI.
 - The first visible range view is fixed to the current local calendar month and item rows only; Items, Categories, and Payment remain monthly normalized views.
-- The current-month range summary derives its total and occurrence count from the same item rows shown in the `This month` list so the summary and row breakdown stay aligned.
-- Custom range controls are in-memory only. They default to the current local calendar month, do not persist to localStorage or backups, and keep the existing `This month` tab label while the controls, note, and summary date span communicate the selected range.
+- The range summary derives its total and occurrence count from the same selected-range item rows shown in the list so the summary and row breakdown stay aligned.
+- Custom range controls are in-memory only. They default to the current local calendar month, do not persist to localStorage or backups, and use the `Range` tab label while the `This month` reset control restores the default current-month range.
 
 ## Compatibility Requirements
 
@@ -78,7 +79,8 @@ Recommended passes:
 5. Current-month range UI — add a fixed `This month` item tab using actual current-month totals; no custom date inputs.
 6. Current-month summary polish — add a compact actual total, occurrence count, and date-span summary to the fixed `This month` tab.
 7. Custom date range controls — add non-persisted selected range inputs and wire them to the existing item-only range view.
-8. Final QA and release docs — verify compatibility, PWA shell versions, exports, backups, and manual QA.
+8. Selected-range label/accessibility/final clarity polish — rename the visible range tab, clarify supporting copy, improve range-control accessible names, and hide normalized stat cards in Range mode; no new modes.
+9. Final QA and release docs — verify compatibility, PWA shell versions, exports, backups, and manual QA.
 ```
 
 ## Build Notes
@@ -90,6 +92,7 @@ Recommended passes:
 - 2026-04-28 pass 5: Added a fixed `This month` Spending overview tab using item-level actual scheduled charges for the current local calendar month. Existing Items, Categories, and Payment tabs remain monthly normalized. The range tab uses existing range breakdown adapters, shows actual current-month row labels, excludes subscriptions without current-month occurrences, keeps multiple currencies separate, and shows a clear empty state when there are no scheduled charges this month. Runtime app shell versioning moved to `app.js?v=1.7.4` and cache `subscription-tracker-v1.7.4-static`.
 - 2026-04-28 pass 6: Added a compact `This month` range summary above the range breakdown. The summary appears only on the range tab, derives actual total(s) and occurrence count from the same current-month item rows used by the list, keeps multiple currencies separate, and shows the current local month date span. Existing Items, Categories, and Payment tabs, normalized overview stats, Upcoming payments, active counts, CSV export, and JSON backup schema remain unchanged. Runtime app shell versioning moved to `app.js?v=1.7.5` and cache `subscription-tracker-v1.7.5-static`.
 - 2026-04-28 pass 7: Added non-persisted start/end date controls to the existing `This month` Spending overview tab. The selected range defaults to the current local calendar month, updates the same actual item rows and summary, includes a reset-to-current-month control, handles invalid or reversed ranges with a clear empty state, and keeps Items, Categories, and Payment tabs monthly normalized. Upcoming payments, active counts, CSV export, JSON backup schema, and localStorage keys remain unchanged. Runtime app shell versioning moved to `app.js?v=1.7.6` and cache `subscription-tracker-v1.7.6-static`.
+- 2026-04-28 pass 8: Renamed the visible selected-range Spending overview tab to `Range`, kept the reset-to-current-month button labeled `This month`, adjusted range row/header copy to describe actual selected-range spending, added clearer accessible labels for range start, range end, and reset controls, and hid normalized Monthly/Yearly/Active stat cards while Range mode is active. No category/payment range modes, persistence, export, schema, Upcoming payments, or active-count behavior changed. Runtime app shell versioning moved to `app.js?v=1.7.9` and cache `subscription-tracker-v1.7.9-static`.
 
 ## QA Checklist
 
@@ -110,22 +113,24 @@ Recommended passes:
 - Range adapter code review confirms item rows use actual occurrence totals, not monthly normalized estimates.
 - Range adapter code review confirms category and payment rows group actual range totals by category and payment label.
 - Range adapter code review confirms zero-occurrence records are excluded and zero-price records with occurrences are preserved.
-- `This month` tab shows actual current-month item totals using occurrence counts.
-- `This month` shows a compact actual current-month summary with total(s), occurrence count, and date span.
-- `This month` summary derives totals and occurrence count from the same rows shown in the item list.
+- `Range` tab shows actual selected-range item totals using occurrence counts.
+- `Range` shows a compact actual selected-range summary with total(s), occurrence count, and date span.
+- `Range` summary derives totals and occurrence count from the same rows shown in the item list.
+- `Range` hides normalized Monthly/Yearly/Active stat cards so actual range totals are visually distinct.
 - Custom range controls default to the current local calendar month.
 - Changing start/end dates updates actual item rows, summary total, occurrence count, note, and date span.
 - Same-day ranges and occurrences exactly on range start or end are included.
 - Reversed or invalid ranges show a clear empty state and no rows.
 - Reset returns the selected range to the current local calendar month.
+- Range start, range end, and reset controls have clear accessible names.
 - Existing Items, Categories, and Payment tabs remain monthly normalized.
-- `This month` excludes subscriptions with no current-month occurrence.
-- `This month` preserves zero-price subscriptions with current-month occurrences.
-- `This month` shows a clear empty state when there are no scheduled charges in the selected range.
+- `Range` excludes subscriptions with no selected-range occurrence.
+- `Range` preserves zero-price subscriptions with selected-range occurrences.
+- `Range` shows a clear empty state when there are no scheduled charges in the selected range.
 - CSV header remains exactly `name,price,currency,billingDate,occurrence,paymentMethod,category,notes`.
 - JSON backup `schemaVersion` remains `2`.
-- App shell versions are all `v1.7.6`.
+- App shell versions are all `v1.7.9`.
 
 ## Release State
 
-v1.7.6 is implemented locally with passes 1-7 complete. Category/payment range tabs, persisted range state, CSV export changes, JSON schema changes, and ended-state behavior remain out of scope.
+v1.7.9 is implemented locally with passes 1-8 complete. Category/payment range tabs, persisted range state, CSV export changes, JSON schema changes, and ended-state behavior remain out of scope.

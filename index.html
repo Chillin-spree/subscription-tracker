@@ -75,13 +75,13 @@
         <div class="overview-range-controls" data-overview-range-controls hidden>
           <label>
             <span>Start</span>
-            <input type="date" data-overview-range-start>
+            <input type="date" aria-label="Range start date" data-overview-range-start>
           </label>
           <label>
             <span>End</span>
-            <input type="date" data-overview-range-end>
+            <input type="date" aria-label="Range end date" data-overview-range-end>
           </label>
-          <button class="secondary-button" type="button" data-overview-range-reset>This month</button>
+          <button class="secondary-button" type="button" aria-label="Reset range to this month" data-overview-range-reset>This month</button>
         </div>
         <div class="overview-range-summary" data-overview-range-summary hidden>
           <div>
@@ -105,7 +105,7 @@
             Payment
           </button>
           <button class="overview-tab" type="button" data-overview-tab="this-month" aria-pressed="false">
-            This month
+            Range
           </button>
         </div>
         <div class="spending-bar" data-spending-bar hidden aria-label="Spending breakdown"></div>
@@ -296,6 +296,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.7.6"></script>
+    <script src="app.js?v=1.7.9"></script>
   </body>
 </html>

@@ -33,12 +33,22 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
-### 2026-04-28 — Keep custom range controls local to the overview session
+### 2026-04-28 — Distinguish selected-range spending from normalized overview
 
 - **Type**: UX
 - **Status**: active
+- **Context**: v1.7.6 added custom start/end controls while the visible overview tab still said `This month`; final v1.7.9 polish clarifies the selected-range UI before release.
+- **Decision**: The selected-range overview tab is labeled `Range`; the reset button keeps the `This month` label because it specifically restores the current local calendar month. Range start/end inputs and reset control have explicit accessible names. Normalized Monthly/Yearly/Active stat cards are hidden while `Range` is selected.
+- **Why**: The tab can now show arbitrary selected ranges, so the tab label should describe the mode while the reset control describes the shortcut. Hiding normalized stat cards in Range mode keeps actual selected-range totals visually distinct from monthly/yearly normalized overview totals.
+- **Consequences**: Future category/payment range views should build under the selected-range concept without implying the range is persisted or limited to the current month.
+- **Related**: `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`
+
+### 2026-04-28 — Keep custom range controls local to the overview session
+
+- **Type**: UX
+- **Status**: active; tab-label detail superseded by `2026-04-28 — Distinguish selected-range spending from normalized overview`
 - **Context**: v1.7.6 adds custom start/end date controls to the existing item-only range Spending overview.
-- **Decision**: Custom range selection is in-memory only, defaults to the current local calendar month, and does not write to localStorage or backup data. The existing `This month` tab label remains for now while the controls, note, and summary date span communicate the selected range.
+- **Decision**: Custom range selection is in-memory only, defaults to the current local calendar month, and does not write to localStorage or backup data. In v1.7.6, the existing `This month` tab label remained while the controls, note, and summary date span communicated the selected range.
 - **Why**: This gives users immediate selected-range review while avoiding persistence, settings, backup, and migration decisions in the first custom-range pass.
 - **Consequences**: Future range UX can revisit labels or persistence as a separate decision, but should preserve actual occurrence calculations and clear separation from normalized overview tabs.
 - **Related**: `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`
@@ -46,7 +56,7 @@
 ### 2026-04-28 — Start visible range spending with current month
 
 - **Type**: UX
-- **Status**: active
+- **Status**: superseded by custom selected-range controls in v1.7.6 and final selected-range polish in v1.7.9
 - **Context**: v1.7 pass 5 introduces the first user-facing date-range Spending overview without adding custom range controls.
 - **Decision**: The first visible range view is a fixed `This month` tab that shows actual scheduled item charges in the current local calendar month. Existing `Items`, `Categories`, and `Payment` tabs remain monthly normalized.
 - **Why**: A fixed current-month view consumes the range helpers with minimal UI and state changes, while avoiding custom date input validation and broader range-control design in the first visible pass.

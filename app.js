@@ -650,13 +650,13 @@ function renderSpendingOverview() {
   const rangeState = getSelectedOverviewRangeState();
 
   overviewEmpty.hidden = hasSubscriptions && hasBreakdownRows;
-  overviewStats.hidden = !hasSubscriptions;
+  overviewStats.hidden = !hasSubscriptions || showsRangeOverview;
   overviewTabs.hidden = !hasSubscriptions;
   overviewRangeControls.hidden = !hasSubscriptions || !showsRangeOverview;
   overviewRangeSummary.hidden = !hasSubscriptions || !showsRangeOverview;
   spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency || !hasBreakdownRows;
   overviewCurrency.textContent = showsRangeOverview
-    ? "This month"
+    ? "Range"
     : hasSingleCurrency ? currencies[0] || "TRY" : "Multiple currencies";
   monthlyTotal.textContent = hasSingleCurrency
     ? `${currencies[0] || "TRY"} ${totalMonthly.toFixed(2)}`
@@ -823,7 +823,7 @@ function renderOverviewTabs() {
 
 function getOverviewBreakdownLabel() {
   if (selectedOverviewMode === "this-month") {
-    return "Actual spending range";
+    return "Actual selected-range spending";
   }
 
   if (selectedOverviewMode === "categories") {
@@ -851,7 +851,7 @@ function renderOverviewBreakdownRow(group) {
   const secondaryLabel = getOverviewRowSecondaryLabel(group);
   const percentage = getBreakdownPercentage(group);
   const percentText = Number.isFinite(percentage) ? `${percentage.toFixed(0)}%` : "";
-  const amountSuffix = selectedOverviewMode === "this-month" ? " this month" : " / month";
+  const amountSuffix = selectedOverviewMode === "this-month" ? " in range" : " / month";
 
   return `
     <div class="payment-method-row">
