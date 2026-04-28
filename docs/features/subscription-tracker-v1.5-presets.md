@@ -188,4 +188,4 @@ Release-ready locally. Passes 1-5 are complete, including final QA and release d
 
 ## Next Pass
 
-Commit and release v1.5, verify GitHub Pages, then start v1.6 spending overview by item/category/payment method.
+v1.5 was released and later followed by v1.6 Spending overview work. See `docs/STATUS.md` for the current release workflow.

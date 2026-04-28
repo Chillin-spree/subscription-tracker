@@ -38,11 +38,16 @@ const monthlyTotal = document.querySelector("[data-monthly-total]");
 const yearlyTotal = document.querySelector("[data-yearly-total]");
 const overviewCount = document.querySelector("[data-overview-count]");
 const overviewNote = document.querySelector("[data-overview-note]");
+const overviewRangeSummary = document.querySelector("[data-overview-range-summary]");
+const overviewRangeTotal = document.querySelector("[data-overview-range-total]");
+const overviewRangeCount = document.querySelector("[data-overview-range-count]");
+const overviewRangeDates = document.querySelector("[data-overview-range-dates]");
 const overviewTabs = document.querySelector("[data-overview-tabs]");
 const overviewTabButtons = document.querySelectorAll("[data-overview-tab]");
 const spendingBar = document.querySelector("[data-spending-bar]");
 const paymentMethodList = document.querySelector("[data-payment-method-list]");
 const overviewEmpty = document.querySelector("[data-overview-empty]");
+const overviewEmptyMessage = document.querySelector("[data-overview-empty-message]");
 const exportActions = document.querySelector("[data-export-actions]");
 const exportEmpty = document.querySelector("[data-export-empty]");
 const exportNote = document.querySelector("[data-export-note]");
@@ -492,6 +497,7 @@ function readForm() {
     price: parseLocalizedPrice(data.get("price")),
     currency: normalize(data.get("currency")) || "TRY",
     billingDate: normalize(data.get("billingDate")),
+    endDate: normalize(data.get("endDate")),
     occurrence: normalize(data.get("occurrence")),
     paymentMethod: normalize(data.get("paymentMethod")),
     category: normalize(data.get("category")),
@@ -510,6 +516,18 @@ function validateSubscription(subscription) {
 
   if (!subscription.billingDate) {
     return "Billing date is required.";
+  }
+
+  if (!isValidDateString(subscription.billingDate)) {
+    return "Enter a valid billing date.";
+  }
+
+  if (subscription.endDate && !isValidDateString(subscription.endDate)) {
+    return "Enter a valid end date.";
+  }
+
+  if (subscription.endDate && compareDateOnly(subscription.endDate, subscription.billingDate) < 0) {
+    return "End date cannot be before the billing date.";
   }
 
   if (!OCCURRENCE_LABELS[subscription.occurrence]) {
@@ -537,6 +555,7 @@ function openForm(subscription = null) {
     form.elements.price.value = subscription.price;
     form.elements.currency.value = subscription.currency || "TRY";
     form.elements.billingDate.value = subscription.billingDate;
+    form.elements.endDate.value = subscription.endDate || "";
     form.elements.occurrence.value = subscription.occurrence;
     form.elements.paymentMethod.value = subscription.paymentMethod;
     form.elements.category.value = subscription.category || "";
@@ -601,17 +620,23 @@ function renderSpendingOverview() {
   const hasSubscriptions = subscriptions.length > 0;
   const currencies = [...new Set(subscriptions.map((subscription) => subscription.currency || "TRY"))];
   const hasSingleCurrency = currencies.length === 1;
+  const showsRangeOverview = selectedOverviewMode === "this-month";
   const totalMonthly = subscriptions.reduce(
     (total, subscription) => total + getMonthlyEquivalent(subscription),
     0,
   );
   const breakdownRows = getOverviewBreakdownRows(selectedOverviewMode);
+  const hasBreakdownRows = breakdownRows.length > 0;
+  const currentMonthRange = getCurrentMonthRange();
 
-  overviewEmpty.hidden = hasSubscriptions;
+  overviewEmpty.hidden = hasSubscriptions && hasBreakdownRows;
   overviewStats.hidden = !hasSubscriptions;
   overviewTabs.hidden = !hasSubscriptions;
-  spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency;
-  overviewCurrency.textContent = hasSingleCurrency ? currencies[0] || "TRY" : "Multiple currencies";
+  overviewRangeSummary.hidden = !hasSubscriptions || !showsRangeOverview;
+  spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency || !hasBreakdownRows;
+  overviewCurrency.textContent = showsRangeOverview
+    ? "This month"
+    : hasSingleCurrency ? currencies[0] || "TRY" : "Multiple currencies";
   monthlyTotal.textContent = hasSingleCurrency
     ? `${currencies[0] || "TRY"} ${totalMonthly.toFixed(2)}`
     : "Multiple currencies";
@@ -619,12 +644,24 @@ function renderSpendingOverview() {
     ? `${currencies[0] || "TRY"} ${(totalMonthly * 12).toFixed(2)}`
     : "Multiple currencies";
   overviewCount.textContent = String(subscriptions.length);
-  overviewNote.hidden = hasSingleCurrency || !hasSubscriptions;
-  overviewNote.textContent = "Multiple currencies are shown separately instead of combined into one total.";
+  overviewNote.hidden = !hasSubscriptions || (hasSingleCurrency && !showsRangeOverview);
+  overviewNote.textContent = getOverviewNoteText(hasSingleCurrency, showsRangeOverview);
+  renderOverviewRangeSummary(breakdownRows, currentMonthRange);
   renderOverviewTabs();
   spendingBar.setAttribute("aria-label", getOverviewBreakdownLabel());
   spendingBar.innerHTML = hasSingleCurrency ? breakdownRows.map(renderSpendingSegment).join("") : "";
   paymentMethodList.innerHTML = breakdownRows.map(renderOverviewBreakdownRow).join("");
+  overviewEmptyMessage.textContent = showsRangeOverview
+    ? "No scheduled charges this month."
+    : "No spending breakdown yet.";
+}
+
+function renderOverviewRangeSummary(breakdownRows, { rangeStart, rangeEnd }) {
+  const summary = getRangeSummaryFromRows(breakdownRows);
+
+  overviewRangeTotal.textContent = formatRangeSummaryTotal(summary.currencyTotals);
+  overviewRangeCount.textContent = String(summary.occurrenceCount);
+  overviewRangeDates.textContent = `${formatDate(rangeStart)} to ${formatDate(rangeEnd)}`;
 }
 
 function renderUpcomingPayments() {
@@ -635,7 +672,11 @@ function renderUpcomingPayments() {
       subscription,
       nextPaymentDate: getNextPaymentDate(subscription.billingDate, subscription.occurrence, today),
     }))
-    .filter(({ nextPaymentDate }) => nextPaymentDate && nextPaymentDate <= horizon)
+    .filter(({ subscription, nextPaymentDate }) => (
+      nextPaymentDate
+      && nextPaymentDate <= horizon
+      && isPaymentWithinEndDate(nextPaymentDate, subscription.endDate)
+    ))
     .sort((a, b) => a.nextPaymentDate - b.nextPaymentDate);
 
   upcomingEmpty.hidden = upcomingPayments.length > 0;
@@ -686,6 +727,11 @@ function getPaymentMethodGroups(overviewItems, totalMonthly) {
 }
 
 function getOverviewBreakdownRows(mode) {
+  if (mode === "this-month") {
+    const { rangeStart, rangeEnd } = getCurrentMonthRange();
+    return getRangeSpendingBreakdownByItem(subscriptions, rangeStart, rangeEnd).map(addBreakdownColor);
+  }
+
   if (mode === "categories") {
     return getSpendingBreakdownByCategory(subscriptions).map(addBreakdownColor);
   }
@@ -714,6 +760,10 @@ function renderOverviewTabs() {
 }
 
 function getOverviewBreakdownLabel() {
+  if (selectedOverviewMode === "this-month") {
+    return "Actual spending this month";
+  }
+
   if (selectedOverviewMode === "categories") {
     return "Spending by category";
   }
@@ -739,6 +789,7 @@ function renderOverviewBreakdownRow(group) {
   const secondaryLabel = getOverviewRowSecondaryLabel(group);
   const percentage = getBreakdownPercentage(group);
   const percentText = Number.isFinite(percentage) ? `${percentage.toFixed(0)}%` : "";
+  const amountSuffix = selectedOverviewMode === "this-month" ? " this month" : " / month";
 
   return `
     <div class="payment-method-row">
@@ -746,7 +797,7 @@ function renderOverviewBreakdownRow(group) {
       <div class="payment-method-main">
         <strong>${escapeHtml(group.label)}</strong>
         <span>${escapeHtml(secondaryLabel)}</span>
-        <span>${escapeHtml(formatCurrencyBreakdown(group.currencyTotals))} / month</span>
+        <span>${escapeHtml(formatCurrencyBreakdown(group.currencyTotals))}${amountSuffix}</span>
       </div>
       <span class="payment-method-percent">${percentText}</span>
     </div>
@@ -754,6 +805,10 @@ function renderOverviewBreakdownRow(group) {
 }
 
 function getOverviewRowSecondaryLabel(group) {
+  if (selectedOverviewMode === "this-month") {
+    return group.secondaryLabel || getOccurrenceCountLabel(group.occurrenceCount || 0);
+  }
+
   if (selectedOverviewMode === "categories") {
     return `${group.itemCount} ${group.itemCount === 1 ? "item" : "items"}`;
   }
@@ -769,6 +824,39 @@ function getBreakdownPercentage(group) {
   const [currencyEntry] = group.currencyBreakdown || [];
 
   return currencyEntry?.percentage ?? Number.NaN;
+}
+
+function getOverviewNoteText(hasSingleCurrency, showsRangeOverview) {
+  const notes = [];
+
+  if (showsRangeOverview) {
+    const { rangeStart, rangeEnd } = getCurrentMonthRange();
+    notes.push(`This month shows actual scheduled charges from ${formatDate(rangeStart)} to ${formatDate(rangeEnd)}.`);
+  }
+
+  if (!hasSingleCurrency) {
+    notes.push("Multiple currencies are shown separately instead of combined into one total.");
+  }
+
+  return notes.join(" ");
+}
+
+function getRangeSummaryFromRows(breakdownRows) {
+  return breakdownRows.reduce((summary, row) => {
+    Object.entries(row.currencyTotals || {}).forEach(([currency, total]) => {
+      summary.currencyTotals[currency] = (summary.currencyTotals[currency] || 0) + total;
+    });
+    summary.occurrenceCount += row.occurrenceCount || 0;
+
+    return summary;
+  }, {
+    currencyTotals: {},
+    occurrenceCount: 0,
+  });
+}
+
+function formatRangeSummaryTotal(currencyTotals) {
+  return formatCurrencyBreakdown(currencyTotals) || "TRY 0.00";
 }
 
 function getSpendingBreakdownByItem(subscriptionRecords) {
@@ -818,6 +906,61 @@ function getSpendingBreakdownByPaymentMethod(subscriptionRecords) {
   ));
 }
 
+function getRangeSpendingBreakdownByItem(subscriptionRecords, rangeStart, rangeEnd) {
+  const rows = normalizeRangeSpendingItems(subscriptionRecords, rangeStart, rangeEnd)
+    .map((item) => ({
+      type: "item",
+      id: item.subscription.id || "",
+      label: item.subscription.name || "Unnamed subscription",
+      secondaryLabel: getRangeItemBreakdownSecondaryLabel(item),
+      subscription: item.subscription,
+      paymentMethod: item.subscription.paymentMethod || "",
+      category: item.subscription.category || "",
+      occurrence: item.subscription.occurrence || "",
+      currency: item.currency,
+      totalAmount: item.totalAmount,
+      monthlyEquivalent: item.totalAmount,
+      occurrenceCount: item.occurrenceCount,
+      occurrenceDates: item.occurrenceDates,
+      currencyTotals: {
+        [item.currency]: item.totalAmount,
+      },
+      currencyBreakdown: [
+        {
+          currency: item.currency,
+          totalAmount: item.totalAmount,
+          monthlyEquivalent: item.totalAmount,
+          percentage: null,
+        },
+      ],
+      itemCount: 1,
+      sortAmount: item.totalAmount,
+    }))
+    .sort(sortBreakdownRows);
+
+  return applySingleCurrencyPercentages(rows);
+}
+
+function getRangeSpendingBreakdownByCategory(subscriptionRecords, rangeStart, rangeEnd) {
+  return applySingleCurrencyPercentages(getGroupedRangeSpendingBreakdown(
+    subscriptionRecords,
+    rangeStart,
+    rangeEnd,
+    (subscription) => normalize(subscription.category) || "Uncategorized",
+    "category",
+  ));
+}
+
+function getRangeSpendingBreakdownByPaymentMethod(subscriptionRecords, rangeStart, rangeEnd) {
+  return applySingleCurrencyPercentages(getGroupedRangeSpendingBreakdown(
+    subscriptionRecords,
+    rangeStart,
+    rangeEnd,
+    (subscription) => subscription.paymentMethod || "Unlabeled payment label",
+    "paymentMethod",
+  ));
+}
+
 function getGroupedSpendingBreakdown(subscriptionRecords, getLabel, type) {
   const groups = normalizeSpendingItems(subscriptionRecords).reduce((result, item) => {
     const label = getLabel(item.subscription);
@@ -852,6 +995,45 @@ function getGroupedSpendingBreakdown(subscriptionRecords, getLabel, type) {
     .sort(sortBreakdownRows);
 }
 
+function getGroupedRangeSpendingBreakdown(subscriptionRecords, rangeStart, rangeEnd, getLabel, type) {
+  const groups = normalizeRangeSpendingItems(subscriptionRecords, rangeStart, rangeEnd).reduce((result, item) => {
+    const label = getLabel(item.subscription);
+
+    result[label] ||= {
+      type,
+      id: label,
+      label,
+      itemCount: 0,
+      occurrenceCount: 0,
+      subscriptions: [],
+      occurrenceDates: [],
+      currencyTotals: {},
+    };
+
+    result[label].itemCount += 1;
+    result[label].occurrenceCount += item.occurrenceCount;
+    result[label].subscriptions.push(item.subscription);
+    result[label].occurrenceDates.push(...item.occurrenceDates);
+    result[label].currencyTotals[item.currency] =
+      (result[label].currencyTotals[item.currency] || 0) + item.totalAmount;
+
+    return result;
+  }, {});
+
+  return Object.values(groups)
+    .map((group) => {
+      const currencyBreakdown = buildRangeCurrencyBreakdown(group.currencyTotals);
+
+      return {
+        ...group,
+        totalAmount: currencyBreakdown.length === 1 ? currencyBreakdown[0].totalAmount : null,
+        currencyBreakdown,
+        sortAmount: getBreakdownSortAmount(currencyBreakdown),
+      };
+    })
+    .sort(sortBreakdownRows);
+}
+
 function normalizeSpendingItems(subscriptionRecords) {
   if (!Array.isArray(subscriptionRecords)) {
     return [];
@@ -868,6 +1050,27 @@ function normalizeSpendingItems(subscriptionRecords) {
   });
 }
 
+function normalizeRangeSpendingItems(subscriptionRecords, rangeStart, rangeEnd) {
+  if (!Array.isArray(subscriptionRecords) || !parseLocalDate(rangeStart) || !parseLocalDate(rangeEnd)) {
+    return [];
+  }
+
+  return subscriptionRecords
+    .map((subscription) => {
+      const normalizedSubscription = { ...subscription };
+      const rangeSpending = getRangeSpendingForSubscription(normalizedSubscription, rangeStart, rangeEnd);
+
+      return {
+        subscription: normalizedSubscription,
+        currency: rangeSpending.currency,
+        totalAmount: rangeSpending.totalAmount,
+        occurrenceCount: rangeSpending.occurrenceCount,
+        occurrenceDates: rangeSpending.occurrenceDates,
+      };
+    })
+    .filter((item) => item.occurrenceCount > 0);
+}
+
 function buildCurrencyBreakdown(currencyTotals) {
   return Object.entries(currencyTotals)
     .map(([currency, monthlyEquivalent]) => ({
@@ -876,6 +1079,17 @@ function buildCurrencyBreakdown(currencyTotals) {
       percentage: null,
     }))
     .sort((a, b) => b.monthlyEquivalent - a.monthlyEquivalent);
+}
+
+function buildRangeCurrencyBreakdown(currencyTotals) {
+  return Object.entries(currencyTotals)
+    .map(([currency, totalAmount]) => ({
+      currency,
+      totalAmount,
+      monthlyEquivalent: totalAmount,
+      percentage: null,
+    }))
+    .sort((a, b) => b.totalAmount - a.totalAmount);
 }
 
 function applySingleCurrencyPercentages(breakdownRows) {
@@ -910,6 +1124,19 @@ function getItemBreakdownSecondaryLabel(subscription) {
     OCCURRENCE_LABELS[subscription.occurrence] || subscription.occurrence,
     subscription.category,
   ].filter(Boolean).join(" · ");
+}
+
+function getRangeItemBreakdownSecondaryLabel(item) {
+  return [
+    getOccurrenceCountLabel(item.occurrenceCount),
+    item.subscription.paymentMethod,
+    OCCURRENCE_LABELS[item.subscription.occurrence] || item.subscription.occurrence,
+    item.subscription.category,
+  ].filter(Boolean).join(" · ");
+}
+
+function getOccurrenceCountLabel(count) {
+  return `${count} ${count === 1 ? "occurrence" : "occurrences"}`;
 }
 
 function getBreakdownSortAmount(currencyBreakdown) {
@@ -1188,6 +1415,10 @@ function validateBackupSubscription(subscription, index) {
   }
 
   requireValidDateString(subscription.billingDate, `${label} billing date`);
+  requireOptionalDateString(subscription.endDate, `${label} end date`);
+  if (subscription.endDate && compareDateOnly(subscription.endDate, subscription.billingDate) < 0) {
+    throw new Error(`${label} end date cannot be before billing date.`);
+  }
   requireValidOccurrence(subscription.occurrence, `${label} billing cycle`);
   requireNonEmptyString(subscription.paymentMethod, `${label} payment label`);
   requireValidTimestamp(subscription.createdAt, `${label} created date`);
@@ -1227,6 +1458,10 @@ function validateBackupActivitySnapshot(snapshot, label) {
   }
 
   requireValidDateString(snapshot.billingDate, `${label} billing date`);
+  requireOptionalDateString(snapshot.endDate, `${label} end date`);
+  if (snapshot.endDate && compareDateOnly(snapshot.endDate, snapshot.billingDate) < 0) {
+    throw new Error(`${label} end date cannot be before billing date.`);
+  }
   requireValidOccurrence(snapshot.occurrence, `${label} billing cycle`);
   requireNonEmptyString(snapshot.paymentMethod, `${label} payment label`);
   requireOptionalString(snapshot.currency, `${label} currency`);
@@ -1323,6 +1558,14 @@ function requireValidDateString(value, label) {
   }
 }
 
+function requireOptionalDateString(value, label) {
+  if (value === undefined || value === null || value === "") {
+    return;
+  }
+
+  requireValidDateString(value, label);
+}
+
 function requireValidOccurrence(value, label) {
   if (!OCCURRENCE_LABELS[value]) {
     throw new Error(`${label} is not supported.`);
@@ -1336,16 +1579,54 @@ function requireValidTimestamp(value, label) {
 }
 
 function isValidDateString(value) {
+  return parseDateOnlyParts(value) !== null;
+}
+
+function parseDateOnlyParts(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    return false;
+    return null;
   }
 
   const [year, month, day] = value.split("-").map(Number);
-  const date = new Date(Date.UTC(year, month - 1, day));
 
-  return date.getUTCFullYear() === year
-    && date.getUTCMonth() === month - 1
-    && date.getUTCDate() === day;
+  if (month < 1 || month > 12 || day < 1) {
+    return null;
+  }
+
+  const daysInMonth = getDaysInMonth(year, month);
+
+  if (day > daysInMonth) {
+    return null;
+  }
+
+  return { year, month, day };
+}
+
+function compareDateOnly(left, right) {
+  const leftParts = parseDateOnlyParts(left);
+  const rightParts = parseDateOnlyParts(right);
+
+  if (!leftParts || !rightParts) {
+    return 0;
+  }
+
+  return dateOnlyToNumber(leftParts) - dateOnlyToNumber(rightParts);
+}
+
+function dateOnlyToNumber({ year, month, day }) {
+  return (year * 10000) + (month * 100) + day;
+}
+
+function getDaysInMonth(year, month) {
+  if (month === 2) {
+    return isLeapYear(year) ? 29 : 28;
+  }
+
+  return [4, 6, 9, 11].includes(month) ? 30 : 31;
+}
+
+function isLeapYear(year) {
+  return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
 }
 
 function isValidTimestamp(value) {
@@ -1384,6 +1665,9 @@ function renderSubscriptionCard(subscription) {
   const category = subscription.category
     ? `<span class="tag">${escapeHtml(subscription.category)}</span>`
     : "";
+  const endDate = isValidDateString(subscription.endDate)
+    ? `<p class="subscription-detail">Ends: ${escapeHtml(formatDateLong(subscription.endDate))}</p>`
+    : "";
   const notes = subscription.notes
     ? `<p class="subscription-notes">${escapeHtml(subscription.notes)}</p>`
     : "";
@@ -1401,6 +1685,7 @@ function renderSubscriptionCard(subscription) {
         <p class="subscription-detail">
           ${escapeHtml(subscription.paymentMethod)}
         </p>
+        ${endDate}
         <div class="subscription-tags">
           <span class="tag">${escapeHtml(subscription.currency || "TRY")}</span>
           ${category}
@@ -1517,6 +1802,20 @@ function formatDate(value) {
   return `${day}.${month}.${year}`;
 }
 
+function formatDateLong(value) {
+  const date = parseLocalDate(value);
+
+  if (!date) {
+    return "";
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+}
+
 function formatDateFromDate(date) {
   return [
     String(date.getDate()).padStart(2, "0"),
@@ -1592,14 +1891,87 @@ function getNextPaymentDate(billingDate, occurrence, today) {
   return candidate;
 }
 
-function parseLocalDate(value) {
-  const parts = String(value || "").split("-").map(Number);
+function getBillingOccurrencesInRange(subscription, rangeStart, rangeEnd) {
+  const anchor = parseLocalDate(subscription?.billingDate);
+  const start = parseLocalDate(rangeStart);
+  const end = parseLocalDate(rangeEnd);
+  const occurrence = subscription?.occurrence;
 
-  if (parts.length !== 3 || parts.some(Number.isNaN)) {
+  if (!anchor || !start || !end || start > end || !OCCURRENCE_LABELS[occurrence]) {
+    return [];
+  }
+
+  const parsedEndDate = parseLocalDate(subscription.endDate);
+  const effectiveStart = start > anchor ? start : anchor;
+  const effectiveEnd = parsedEndDate && parsedEndDate < end ? parsedEndDate : end;
+
+  if (effectiveStart > effectiveEnd) {
+    return [];
+  }
+
+  const occurrenceDates = [];
+  let cycleIndex = 0;
+  let candidate = addBillingCycle(anchor, occurrence, cycleIndex);
+
+  while (candidate && candidate < effectiveStart) {
+    cycleIndex += 1;
+    candidate = addBillingCycle(anchor, occurrence, cycleIndex);
+  }
+
+  while (candidate && candidate <= effectiveEnd) {
+    occurrenceDates.push(formatDateForStorage(candidate));
+    cycleIndex += 1;
+    candidate = addBillingCycle(anchor, occurrence, cycleIndex);
+  }
+
+  return occurrenceDates;
+}
+
+function getRangeSpendingForSubscription(subscription, rangeStart, rangeEnd) {
+  const occurrenceDates = getBillingOccurrencesInRange(subscription, rangeStart, rangeEnd);
+  const price = Number(subscription?.price);
+  const amount = Number.isFinite(price) ? price : 0;
+
+  return {
+    subscription,
+    occurrenceCount: occurrenceDates.length,
+    totalAmount: amount * occurrenceDates.length,
+    currency: subscription?.currency || "TRY",
+    occurrenceDates,
+  };
+}
+
+function isPaymentWithinEndDate(paymentDate, endDate) {
+  if (!endDate) {
+    return true;
+  }
+
+  const parsedEndDate = parseLocalDate(endDate);
+
+  if (!parsedEndDate) {
+    return true;
+  }
+
+  return paymentDate <= parsedEndDate;
+}
+
+function getCurrentMonthRange() {
+  const today = new Date();
+
+  return {
+    rangeStart: formatDateForStorage(new Date(today.getFullYear(), today.getMonth(), 1)),
+    rangeEnd: formatDateForStorage(new Date(today.getFullYear(), today.getMonth() + 1, 0)),
+  };
+}
+
+function parseLocalDate(value) {
+  const parts = parseDateOnlyParts(value);
+
+  if (!parts) {
     return null;
   }
 
-  const [year, month, day] = parts;
+  const { year, month, day } = parts;
   return new Date(year, month - 1, day);
 }
 
@@ -1611,13 +1983,47 @@ function addDays(date, days) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 }
 
+function addBillingCycle(date, occurrence, stepCount = 1) {
+  if (!Number.isInteger(stepCount) || stepCount < 0) {
+    return null;
+  }
+
+  if (occurrence === "weekly") {
+    return addDays(date, stepCount * 7);
+  }
+
+  const intervalMonths = {
+    monthly: 1,
+    quarterly: 3,
+    yearly: 12,
+  }[occurrence];
+
+  if (!intervalMonths) {
+    return null;
+  }
+
+  return addMonthsClamped(date, stepCount * intervalMonths);
+}
+
 function addMonthsClamped(anchor, monthsToAdd) {
   const targetYear = anchor.getFullYear();
   const targetMonth = anchor.getMonth() + monthsToAdd;
-  const lastDay = new Date(targetYear, targetMonth + 1, 0).getDate();
-  const targetDay = Math.min(anchor.getDate(), lastDay);
+  return clampDateToMonth(targetYear, targetMonth, anchor.getDate());
+}
 
-  return new Date(targetYear, targetMonth, targetDay);
+function clampDateToMonth(year, monthIndex, day) {
+  const lastDay = new Date(year, monthIndex + 1, 0).getDate();
+  const targetDay = Math.min(day, lastDay);
+
+  return new Date(year, monthIndex, targetDay);
+}
+
+function formatDateForStorage(date) {
+  return [
+    String(date.getFullYear()),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-");
 }
 
 function getDayDifference(startDate, endDate) {
@@ -1649,6 +2055,7 @@ function createSubscriptionSnapshot(subscription) {
     price: subscription.price,
     currency: subscription.currency || "TRY",
     billingDate: subscription.billingDate,
+    endDate: subscription.endDate || "",
     occurrence: subscription.occurrence,
     paymentMethod: subscription.paymentMethod,
     category: subscription.category || "",

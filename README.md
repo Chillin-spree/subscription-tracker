@@ -5,11 +5,12 @@ A minimalist phone-first subscription tracker built with plain HTML, CSS, and Ja
 ## Features
 
 - Add, edit, and delete manual subscription records.
+- Add an optional end date to a subscription and keep Upcoming payments from showing charges after that date.
 - Enter prices with dot or comma decimal styles, such as `799`, `799.99`, `799,99`, `1.299,99`, or `1,299.99`.
 - Persist records in browser `localStorage`.
 - See payments due in the next 7 days.
 - Review an activity log for created, updated, and deleted subscriptions.
-- View monthly/yearly spending totals and break monthly equivalent spending down by item, category, or payment label.
+- View monthly/yearly spending totals, break monthly equivalent spending down by item, category, or payment label, and review actual scheduled charges for the current month.
 - Save local payment label and category presets for faster manual entry while keeping fields editable as free text.
 - Export subscription data as plain text or CSV.
 - Download and restore local JSON backups that include subscriptions, activity history, and saved presets.
@@ -37,12 +38,12 @@ The app has no account system, server, analytics, cloud sync, upload, data sale,
 
 Do not enter sensitive payment details such as credit card numbers, CVV/CVC, bank account numbers, IBAN, passwords, payment provider login details, identity numbers, or any data needed to make, authorize, or process a payment.
 
-CSV exports keep the compatibility header `paymentMethod`, which means payment label/nickname only. Price values remain raw numeric values in CSV exports for compatibility. Current JSON backups include subscriptions, activity log, and saved presets. Older v1.4 JSON backups remain restorable; they replace subscriptions and activity log after explicit confirmation while keeping current saved presets unchanged.
+CSV exports keep the compatibility header `paymentMethod`, which means payment label/nickname only. Price values remain raw numeric values in CSV exports for compatibility. Optional end dates are not included in the CSV format. Current JSON backups include subscriptions, activity log, and saved presets with schema version 2. Older v1.4 JSON backups remain restorable; they replace subscriptions and activity log after explicit confirmation while keeping current saved presets unchanged.
 
 ## Project Status
 
-`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. v1.3.1 fixes stale PWA app-shell behavior after the price input update. `subscription-tracker-v1.4-json-backup-restore` adds local JSON backup download plus validated, confirmed local restore. `subscription-tracker-v1.5-presets` adds local saved payment label and category presets with JSON backup compatibility. `subscription-tracker-v1.6-spending-overview` is release-ready locally with item, category, and payment-label spending breakdowns. Future not-now ideas are tracked in `docs/BACKLOG.md`.
+`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. v1.3.1 fixes stale PWA app-shell behavior after the price input update. `subscription-tracker-v1.4-json-backup-restore` adds local JSON backup download plus validated, confirmed local restore. `subscription-tracker-v1.5-presets` adds local saved payment label and category presets with JSON backup compatibility. `subscription-tracker-v1.6-spending-overview` adds item, category, and payment-label spending breakdowns. `subscription-tracker-v1.7-date-ranges-end-dates` adds optional absolute end dates, applies them to Upcoming payments, and adds a fixed current-month actual spending view with an actual total and occurrence summary. Custom date ranges remain future work. Future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 
-No license has been selected yet.
+MIT License. See `LICENSE`.

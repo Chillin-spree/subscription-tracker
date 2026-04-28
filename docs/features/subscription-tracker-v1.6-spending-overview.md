@@ -181,7 +181,7 @@ Rules:
 
 ## Docs Impact
 
-- `docs/STATUS.md`: should point to v1.6 spending overview as active planning/build state while preserving v1.5 as the current live release.
+- `docs/STATUS.md`: pointed to v1.6 during this feature's active planning/build state.
 - `docs/DECISIONS.md`: should record the monthly normalized overview basis as a durable UX/product decision.
 - `docs/BACKLOG.md`: should remove v1.6 spending overview from future roadmap once active.
 - `README.md`: should not present v1.6 as released until implementation and release checks are complete.
@@ -191,7 +191,7 @@ Rules:
 
 ## Release State
 
-Release-ready locally. Passes 1-5 are complete, including final QA and release documentation. v1.5 remains the current live release until v1.6 is committed, pushed, deployed, and verified.
+Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`). v1.7.5 work now builds on this released v1.6 baseline.
 
 ## Build Notes
 
@@ -240,7 +240,7 @@ Release-ready locally. Passes 1-5 are complete, including final QA and release d
 
 ## Next Pass
 
-Commit and release v1.6, verify GitHub Pages, then start v1.7 date ranges and absolute end dates.
+v1.7 date ranges and absolute end dates are now tracked in `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`.
 
 ## Definition of Done
 

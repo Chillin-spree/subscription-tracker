@@ -29,7 +29,6 @@
 
 ## Roadmap
 
-- `subscription-tracker-v1.7-date-ranges-end-dates`: Next planned feature. Explore selected date ranges for spending review plus absolute end dates for subscriptions or recurring payments, while preserving existing records, exports, backups, PWA continuity, and local-only privacy.
 - `subscription-tracker-v1.8-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
 - `subscription-tracker-v1.9-security-hardening-import-safety`: Review input rendering, imported JSON safety, local-only protections, and future data migrations; avoid breaking existing data or offline behavior.
 

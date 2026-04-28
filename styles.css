@@ -254,6 +254,7 @@ h2 {
 .dialog-backdrop[hidden],
 .overview-stats[hidden],
 .overview-note[hidden],
+.overview-range-summary[hidden],
 .spending-bar[hidden],
 .export-actions[hidden],
 .restore-button[hidden],
@@ -291,9 +292,38 @@ h2 {
   font-size: 0.84rem;
 }
 
+.overview-range-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+
+.overview-range-summary > div {
+  min-width: 0;
+}
+
+.overview-range-summary strong {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.overview-range-dates {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .overview-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px;
   margin-top: 12px;
   padding: 4px;
@@ -783,6 +813,7 @@ h2 {
 @media (max-width: 360px) {
   .summary-strip,
   .overview-stats,
+  .overview-range-summary,
   .preset-add-row,
   .form-actions,
   .export-actions {

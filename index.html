@@ -72,6 +72,17 @@
           </div>
         </div>
         <p class="overview-note" data-overview-note hidden></p>
+        <div class="overview-range-summary" data-overview-range-summary hidden>
+          <div>
+            <span class="summary-label">Actual this month</span>
+            <strong data-overview-range-total>TRY 0.00</strong>
+          </div>
+          <div>
+            <span class="summary-label">Occurrences</span>
+            <strong data-overview-range-count>0</strong>
+          </div>
+          <span class="overview-range-dates" data-overview-range-dates></span>
+        </div>
         <div class="overview-tabs" data-overview-tabs hidden role="group" aria-label="Spending breakdown">
           <button class="overview-tab is-active" type="button" data-overview-tab="items" aria-pressed="true">
             Items
@@ -82,11 +93,14 @@
           <button class="overview-tab" type="button" data-overview-tab="payment" aria-pressed="false">
             Payment
           </button>
+          <button class="overview-tab" type="button" data-overview-tab="this-month" aria-pressed="false">
+            This month
+          </button>
         </div>
         <div class="spending-bar" data-spending-bar hidden aria-label="Spending breakdown"></div>
         <div class="payment-method-list" data-payment-method-list aria-live="polite"></div>
         <div class="empty-state compact" data-overview-empty>
-          <p>No spending breakdown yet.</p>
+          <p data-overview-empty-message>No spending breakdown yet.</p>
         </div>
       </section>
 
@@ -229,6 +243,11 @@
           </label>
 
           <label>
+            <span>End date (optional)</span>
+            <input name="endDate" type="date">
+          </label>
+
+          <label>
             <span>Billing cycle *</span>
             <select name="occurrence" required>
               <option value="">Choose billing cycle</option>
@@ -266,6 +285,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.6.2"></script>
+    <script src="app.js?v=1.7.5"></script>
   </body>
 </html>

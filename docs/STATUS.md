@@ -17,35 +17,34 @@
 
 ## Workflow State
 
-- **Mode**: v1.6 release-ready
-- **Active feature**: spending overview by item, category, and payment label
-- **Feature file**: `docs/features/subscription-tracker-v1.6-spending-overview.md`
+- **Mode**: v1.7.5 release-ready
+- **Active feature**: current-month spending overview summary
+- **Feature file**: `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.6 final QA and release documentation completed locally.
-- **Waiting on**: Review, commit, push, and live GitHub Pages verification.
+- **Current step**: v1.7.5 is complete and ready for release verification.
+- **Waiting on**: Live GitHub Pages verification after release push.
 - **Blockers**: none
-- **Next recommended step**: Commit and release v1.6, verify GitHub Pages, then start v1.7 date ranges and absolute end dates.
-- **Recent touch points**: v1.5 is live in commit `74c63ee` (`Add saved payment and category presets`). v1.6 is release-ready locally with Spending overview tabs for Items, Categories, and Payment using monthly normalized totals. Final QA passed for static syntax, PWA version consistency, spending overview behavior, CSV compatibility, JSON backup/restore compatibility, localStorage continuity, and local-only privacy.
+- **Next recommended step**: Verify live GitHub Pages after release push, then plan custom date range controls as a separate pass.
+- **Recent touch points**: v1.7.5 includes optional `endDate` form/storage/display support, manual date-only validation, Upcoming payments filtering after inclusive end dates, pure actual-occurrence range helpers, internal range breakdown adapters, a fixed `This month` actual-spending tab with a compact actual-total and occurrence summary, unchanged active counts, unchanged CSV header, unchanged JSON backup schema version 2, and app shell versioning moved to `v1.7.5`.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-04-28
-- **Handoff type**: v1.6 final QA and release docs
-- **Summary**: Finalize v1.6 release readiness for Spending overview breakdowns by item, category, and payment label.
-- **Where full handoff lives**: `docs/features/subscription-tracker-v1.6-spending-overview.md`
+- **Handoff type**: v1.7 pass 6 implementation
+- **Summary**: Add a compact actual current-month summary/header to the existing `This month` Spending overview tab; keep custom date inputs, category/payment range tabs, active count changes, CSV changes, JSON schema changes, and ended-state behavior out of scope.
+- **Where full handoff lives**: `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-04-28: Implemented v1.7 pass 6 compact `This month` range summary. The summary is visible only on the range tab, derives actual total(s) and occurrence count from the same current-month item rows, keeps multiple currencies separate, preserves existing normalized overview tabs and stats, and moves app shell versioning to `v1.7.5`.
+- 2026-04-28: Implemented v1.7 pass 5 fixed `This month` Spending overview tab. The tab uses actual scheduled current-month item totals from range helpers, labels rows as current-month actual spending, keeps existing Items/Categories/Payment tabs normalized, and preserves Upcoming payments, active counts, CSV export, and JSON backup schema. App shell versioning moved to `v1.7.4`.
+- 2026-04-28: Implemented v1.7 pass 4 internal range breakdown adapters. Added item, category, and payment-label range helpers that adapt actual occurrence totals into the existing overview row shape for future UI use. Current Spending overview, Upcoming payments, active counts, CSV export, and JSON backup schema remain unchanged. App shell versioning moved to `v1.7.3`.
+- 2026-04-28: Implemented v1.7 pass 3 pure range calculation helpers. Helpers count actual scheduled billing occurrences in an inclusive selected range, clamp monthly/quarterly/yearly dates from the original billing anchor, respect inclusive `endDate`, and return occurrence count, total amount, currency, and occurrence dates for future Spending overview use. Current UI behavior, CSV export, JSON backup schema, and active counts remain unchanged. App shell versioning moved to `v1.7.2`.
+- 2026-04-28: Implemented v1.7 pass 2 Upcoming payments end-date filtering. Next payments after an optional inclusive `endDate` are excluded from Upcoming payments and Due soon totals; subscriptions without `endDate` remain ongoing. Active counts, Spending overview, CSV export, and JSON backup schema remain unchanged. App shell versioning moved to `v1.7.1`.
+- 2026-04-28: Implemented v1.7 pass 1 optional absolute end-date foundation. Added optional form field, date-only validation, edit population, card display, backup validation compatibility, and app shell versioning `v1.7.0`; CSV header and JSON backup schema version remain unchanged.
 - 2026-04-28: Completed v1.6 final QA and release documentation. Checks passed: `node --check app.js`, `node --check service-worker.js`, `git diff --check`, PWA version scan, runtime overview harness, CSV header check, JSON schema version 1 and 2 restore check, manifest start/scope scan, localStorage continuity scan, and local-only/privacy scan.
-- 2026-04-28: Implemented v1.6 pass 4 Categories tab. Spending overview now has Items, Categories, and Payment tabs; Categories groups blank/missing categories as display-only `Uncategorized`, shows item counts, and app shell versioning moved to `app.js?v=1.6.2` plus cache `subscription-tracker-v1.6.2-static`.
-- 2026-04-28: Implemented v1.6 pass 3 Spending overview tabs. Items is the default view, Payment keeps the grouped payment-label breakdown, mixed-currency percentages/bars are suppressed, and app shell versioning moved to `app.js?v=1.6.1` plus cache `subscription-tracker-v1.6.1-static`.
-- 2026-04-28: Implemented v1.6 pass 2 shared spending breakdown data helpers for items, categories, and payment labels. Runtime app shell versioning moved to `app.js?v=1.6.0` and cache `subscription-tracker-v1.6.0-static`; no visible overview tabs or item/category UI were added.
-- 2026-04-28: Started v1.6 spending overview planning. v1.5 remains the current live release at commit `74c63ee`; v1.6 pass 1 is docs-only and defines monthly normalized breakdowns by item, category, and payment label.
-- 2026-04-26: Completed v1.5 final QA and release documentation. Checks passed: `node --check app.js`, `node --check service-worker.js`, `git diff --check`, runtime preset/backup harness, PWA version scan, CSV header scan, manifest start/scope scan, and local-only/privacy scan.
-- 2026-04-26: Implemented v1.5 pass 4 JSON backup compatibility: new exports use schema version 2 with saved presets, schema version 1 backups still restore subscriptions/activity and keep current presets, and app-shell versioning moved to `1.5.2`.
-- 2026-04-26: Implemented v1.5 pass 3 lightweight preset management UI for adding/removing saved payment label and category presets; subscription records, CSV, and JSON backup schema remain unchanged.
