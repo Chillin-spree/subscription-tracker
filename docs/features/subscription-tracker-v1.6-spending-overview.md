@@ -191,7 +191,7 @@ Rules:
 
 ## Release State
 
-Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`). v1.7.5 work now builds on this released v1.6 baseline.
+Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`). v1.7 work now builds on this released v1.6 baseline.
 
 ## Build Notes
 

@@ -254,6 +254,7 @@ h2 {
 .dialog-backdrop[hidden],
 .overview-stats[hidden],
 .overview-note[hidden],
+.overview-range-controls[hidden],
 .overview-range-summary[hidden],
 .spending-bar[hidden],
 .export-actions[hidden],
@@ -290,6 +291,34 @@ h2 {
   margin-top: 12px;
   color: var(--muted);
   font-size: 0.84rem;
+}
+
+.overview-range-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 12px;
+}
+
+.overview-range-controls label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 720;
+}
+
+.overview-range-controls input {
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
 }
 
 .overview-range-summary {
@@ -813,6 +842,7 @@ h2 {
 @media (max-width: 360px) {
   .summary-strip,
   .overview-stats,
+  .overview-range-controls,
   .overview-range-summary,
   .preset-add-row,
   .form-actions,

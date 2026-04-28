@@ -38,6 +38,10 @@ const monthlyTotal = document.querySelector("[data-monthly-total]");
 const yearlyTotal = document.querySelector("[data-yearly-total]");
 const overviewCount = document.querySelector("[data-overview-count]");
 const overviewNote = document.querySelector("[data-overview-note]");
+const overviewRangeControls = document.querySelector("[data-overview-range-controls]");
+const overviewRangeStart = document.querySelector("[data-overview-range-start]");
+const overviewRangeEnd = document.querySelector("[data-overview-range-end]");
+const overviewRangeReset = document.querySelector("[data-overview-range-reset]");
 const overviewRangeSummary = document.querySelector("[data-overview-range-summary]");
 const overviewRangeTotal = document.querySelector("[data-overview-range-total]");
 const overviewRangeCount = document.querySelector("[data-overview-range-count]");
@@ -76,6 +80,7 @@ let categoryPresets = loadPresetList(CATEGORY_PRESETS_STORAGE_KEY);
 let editingId = null;
 let validatedBackup = null;
 let selectedOverviewMode = "items";
+let selectedOverviewRange = getCurrentMonthRange();
 
 renderSubscriptions();
 renderActivityLog();
@@ -184,6 +189,21 @@ overviewTabs.addEventListener("click", (event) => {
   }
 
   selectedOverviewMode = tab.dataset.overviewTab;
+  renderSpendingOverview();
+});
+
+[overviewRangeStart, overviewRangeEnd].forEach((input) => {
+  input.addEventListener("change", () => {
+    selectedOverviewRange = {
+      rangeStart: normalize(overviewRangeStart.value),
+      rangeEnd: normalize(overviewRangeEnd.value),
+    };
+    renderSpendingOverview();
+  });
+});
+
+overviewRangeReset.addEventListener("click", () => {
+  selectedOverviewRange = getCurrentMonthRange();
   renderSpendingOverview();
 });
 
@@ -627,11 +647,12 @@ function renderSpendingOverview() {
   );
   const breakdownRows = getOverviewBreakdownRows(selectedOverviewMode);
   const hasBreakdownRows = breakdownRows.length > 0;
-  const currentMonthRange = getCurrentMonthRange();
+  const rangeState = getSelectedOverviewRangeState();
 
   overviewEmpty.hidden = hasSubscriptions && hasBreakdownRows;
   overviewStats.hidden = !hasSubscriptions;
   overviewTabs.hidden = !hasSubscriptions;
+  overviewRangeControls.hidden = !hasSubscriptions || !showsRangeOverview;
   overviewRangeSummary.hidden = !hasSubscriptions || !showsRangeOverview;
   spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency || !hasBreakdownRows;
   overviewCurrency.textContent = showsRangeOverview
@@ -645,23 +666,58 @@ function renderSpendingOverview() {
     : "Multiple currencies";
   overviewCount.textContent = String(subscriptions.length);
   overviewNote.hidden = !hasSubscriptions || (hasSingleCurrency && !showsRangeOverview);
-  overviewNote.textContent = getOverviewNoteText(hasSingleCurrency, showsRangeOverview);
-  renderOverviewRangeSummary(breakdownRows, currentMonthRange);
+  overviewNote.textContent = getOverviewNoteText(hasSingleCurrency, showsRangeOverview, rangeState);
+  renderOverviewRangeControls();
+  renderOverviewRangeSummary(breakdownRows, rangeState);
   renderOverviewTabs();
   spendingBar.setAttribute("aria-label", getOverviewBreakdownLabel());
   spendingBar.innerHTML = hasSingleCurrency ? breakdownRows.map(renderSpendingSegment).join("") : "";
   paymentMethodList.innerHTML = breakdownRows.map(renderOverviewBreakdownRow).join("");
-  overviewEmptyMessage.textContent = showsRangeOverview
-    ? "No scheduled charges this month."
-    : "No spending breakdown yet.";
+  overviewEmptyMessage.textContent = showsRangeOverview && !rangeState.isValid
+    ? "Choose a valid date range."
+    : showsRangeOverview
+      ? "No scheduled charges in this range."
+      : "No spending breakdown yet.";
 }
 
-function renderOverviewRangeSummary(breakdownRows, { rangeStart, rangeEnd }) {
+function renderOverviewRangeControls() {
+  overviewRangeStart.value = selectedOverviewRange.rangeStart || "";
+  overviewRangeEnd.value = selectedOverviewRange.rangeEnd || "";
+}
+
+function renderOverviewRangeSummary(breakdownRows, rangeState) {
   const summary = getRangeSummaryFromRows(breakdownRows);
 
   overviewRangeTotal.textContent = formatRangeSummaryTotal(summary.currencyTotals);
   overviewRangeCount.textContent = String(summary.occurrenceCount);
-  overviewRangeDates.textContent = `${formatDate(rangeStart)} to ${formatDate(rangeEnd)}`;
+  overviewRangeDates.textContent = rangeState.isValid
+    ? `${formatDate(rangeState.rangeStart)} to ${formatDate(rangeState.rangeEnd)}`
+    : "Invalid date range";
+}
+
+function getSelectedOverviewRangeState() {
+  const { rangeStart, rangeEnd } = selectedOverviewRange;
+  const start = parseLocalDate(rangeStart);
+  const end = parseLocalDate(rangeEnd);
+
+  return {
+    rangeStart,
+    rangeEnd,
+    isValid: Boolean(start && end && start <= end),
+  };
+}
+
+function getOverviewRangeForRows() {
+  const rangeState = getSelectedOverviewRangeState();
+
+  if (!rangeState.isValid) {
+    return null;
+  }
+
+  return {
+    rangeStart: rangeState.rangeStart,
+    rangeEnd: rangeState.rangeEnd,
+  };
 }
 
 function renderUpcomingPayments() {
@@ -728,7 +784,13 @@ function getPaymentMethodGroups(overviewItems, totalMonthly) {
 
 function getOverviewBreakdownRows(mode) {
   if (mode === "this-month") {
-    const { rangeStart, rangeEnd } = getCurrentMonthRange();
+    const range = getOverviewRangeForRows();
+
+    if (!range) {
+      return [];
+    }
+
+    const { rangeStart, rangeEnd } = range;
     return getRangeSpendingBreakdownByItem(subscriptions, rangeStart, rangeEnd).map(addBreakdownColor);
   }
 
@@ -761,7 +823,7 @@ function renderOverviewTabs() {
 
 function getOverviewBreakdownLabel() {
   if (selectedOverviewMode === "this-month") {
-    return "Actual spending this month";
+    return "Actual spending range";
   }
 
   if (selectedOverviewMode === "categories") {
@@ -826,12 +888,15 @@ function getBreakdownPercentage(group) {
   return currencyEntry?.percentage ?? Number.NaN;
 }
 
-function getOverviewNoteText(hasSingleCurrency, showsRangeOverview) {
+function getOverviewNoteText(hasSingleCurrency, showsRangeOverview, rangeState = getSelectedOverviewRangeState()) {
   const notes = [];
 
   if (showsRangeOverview) {
-    const { rangeStart, rangeEnd } = getCurrentMonthRange();
-    notes.push(`This month shows actual scheduled charges from ${formatDate(rangeStart)} to ${formatDate(rangeEnd)}.`);
+    if (rangeState.isValid) {
+      notes.push(`Selected range shows actual scheduled charges from ${formatDate(rangeState.rangeStart)} to ${formatDate(rangeState.rangeEnd)}.`);
+    } else {
+      notes.push("Choose a valid start and end date to show actual scheduled charges.");
+    }
   }
 
   if (!hasSingleCurrency) {

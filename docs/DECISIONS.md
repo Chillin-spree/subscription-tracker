@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-04-28 — Keep custom range controls local to the overview session
+
+- **Type**: UX
+- **Status**: active
+- **Context**: v1.7.6 adds custom start/end date controls to the existing item-only range Spending overview.
+- **Decision**: Custom range selection is in-memory only, defaults to the current local calendar month, and does not write to localStorage or backup data. The existing `This month` tab label remains for now while the controls, note, and summary date span communicate the selected range.
+- **Why**: This gives users immediate selected-range review while avoiding persistence, settings, backup, and migration decisions in the first custom-range pass.
+- **Consequences**: Future range UX can revisit labels or persistence as a separate decision, but should preserve actual occurrence calculations and clear separation from normalized overview tabs.
+- **Related**: `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`
+
 ### 2026-04-28 — Start visible range spending with current month
 
 - **Type**: UX

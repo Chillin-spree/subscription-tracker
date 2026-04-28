@@ -10,7 +10,7 @@ A minimalist phone-first subscription tracker built with plain HTML, CSS, and Ja
 - Persist records in browser `localStorage`.
 - See payments due in the next 7 days.
 - Review an activity log for created, updated, and deleted subscriptions.
-- View monthly/yearly spending totals, break monthly equivalent spending down by item, category, or payment label, and review actual scheduled charges for the current month.
+- View monthly/yearly spending totals, break monthly equivalent spending down by item, category, or payment label, and review actual scheduled charges for the current month or a selected date range.
 - Save local payment label and category presets for faster manual entry while keeping fields editable as free text.
 - Export subscription data as plain text or CSV.
 - Download and restore local JSON backups that include subscriptions, activity history, and saved presets.
@@ -42,7 +42,7 @@ CSV exports keep the compatibility header `paymentMethod`, which means payment l
 
 ## Project Status
 
-`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. v1.3.1 fixes stale PWA app-shell behavior after the price input update. `subscription-tracker-v1.4-json-backup-restore` adds local JSON backup download plus validated, confirmed local restore. `subscription-tracker-v1.5-presets` adds local saved payment label and category presets with JSON backup compatibility. `subscription-tracker-v1.6-spending-overview` adds item, category, and payment-label spending breakdowns. `subscription-tracker-v1.7-date-ranges-end-dates` adds optional absolute end dates, applies them to Upcoming payments, and adds a fixed current-month actual spending view with an actual total and occurrence summary. Custom date ranges remain future work. Future not-now ideas are tracked in `docs/BACKLOG.md`.
+`subscription-tracker-v1` is complete and approved. `subscription-tracker-v1.1-pwa-support` adds install metadata, phone home screen icons, and offline shell loading after first visit. `subscription-tracker-v1.3-price-input-localization` accepts common dot and comma price formats while preserving numeric local storage, CSV compatibility, and home-screen app continuity. v1.3.1 fixes stale PWA app-shell behavior after the price input update. `subscription-tracker-v1.4-json-backup-restore` adds local JSON backup download plus validated, confirmed local restore. `subscription-tracker-v1.5-presets` adds local saved payment label and category presets with JSON backup compatibility. `subscription-tracker-v1.6-spending-overview` adds item, category, and payment-label spending breakdowns. `subscription-tracker-v1.7-date-ranges-end-dates` adds optional absolute end dates, applies them to Upcoming payments, and adds actual scheduled range spending with a non-persisted custom date range control. Category/payment range views remain future work. Future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 
