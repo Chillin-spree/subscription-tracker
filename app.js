@@ -1579,7 +1579,7 @@ function renderPlainTextBackupPreview(records) {
   const visibleRecords = records.slice(0, previewLimit);
   const remainingCount = records.length - visibleRecords.length;
   const previewItems = visibleRecords
-    .map((record) => `<span>${escapeHtml(record.name)}</span>`)
+    .map((record) => renderPlainTextBackupPreviewRecord(record))
     .join("");
   const remainingText = remainingCount > 0
     ? `<span>And ${remainingCount} more ${remainingCount === 1 ? "record" : "records"}.</span>`
@@ -1591,23 +1591,43 @@ function renderPlainTextBackupPreview(records) {
   plainTextBackupPreview.innerHTML = `
     <strong>Backup text preview</strong>
     <span>Subscriptions: ${records.length}</span>
-    ${previewItems}
+    <div class="backup-preview-records">
+      ${previewItems}
+    </div>
     ${remainingText}
     <em>No data has been restored yet.</em>
+  `;
+}
+
+function renderPlainTextBackupPreviewRecord(record) {
+  const price = `${record.currency || "TRY"} ${Number(record.price).toFixed(2)}`;
+  const billingDate = formatDateLong(record.billingDate);
+  const occurrence = OCCURRENCE_LABELS[record.occurrence] || record.occurrence;
+  const endDate = record.endDate ? ` · Ends ${formatDateLong(record.endDate)}` : "";
+
+  return `
+    <div class="backup-preview-record">
+      <span class="backup-preview-record-title">${escapeHtml(record.name)}</span>
+      <span class="backup-preview-record-meta">
+        ${escapeHtml(price)} · ${escapeHtml(occurrence)} · Bills ${escapeHtml(billingDate)}${escapeHtml(endDate)}
+      </span>
+    </div>
   `;
 }
 
 function renderPlainTextBackupPreviewError(errors) {
   clearValidatedPlainTextBackup();
   const errorItems = errors
-    .map((error) => `<span>${escapeHtml(error)}</span>`)
+    .map((error) => `<li>${escapeHtml(error)}</li>`)
     .join("");
 
   plainTextBackupPreview.hidden = false;
   plainTextBackupPreview.classList.add("is-error");
   plainTextBackupPreview.innerHTML = `
     <strong>Backup text could not be previewed</strong>
-    ${errorItems}
+    <ul class="backup-preview-error-list">
+      ${errorItems}
+    </ul>
     <em>No data has been imported or restored.</em>
   `;
 }

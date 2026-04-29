@@ -805,6 +805,42 @@ h2 {
   font-weight: 720;
 }
 
+.backup-preview-records,
+.backup-preview-record {
+  display: grid;
+  gap: 6px;
+}
+
+.backup-preview-record {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.backup-preview-record-title {
+  color: var(--text);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.backup-preview-record-meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.backup-preview-error-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.backup-preview-result.is-error .backup-preview-error-list {
+  color: #9d3e24;
+}
+
 .backup-preview-result.is-error em,
 .backup-preview-result.is-error strong {
   color: #9d3e24;
