@@ -2,17 +2,36 @@
 
 > Clarify that Subscription Tracker is local-only and that payment-related fields are labels/nicknames, not real payment details.
 
-Status: complete / released
-
-## Goal
+## Summary
 
 Make the product and project docs clear that user records stay under user control in browser/device storage, and that the app does not collect, process, authorize, upload, sync, sell, or analyze payment data.
 
-## Product Principle
+## Current Release State
+
+v1.2 shipped as the privacy and local-data clarity release. Its privacy stance remains active and is also preserved in `AGENTS.md`, `README.md`, and later compatibility notes.
+
+## User-Facing Scope
+
+- Add local-only UI notice.
+- Add form safety copy telling users to enter labels only.
+- Replace older method/account visible wording with `Payment label`.
+- Replace older occurrence visible wording with `Billing cycle`.
+- Update human-readable text export labels to `Billing cycle` and `Payment label`.
+- Preserve internal field names and storage/export compatibility.
+
+## Non-Goals
+
+- No localStorage key or data-field renames.
+- No internal `paymentMethod` rename.
+- No CSV header change.
+- No CRUD, PWA, manifest, or service worker behavior changes.
+- No dependencies or frameworks.
+
+## Compatibility / Preservation Rules
 
 This app must never collect or imply that users should enter real payment information.
 
-## Allowed User Data
+Allowed user data:
 
 - Subscription or bill name.
 - Price/amount.
@@ -23,7 +42,7 @@ This app must never collect or imply that users should enter real payment inform
 - Category, when added in a future version.
 - Notes, if added in a future version.
 
-## Disallowed User Data
+Disallowed user data:
 
 - Credit card numbers.
 - CVV/CVC.
@@ -34,7 +53,7 @@ This app must never collect or imply that users should enter real payment inform
 - Identity numbers.
 - Any data needed to make, authorize, or process a payment.
 
-## Current Technical Notes
+## Implementation Notes
 
 - Subscription records are stored in browser `localStorage`.
 - The app has no backend, account system, analytics, upload, cloud sync, payment processing, or payment authorization.
@@ -43,63 +62,7 @@ This app must never collect or imply that users should enter real payment inform
 - v1.2 should not rename localStorage keys or internal data fields. Preserve backward compatibility and clarify user-facing wording instead.
 - PWA support caches only static app shell files; user records remain in browser storage.
 
-## Pass 1 Scope
-
-- Add this feature file.
-- Update `docs/STATUS.md` to mark v1.2 active.
-- Strengthen README privacy/local-data wording.
-- Add durable project guardrails to `AGENTS.md`.
-- Keep `docs/VISION.md`, `docs/BACKLOG.md`, and `docs/features/subscription-tracker-v1.md` concise and consistent with the privacy principle.
-
-## Not In Pass 1
-
-- Runtime app changes.
-- UI copy changes in `index.html`.
-- JavaScript changes in `app.js`.
-- Style changes in `styles.css`.
-- Manifest or service worker changes.
-- localStorage key or data-field renames.
-- Export format changes.
-- Dependencies or frameworks.
-
-## Pass 2 Scope
-
-- Add a compact local-only notice near the top of the app.
-- Add form-specific safety copy that tells users to enter labels only.
-- Replace older method/account visible wording with `Payment label`.
-- Replace older occurrence visible wording with `Billing cycle`.
-- Update matching validation and accessible text without changing storage or behavior.
-
-## Not In Pass 2
-
-- localStorage key or data-field renames.
-- Internal `paymentMethod` renames.
-- Export label or CSV header changes.
-- CRUD, PWA, manifest, or service worker behavior changes.
-- Dependencies or frameworks.
-
-## Pass 3 Scope
-
-- Update human-readable text export cycle labels to `Billing cycle`.
-- Update human-readable text export label fields to `Payment label`.
-- Preserve CSV headers, including `paymentMethod`.
-- Verify no risky user-facing wording remains.
-- Run final checks and smoke tests.
-
-## Not In Pass 3
-
-- localStorage key or data-field renames.
-- Internal `paymentMethod` renames.
-- CSV header changes.
-- CRUD, PWA, manifest, or service worker behavior changes.
-- Dependencies or frameworks.
-
-## Recommended Follow-Up Passes
-
-1. Review v1.2 privacy/local-data clarity for release.
-2. If approved, close the feature and update status.
-
-## Acceptance Criteria
+## QA Checklist
 
 - [x] Docs clearly state data stays in browser/device storage.
 - [x] Docs clearly state the app does not upload, sync, sell, analyze, process, authorize, or make payments.
@@ -108,10 +71,19 @@ This app must never collect or imply that users should enter real payment inform
 - [x] No app files or runtime behavior are changed.
 - [x] Existing documentation remains concise and consistent.
 
-## Build Notes
+## Risks
+
+- Wording must not imply the app can make, authorize, process, or verify payments.
+- Internal `paymentMethod` naming must remain compatible while user-facing text says payment label/nickname.
+
+## Release History
 
 - 2026-04-25 pass 1: Documentation setup and project guardrails completed. No runtime app files were changed.
 - 2026-04-25 pass 2: Added local-only UI notice, form safety copy, safer visible payment-label/billing-cycle wording, and matching validation copy. Internal `paymentMethod` and localStorage keys remain unchanged.
 - 2026-04-25 pass 3: Updated human-readable text export labels to `Billing cycle` and `Payment label`; preserved CSV `paymentMethod`; ran final static checks and browser smoke checks.
 - 2026-04-25 release: Published v1.2 to GitHub Pages from `main`.
 - 2026-04-25 release fix: Bumped the static service worker cache name to refresh cached v1.2 app shell assets.
+
+## Open Follow-Ups
+
+- Keep local-only and label-only wording aligned across future public UI and docs.

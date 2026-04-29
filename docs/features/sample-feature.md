@@ -1,118 +1,48 @@
-# Sample Feature
+# Sample Feature Template
 
-> Example lifecycle file for one feature from design through build and review.
+> Template for feature files. Copy this structure when creating a new feature file, then remove guidance that does not apply.
 
-<!-- Optional obsolete classification:
-Status: example | active | shipped | obsolete
-If obsolete, say why and link to the replacement.
--->
+## Summary
 
-## Spec
+One or two sentences describing the user value and the product or technical change.
 
-### Purpose
+## Current Release State
 
-TBD
+- **Status**: draft | planned | local | shipped | superseded
+- **Latest release/commit**: TBD
+- **Runtime/app shell**: unchanged | TBD
+- **Notes**: TBD
 
-### User Outcome
-
-TBD
-
-### Approved Behavior
+## User-Facing Scope
 
 - TBD
 
-### User Flow
+## Non-Goals
 
-1. TBD
+- TBD
 
-### Acceptance Criteria
+## Compatibility / Preservation Rules
+
+- List feature-specific compatibility rules here.
+- Do not repeat the full project invariants from `AGENTS.md` unless the feature directly touches storage, backup, privacy, or PWA continuity.
+
+## Implementation Notes
+
+- Keep this section feature-specific.
+- Do not include copy-paste Codex prompts here; use `docs/HANDOFFS.md`.
+
+## QA Checklist
 
 - [ ] TBD
 
-### Out of Scope
+## Risks
 
 - TBD
 
-### Design Notes
+## Release History
 
 - TBD
 
-## Build Handoff
-
-### Goal
-
-TBD
-
-### Relevant Context
+## Open Follow-Ups
 
 - TBD
-
-### Risk Level
-
-Low | Medium | High
-
-### Build pass
-
-TBD
-
-### Not in this pass
-
-- TBD
-
-### Build Scope
-
-- TBD
-
-### Constraints to Preserve
-
-- TBD
-
-### Must Not Do
-
-- TBD
-
-### Implementation Rules
-
-- Prefer the smallest safe change.
-- Follow existing project patterns.
-- Run relevant checks or explain why not.
-- Report any scope expansion before continuing.
-- If this handoff feels too large for one focused session, stop and propose a smaller Build Pass Plan.
-
-### Assumptions
-
-- TBD
-
-<!-- Use docs/HANDOFFS.md for copy-paste work templates. -->
-
-## Tasks
-
-- [ ] Inspect relevant files and existing patterns.
-- [ ] Implement the smallest safe change.
-- [ ] Run relevant checks.
-- [ ] Report changed files, checks, and risks.
-
-## Build Notes
-
-<!-- Add concise implementation notes, important file paths, and check results. -->
-
-- TBD
-
-## Review Notes
-
-<!-- Add review outcomes, required fixes, and approval notes. -->
-
-- TBD
-
-## Definition of Done
-
-- [ ] Spec is clear enough to build.
-- [ ] Build scope stayed within this feature.
-- [ ] Design intent matches shipped behavior.
-- [ ] Acceptance criteria pass.
-- [ ] Relevant checks were run or explicitly skipped with reason.
-- [ ] Review completed.
-- [ ] `docs/STATUS.md` updated if workflow state changed.
-- [ ] `docs/DECISIONS.md` updated if durable decisions were made.
-- [ ] `docs/BUGS.md` updated if confirmed bugs were fixed.
-- [ ] Next step is clear.

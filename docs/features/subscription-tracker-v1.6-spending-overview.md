@@ -1,8 +1,12 @@
 # subscription-tracker-v1.6-spending-overview
 
-## Goal
+## Summary
 
 Improve Spending overview so users can understand monthly normalized recurring spending by individual item, category, and payment label while preserving existing records, exports, backups, PWA continuity, and the local-only privacy stance.
+
+## Current Release State
+
+Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`). v1.7 date ranges and end dates built on this released v1.6 baseline.
 
 ## User-Facing Scope
 
@@ -32,7 +36,9 @@ Improve Spending overview so users can understand monthly normalized recurring s
 - No inactive, archived, or ended subscription state unless a later feature designs that data model.
 - No payment processing or payment authorization behavior.
 
-## Calculation Decision
+## Implementation Notes
+
+### Calculation Decision
 
 Spending overview uses monthly normalized totals as the primary comparison basis:
 
@@ -47,7 +53,7 @@ Multiple currencies are displayed separately and are not converted or combined i
 
 Next-payment timing, due dates, and next-7-days payment totals remain part of Upcoming payments, not Spending overview.
 
-## Proposed UX and Layout
+### Proposed UX and Layout
 
 Use one Spending overview panel with a compact mode control near the existing totals:
 
@@ -65,7 +71,7 @@ Each mode should reuse the same visual pattern:
 - Rows sort by monthly equivalent descending.
 - The UI should stay lightweight and avoid becoming a full analytics dashboard.
 
-## Grouping Behavior
+### Grouping Behavior
 
 ### Items
 
@@ -91,7 +97,7 @@ Each mode should reuse the same visual pattern:
 - Show item count per payment label where space allows.
 - Sort payment labels by monthly equivalent descending.
 
-## Edge Cases
+### Edge Cases
 
 - Empty subscription list: show the existing overview empty state with no breakdown controls if needed.
 - Missing category: show as `Uncategorized` without mutating saved records.
@@ -103,9 +109,9 @@ Each mode should reuse the same visual pattern:
 - Existing saved payment label and category presets should not affect stored subscription values.
 - There is no inactive or ended subscription state in the current model, so all saved subscription records remain active for v1.6 calculations.
 
-## Compatibility Risks
+## Compatibility / Preservation Rules
 
-- Existing subscription records must not be mutated.
+- Do not mutate existing subscription records.
 - Existing localStorage keys must remain unchanged:
   - `subscription-tracker-v1-subscriptions`
   - `subscription-tracker-v1-activity-log`
@@ -119,11 +125,9 @@ Each mode should reuse the same visual pattern:
 - Preset deletion or absence must not change Spending overview calculations for existing records.
 - Local-only privacy copy must remain accurate.
 
-## PWA and Cache Risks
+### PWA and Cache Notes
 
-This documentation setup pass does not change runtime app shell files, so no cache bump is required.
-
-Future implementation passes that change `index.html`, `app.js`, `styles.css`, or other app shell assets must:
+Runtime passes that change `index.html`, `app.js`, `styles.css`, or other app shell assets must:
 
 - update the script URL version in `index.html` if `app.js` changes,
 - update the `service-worker.js` cache name,
@@ -133,32 +137,12 @@ Future implementation passes that change `index.html`, `app.js`, `styles.css`, o
 - preserve offline app shell behavior after first visit,
 - preserve the live GitHub Pages URL.
 
-## Build Pass Plan
+## Risks
 
-```text
-BUILD PASS PLAN — subscription-tracker-v1.6-spending-overview
-
-Full feature:
-Improve Spending overview with monthly normalized breakdowns by item, category, and payment label.
-
-Risk:
-Medium once implementation begins, because v1.6 touches overview calculations, UI state, rendering, and PWA-cached app shell files.
-
-Recommended passes:
-1. Documentation setup — create this feature file, update project state/backlog/decision docs, no runtime code.
-2. Shared overview data helpers — add pure helper functions for item, category, and payment breakdown data; preserve current UI behavior.
-3. Overview mode control and item view — add a compact Items/Categories/Payment control and implement the item breakdown first.
-4. Category breakdown — add category grouping, `Uncategorized`, item counts, sorting, and multiple-currency behavior.
-5. Payment breakdown alignment — move the existing payment-label grouped overview onto the shared rendering pattern and preserve current behavior.
-6. Final QA, PWA cache, and docs — bump app shell versions if runtime files changed, verify compatibility, and update release docs.
-
-Rules:
-- Keep each pass small and reviewable.
-- Do not combine UI mode controls, all grouping modes, backup/export changes, and release checks in one pass.
-- Do not mutate existing subscription records.
-- Do not rename storage keys or exported CSV fields.
-- Do not introduce currency conversion.
-```
+- Existing subscription records must not be mutated.
+- Multiple currencies must not be silently combined into one total.
+- Stale PWA app shells can mix old and new app files if runtime passes miss script/cache versioning.
+- Preset deletion or absence must not affect Spending overview calculations for existing records.
 
 ## QA Checklist
 
@@ -179,21 +163,7 @@ Rules:
 - No sensitive payment data is requested or implied.
 - If runtime files change, `node --check app.js`, `node --check service-worker.js`, `git diff --check`, and PWA cache/version checks pass.
 
-## Docs Impact
-
-- `docs/STATUS.md`: pointed to v1.6 during this feature's active planning/build state.
-- `docs/DECISIONS.md`: should record the monthly normalized overview basis as a durable UX/product decision.
-- `docs/BACKLOG.md`: should remove v1.6 spending overview from future roadmap once active.
-- `README.md`: should not present v1.6 as released until implementation and release checks are complete.
-- `docs/VISION.md`: no change expected; the current lightweight spending snapshot direction already supports v1.6.
-- `docs/BUGS.md`: no change expected unless a confirmed bug is discovered.
-- `docs/HANDOFFS.md`: no change expected unless reusable workflow templates need revision.
-
-## Release State
-
-Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`). v1.7 work now builds on this released v1.6 baseline.
-
-## Build Notes
+## Release History
 
 - 2026-04-28 pass 1: Created the v1.6 spending overview feature planning doc. No runtime files were changed.
 - 2026-04-28 pass 2: Added shared data helpers for item, category, and payment-label spending breakdowns using the existing monthly equivalent calculation. Helper output keeps currency totals separated, avoids mixed-currency percentages, keeps duplicate item names separate, maps blank categories to display-only `Uncategorized`, and includes item counts for grouped breakdowns. Existing visible Spending overview behavior remains unchanged. Runtime app shell versioning moved to `app.js?v=1.6.0` and cache `subscription-tracker-v1.6.0-static`.
@@ -201,7 +171,7 @@ Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`).
 - 2026-04-28 pass 4: Added the Categories tab to Spending overview using the shared category breakdown helper. Categories groups records by existing `category`, displays blank or missing categories as `Uncategorized` without writing that value to records, shows item counts, keeps currencies separated, and preserves Items as the default tab. Runtime app shell versioning moved to `app.js?v=1.6.2` and cache `subscription-tracker-v1.6.2-static`.
 - 2026-04-28 pass 5: Completed final QA and release documentation. Public README now documents item, category, and payment-label spending breakdowns. No runtime code changed in the release documentation pass.
 
-## Final QA Summary
+### Final QA Summary
 
 - Static syntax checks passed:
   - `node --check app.js`
@@ -238,22 +208,6 @@ Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`).
   - Schema version 1 backups remain accepted as legacy input.
   - No upload, sync, account, server, analytics, dependency, payment processing, or payment authorization behavior was added.
 
-## Next Pass
+## Open Follow-Ups
 
-v1.7 date ranges and absolute end dates are now tracked in `docs/features/subscription-tracker-v1.7-date-ranges-end-dates.md`.
-
-## Definition of Done
-
-- [x] v1.6 scope, non-goals, calculation basis, UX direction, grouping behavior, edge cases, compatibility risks, PWA risks, build passes, and QA checklist are documented.
-- [x] `docs/STATUS.md` points to v1.6 as active planning/build state.
-- [x] `docs/BACKLOG.md` no longer treats v1.6 spending overview as a future roadmap candidate.
-- [x] `docs/DECISIONS.md` records the durable calculation decision.
-- [x] Runtime files remain unchanged in the documentation setup pass.
-- [x] Relevant checks pass.
-- [x] Pass 2 shared item/category/payment-label breakdown helpers are implemented.
-- [x] Pass 2 PWA script and cache versions are updated consistently.
-- [x] Pass 3 Items/Payment overview tabs are implemented with Items as the default.
-- [x] Pass 3 PWA script and cache versions are updated consistently.
-- [x] Pass 4 Categories overview tab is implemented.
-- [x] Pass 4 PWA script and cache versions are updated consistently.
-- [x] Pass 5 final QA and release documentation are complete.
+- Later range-specific spending behavior is tracked in v1.7 and v1.9 feature files.

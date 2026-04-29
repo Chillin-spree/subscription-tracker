@@ -4,7 +4,13 @@
 
 Harden local import/render safety around stored or restored subscription data while preserving the local-only app model, backup compatibility, and installed PWA continuity.
 
-## Scope
+## Current Release State
+
+v1.9.2 Pass 1 shipped in commit `a55cac1` (`Harden imported subscription rendering`). It is the narrow subscription action attribute escaping and import/render verifier release.
+
+Remaining import-safety follow-ups are still tracked separately and are not part of the shipped v1.9.2 Pass 1 scope.
+
+## User-Facing Scope
 
 - Escape subscription IDs when rendering generated action button `data-id` attributes.
 - Add dependency-free import/render safety verifier coverage for:
@@ -24,6 +30,18 @@ Harden local import/render safety around stored or restored subscription data wh
 - No CSV/JSON legacy controls restored to the visible UI.
 - No broad renderer refactor.
 - No auth, cloud sync, analytics, payment processing, bank/card import, OCR/email scanning, paid services, or push notifications.
+
+## Compatibility / Preservation Rules
+
+- Backup parser, format, schema, copy, download, preview, restore, and storage behavior are unchanged.
+- JSON backup `schemaVersion` remains `2`.
+- Existing localStorage keys remain unchanged:
+  - `subscription-tracker-v1-subscriptions`
+  - `subscription-tracker-v1-activity-log`
+  - `subscription-tracker-v1-payment-method-presets`
+  - `subscription-tracker-v1-category-presets`
+- Legacy CSV/JSON controls remain hidden in the main UI.
+- Range dates and Range sub-mode settings remain non-persisted.
 
 ## User-Facing Behavior
 
@@ -59,25 +77,13 @@ Harden local import/render safety around stored or restored subscription data wh
 - The verifier checks generated markup strings rather than running a full browser. Mitigation: this matches the app's existing dependency-free helper verification pattern and focuses on the exact rendering function changed.
 - PWA stale shell behavior. Mitigation: app shell cache and script query string are bumped to `v1.9.2`.
 
-## Follow-Ups
+## Release History
+
+- 2026-04-29: v1.9.2 Pass 1 escaped generated subscription action `data-id` attributes and added `scripts/verify-import-safety.js`.
+
+## Open Follow-Ups
 
 - Add defensive handling for corrupted localStorage records.
 - Add import size/count and field-length limits for pasted text and JSON preview paths.
 - Harden hidden legacy CSV export against spreadsheet formula interpretation before re-exposing CSV.
 - Consider a broader import-safety verifier for hidden JSON restore validation cases.
-
-## Release State
-
-v1.9.2 Pass 1 is implemented locally and documented. It is pending review and has not been committed or pushed.
-
-## Compatibility Confirmation
-
-- Backup parser, format, schema, copy, download, preview, restore, and storage behavior are unchanged.
-- JSON backup `schemaVersion` remains `2`.
-- Existing localStorage keys remain unchanged:
-  - `subscription-tracker-v1-subscriptions`
-  - `subscription-tracker-v1-activity-log`
-  - `subscription-tracker-v1-payment-method-presets`
-  - `subscription-tracker-v1-category-presets`
-- Legacy CSV/JSON controls remain hidden in the main UI.
-- Range dates and Range sub-mode settings remain non-persisted.

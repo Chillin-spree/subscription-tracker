@@ -1,8 +1,14 @@
 # subscription-tracker-v1.8-simple-text-backup
 
-## Goal
+## Summary
 
 Make the normal user-facing backup workflow a simple, human-readable plain text copy/paste format while preserving existing data, CSV compatibility, legacy JSON backup/restore, PWA continuity, and the local-only privacy stance.
+
+## Current Release State
+
+v1.8.8 shipped as the simple text backup release with copy and download support for the same plain text backup content. Backup UX follow-ups and any future legacy code deletion remain separate future passes.
+
+Later v1.9 and v1.9.2 work did not change the plain text backup parser, format, restore/write behavior, CSV compatibility, JSON schema, localStorage keys, or hidden legacy UI behavior.
 
 ## User-Facing Scope
 
@@ -28,20 +34,7 @@ Make the normal user-facing backup workflow a simple, human-readable plain text 
 - No CSV format change.
 - No cloud sync, upload, account, analytics, payment processing, or payment authorization behavior.
 
-## Plain Text Backup Format
-
-The v1 text backup begins with:
-
-```text
-Subscription Tracker Backup
-Version: 1
-```
-
-Records are separated by `---`. The first non-empty line after the separator is the subscription name. Supported fields are `Price`, `Currency`, `Billing date`, `Occurrence`, `Payment method`, `Category`, `End date`, and `Notes`.
-
-`Notes` is last and may span multiple lines until the next record separator. A literal note line containing `---` is escaped as `\---`.
-
-## Compatibility Requirements
+## Compatibility / Preservation Rules
 
 - Preserve localStorage keys:
   - `subscription-tracker-v1-subscriptions`
@@ -55,30 +48,25 @@ Records are separated by `---`. The first non-empty line after the separator is 
 - Preserve root-level service worker registration.
 - Keep payment-related fields as labels or nicknames only.
 
-## Build Pass Plan
+## Implementation Notes
+
+The v1 plain text backup begins with:
 
 ```text
-BUILD PASS PLAN — subscription-tracker-v1.8-simple-text-backup
-
-Full feature:
-Make plain text backup export/import the primary user-facing data portability workflow.
-
-Risk:
-Medium for helper/export/preview passes; high for confirmed restore because it replaces local subscription records.
-
-Recommended passes:
-1. Plain text backup helpers — add serializer/parser/validator helpers only; no UI.
-2. Plain text backup export — add visible backup `.txt` export; no import.
-3. Paste import preview — add paste UI and validation preview; no write behavior.
-4. Confirmed paste restore — replace local data from validated text only after explicit confirmation.
-5. UI simplification — make text backup/import primary and hide or de-emphasize legacy CSV/JSON/file options after text export/import is proven.
-6. Final QA and docs — verify exports, restores, legacy compatibility, PWA shell versions, and release docs.
-7. Preview polish — improve pasted backup preview clarity without changing parser, format, storage, or restore behavior.
-8. Helper verification — add a lightweight local script for serializer/parser round trips and validation cases without changing runtime behavior.
-9. Accessibility polish — connect pasted backup help text, preview output, and restore controls without changing backup behavior.
-10. Backup panel stabilization — clarify the final visible panel heading, restore safety copy, and preview status semantics without changing backup behavior.
-11. Copy backup text — add clipboard copy for the same plain text backup while keeping download as fallback.
+Subscription Tracker Backup
+Version: 1
 ```
+
+Records are separated by `---`. The first non-empty line after the separator is the subscription name. Supported fields are `Price`, `Currency`, `Billing date`, `Occurrence`, `Payment method`, `Category`, `End date`, and `Notes`.
+
+`Notes` is last and may span multiple lines until the next record separator. A literal note line containing `---` is escaped as `\---`.
+
+## Risks
+
+- Confirmed restore replaces current local subscriptions after validation and confirmation.
+- Invalid previews must never expose restore.
+- Hidden legacy CSV/JSON code must remain compatible unless explicitly removed in a future planned pass.
+- Notes and record separators must round-trip without corrupting user text.
 
 ## QA Checklist
 
@@ -114,7 +102,7 @@ Recommended passes:
 - JSON backup `schemaVersion` remains `2`.
 - Plain text backup helper verification passes with `node scripts/verify-plain-text-backup.js`.
 
-## Build Notes
+## Release History
 
 - 2026-04-28 pass 1: Added helper-only plain text backup serializer/parser/validator functions. No UI, storage, CSV, JSON, or PWA shell behavior changed.
 - 2026-04-28 pass 2: Added visible `Download backup text` export using the v1 plain text backup format. The old summary text export remains visible as `Download summary text`; CSV export and legacy JSON backup/restore remain visible and unchanged. Runtime app shell versioning moved to `app.js?v=1.8.0` and cache `subscription-tracker-v1.8.0-static`.
@@ -127,6 +115,6 @@ Recommended passes:
 - 2026-04-29 v1.8.7 stabilization: Finalized the backup panel by changing the visible heading from `Export` to `Backup`, clarifying that pasted restore replaces current subscriptions while keeping activity log and saved presets, and adding status semantics to the plain text backup preview result. Parser behavior, backup format, restore/write behavior, CSV, JSON schema, localStorage keys, and hidden legacy UI behavior remain unchanged. Runtime app shell versioning moved to `app.js?v=1.8.7` and cache `subscription-tracker-v1.8.7-static`.
 - 2026-04-29 v1.8.8 copy-backup export: Added `Copy backup text` beside `Download backup text`. Copy uses the same v1 plain text backup content as download through the Clipboard API when available; unsupported or failed copy shows fallback guidance to use download. Parser behavior, backup format, restore/write behavior, CSV, JSON schema, localStorage keys, and hidden legacy UI behavior remain unchanged. Runtime app shell versioning moved to `app.js?v=1.8.8` and cache `subscription-tracker-v1.8.8-static`.
 
-## Release State
+## Open Follow-Ups
 
-v1.8.8 is implemented locally as copy-backup export polish. Final release prep, backup UX follow-ups, v1.9 planning, and any future legacy code deletion remain separate future passes.
+- Backup UX follow-ups and any future legacy code deletion remain separate future passes.

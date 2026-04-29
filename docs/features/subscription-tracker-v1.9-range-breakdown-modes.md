@@ -4,7 +4,15 @@
 
 Add compact selected Range breakdown modes so users can review actual scheduled charges in the selected date range by item, category, or payment label.
 
-## Scope
+## Current Release State
+
+v1.9.0 shipped in commit `310c1cf` (`Release v1.9.0 range breakdown modes`) and was pushed to `main`.
+
+Live GitHub Pages asset verification passed for `app.js?v=1.9.0`, the Range sub-mode code, `BACKUP_SCHEMA_VERSION = 2`, existing storage keys, `subscription-tracker-v1.9.0-static`, and the versioned cached app script. Browser/PWA smoke was not performed, so installed-app behavior remains a follow-up QA gap rather than a known issue.
+
+v1.9.1 shipped in commit `16cec61` (`Add range helper verification`) and added a dependency-free range/date helper verification harness in `scripts/verify-range-helpers.js`. It did not change runtime behavior or app shell/cache versioning.
+
+## User-Facing Scope
 
 - Add Range-only sub-mode controls:
   - `By item`
@@ -29,6 +37,19 @@ Add compact selected Range breakdown modes so users can review actual scheduled 
 - No localStorage key changes.
 - No CSV/JSON legacy controls restored to the visible UI.
 - No broad dashboard redesign.
+
+## Compatibility / Preservation Rules
+
+- Backup parser, format, schema, copy, download, preview, restore, and storage behavior are unchanged.
+- JSON backup `schemaVersion` remains `2`.
+- Existing localStorage keys remain unchanged:
+  - `subscription-tracker-v1-subscriptions`
+  - `subscription-tracker-v1-activity-log`
+  - `subscription-tracker-v1-payment-method-presets`
+  - `subscription-tracker-v1-category-presets`
+- Legacy CSV/JSON controls remain hidden in the main UI.
+- Range dates and Range sub-mode settings remain non-persisted.
+- Top-level `Items`, `Categories`, and `Payment` remain normalized monthly/yearly views.
 
 ## User-Facing Behavior
 
@@ -79,22 +100,11 @@ Add compact selected Range breakdown modes so users can review actual scheduled 
 - Misleading mixed-currency percentages. Mitigation: existing single-currency percentage behavior is preserved, and mixed-currency rows keep separate currency totals.
 - PWA stale shell behavior. Mitigation: app shell cache and script query string are bumped to `v1.9.0`.
 
-## Release State
+## Release History
 
-v1.9.0 shipped in commit `310c1cf` (`Release v1.9.0 range breakdown modes`) and was pushed to `main`.
+- 2026-04-29: v1.9.0 added non-persisted selected-range breakdown modes by item, category, and payment label.
+- 2026-04-29: v1.9.1 added dependency-free range/date helper verification without changing runtime behavior.
 
-Live GitHub Pages asset verification passed for `app.js?v=1.9.0`, the Range sub-mode code, `BACKUP_SCHEMA_VERSION = 2`, existing storage keys, `subscription-tracker-v1.9.0-static`, and the versioned cached app script. Browser/PWA smoke was not performed, so installed-app behavior remains a follow-up QA gap rather than a known issue.
+## Open Follow-Ups
 
-v1.9.1 adds a local dependency-free range/date helper verification harness in `scripts/verify-range-helpers.js`. It does not change runtime behavior or app shell/cache versioning.
-
-## Compatibility Confirmation
-
-- Backup parser, format, schema, copy, download, preview, restore, and storage behavior are unchanged.
-- JSON backup `schemaVersion` remains `2`.
-- Existing localStorage keys remain unchanged:
-  - `subscription-tracker-v1-subscriptions`
-  - `subscription-tracker-v1-activity-log`
-  - `subscription-tracker-v1-payment-method-presets`
-  - `subscription-tracker-v1-category-presets`
-- Legacy CSV/JSON controls remain hidden in the main UI.
-- Range dates and Range sub-mode settings remain non-persisted.
+- Browser/PWA smoke was not performed during live asset verification and remains a QA gap rather than a known issue.

@@ -29,7 +29,7 @@
 
 ## Roadmap
 
-- `subscription-tracker-v1.9-security-hardening-import-safety`: Review input rendering, imported JSON safety, local-only protections, and future data migrations; avoid breaking existing data or offline behavior.
+- `subscription-tracker-import-safety-followups`: Continue import/storage hardening after v1.9.2. Candidate follow-ups include corrupted localStorage handling, pasted text/JSON size and count limits, hidden CSV formula hardening before any CSV re-exposure, and broader JSON restore verifier coverage.
 
 ## Parked / Later
 

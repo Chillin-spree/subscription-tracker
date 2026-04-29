@@ -1,8 +1,14 @@
 # subscription-tracker-v1.7-date-ranges-end-dates
 
-## Goal
+## Summary
 
 Introduce optional absolute subscription end dates as a safe model foundation, then later design selected date-range spending review without breaking existing records, exports, backups, PWA continuity, or local-only privacy.
+
+## Current Release State
+
+v1.7.9 shipped as the date ranges and end-date release. Category/payment range tabs, persisted range state, CSV export changes, JSON schema changes, and ended-state behavior remained out of scope for v1.7.
+
+Later v1.9 work added Range category/payment sub-modes without changing the v1.7 decisions that Range dates are non-persisted and top-level Items/Categories/Payment stay monthly normalized.
 
 ## User-Facing Scope
 
@@ -31,7 +37,7 @@ Introduce optional absolute subscription end dates as a safe model foundation, t
 - No localStorage key rename or record migration.
 - No auth, sync, upload, analytics, payment processing, or payment authorization behavior.
 
-## Date Model Decision
+## Implementation Notes
 
 - `endDate` is an optional absolute date-only field using `YYYY-MM-DD`.
 - Empty or missing `endDate` values remain valid and are treated as blank.
@@ -46,7 +52,7 @@ Introduce optional absolute subscription end dates as a safe model foundation, t
 - The range summary derives its total and occurrence count from the same selected-range item rows shown in the list so the summary and row breakdown stay aligned.
 - Custom range controls are in-memory only. They default to the current local calendar month, do not persist to localStorage or backups, and use the `Range` tab label while the `This month` reset control restores the default current-month range.
 
-## Compatibility Requirements
+## Compatibility / Preservation Rules
 
 - Preserve localStorage keys:
   - `subscription-tracker-v1-subscriptions`
@@ -60,30 +66,15 @@ Introduce optional absolute subscription end dates as a safe model foundation, t
 - Preserve `manifest.webmanifest` `start_url: "./"` and `scope: "./"`.
 - Preserve root-level service worker registration.
 
-## Build Pass Plan
+## Risks
 
-```text
-BUILD PASS PLAN — subscription-tracker-v1.7-date-ranges-end-dates
+- Date-only parsing must avoid timezone-sensitive behavior.
+- End dates must remain inclusive.
+- Range totals must stay visually distinct from monthly normalized overview totals.
+- Multiple currencies must stay separated.
+- Backup/schema/storage compatibility must be preserved.
 
-Full feature:
-Add optional absolute end dates and later date-range spending review.
-
-Risk:
-Medium, because date metadata affects storage compatibility and future calculations.
-
-Recommended passes:
-1. Optional end-date model foundation — add field, validation, display, date-only helpers, and PWA cache bump; no range calculations.
-2. Upcoming payments end-date filter — suppress next payments after the inclusive end date; no range calculations.
-3. Range calculation helpers — add pure helpers and checks without changing visible UI.
-4. Range breakdown adapters — adapt actual range totals into item, category, and payment-label overview row data; no visible UI.
-5. Current-month range UI — add a fixed `This month` item tab using actual current-month totals; no custom date inputs.
-6. Current-month summary polish — add a compact actual total, occurrence count, and date-span summary to the fixed `This month` tab.
-7. Custom date range controls — add non-persisted selected range inputs and wire them to the existing item-only range view.
-8. Selected-range label/accessibility/final clarity polish — rename the visible range tab, clarify supporting copy, improve range-control accessible names, and hide normalized stat cards in Range mode; no new modes.
-9. Final QA and release docs — verify compatibility, PWA shell versions, exports, backups, and manual QA.
-```
-
-## Build Notes
+## Release History
 
 - 2026-04-28 pass 1: Added optional `endDate` form handling, validation, card display, and manual date-only helpers. Existing records without `endDate` continue to load and edit with a blank end-date field. Runtime app shell versioning moved to `app.js?v=1.7.0` and cache `subscription-tracker-v1.7.0-static`. CSV export headers and JSON backup schema version remain unchanged.
 - 2026-04-28 pass 2: Upcoming payments now respects optional end dates. Records without `endDate` remain ongoing; records with a next payment before or exactly on `endDate` still appear; records whose next payment is after `endDate` are excluded from Upcoming payments and Due soon totals. Active counts, Spending overview, CSV export, and JSON backup schema remain unchanged. Runtime app shell versioning moved to `app.js?v=1.7.1` and cache `subscription-tracker-v1.7.1-static`.
@@ -131,6 +122,6 @@ Recommended passes:
 - JSON backup `schemaVersion` remains `2`.
 - App shell versions are all `v1.7.9`.
 
-## Release State
+## Open Follow-Ups
 
-v1.7.9 is implemented locally with passes 1-8 complete. Category/payment range tabs, persisted range state, CSV export changes, JSON schema changes, and ended-state behavior remain out of scope.
+- Persisted range state, CSV end-date export, JSON schema version 3, and ended/inactive subscription semantics remain future design topics.
