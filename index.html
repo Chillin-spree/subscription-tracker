@@ -140,7 +140,7 @@
 
       <section class="panel" aria-labelledby="export-title">
         <div class="section-heading">
-          <h2 id="export-title">Export</h2>
+          <h2 id="export-title">Backup</h2>
           <span class="section-meta">Backup text</span>
         </div>
         <div class="empty-state compact" data-export-empty>
@@ -160,20 +160,23 @@
           <label class="file-field">
             <span>Preview backup text</span>
             <textarea
+              id="plain-text-backup-input"
               name="plainTextBackup"
               rows="8"
               placeholder="Paste Subscription Tracker Backup text"
+              aria-describedby="plain-text-backup-help"
               data-plain-text-backup-input
             ></textarea>
           </label>
-          <button class="secondary-button" type="button" data-preview-plain-text-backup>
+          <button class="secondary-button" type="button" aria-controls="plain-text-backup-preview" data-preview-plain-text-backup>
             Preview pasted backup
           </button>
-          <p class="export-note">
-            Pasted backup text is checked locally in this browser. Restore appears only after a valid preview.
+          <p class="export-note" id="plain-text-backup-help">
+            Pasted backup text is checked locally in this browser. Restore appears only after a valid preview and
+            replaces current subscriptions while keeping activity log and saved presets.
           </p>
-          <div class="backup-preview-result" data-plain-text-backup-preview hidden aria-live="polite"></div>
-          <button class="restore-button" type="button" data-restore-plain-text-backup hidden>
+          <div class="backup-preview-result" id="plain-text-backup-preview" data-plain-text-backup-preview hidden role="status" aria-live="polite"></div>
+          <button class="restore-button" type="button" aria-controls="plain-text-backup-preview" aria-describedby="plain-text-backup-help" data-restore-plain-text-backup hidden>
             Replace subscriptions with pasted backup
           </button>
         </div>
@@ -319,6 +322,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.8.4"></script>
+    <script src="app.js?v=1.8.7"></script>
   </body>
 </html>
