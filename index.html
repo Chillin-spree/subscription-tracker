@@ -160,9 +160,6 @@
         <div class="export-actions" data-export-actions hidden>
           <button class="primary-button" type="button" data-export-plain-text-backup>Download backup text</button>
           <button class="secondary-button" type="button" data-copy-plain-text-backup>Copy backup text</button>
-          <button class="secondary-button" type="button" data-export-text hidden>Download summary text</button>
-          <button class="primary-button" type="button" data-export-csv hidden>Export CSV</button>
-          <button class="secondary-button wide-button" type="button" data-export-json hidden>Download JSON backup</button>
         </div>
         <p class="export-note" data-export-note hidden>
           Backup text is readable, editable, and checked locally before replacing local subscriptions. Nothing is
@@ -190,19 +187,6 @@
           <div class="backup-preview-result" id="plain-text-backup-preview" data-plain-text-backup-preview hidden role="status" aria-live="polite"></div>
           <button class="restore-button" type="button" aria-controls="plain-text-backup-preview" aria-describedby="plain-text-backup-help" data-restore-plain-text-backup hidden>
             Replace subscriptions with pasted backup
-          </button>
-        </div>
-        <div class="backup-preview" hidden>
-          <label class="file-field">
-            <span>Preview JSON backup</span>
-            <input name="backupFile" type="file" accept="application/json,.json" data-backup-file>
-          </label>
-          <p class="export-note">
-            Backup files are checked locally in this browser. Nothing is uploaded, restored, or overwritten.
-          </p>
-          <div class="backup-preview-result" data-backup-preview hidden aria-live="polite"></div>
-          <button class="restore-button" type="button" data-restore-backup hidden>
-            Replace local data with this backup
           </button>
         </div>
       </section>
@@ -334,6 +318,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.9.2"></script>
+    <script src="app.js?v=1.10.0"></script>
   </body>
 </html>

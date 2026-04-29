@@ -90,7 +90,7 @@ After meaningful feature, bugfix, release, roadmap, process, or risk changes, ru
 - Preserve existing localStorage keys unless an explicit backward-compatible migration is planned:
   - `subscription-tracker-v1-subscriptions`
   - `subscription-tracker-v1-activity-log`
-- Preserve backup compatibility, including existing CSV compatibility, unless an explicit versioned change is planned.
+- Preserve the supported plain text backup format unless an explicit versioned change is planned.
 - Preserve installed/home-screen PWA continuity: live GitHub Pages URL, manifest `start_url: "./"`, manifest `scope: "./"`, root-level `service-worker.js` registration, offline app shell after first visit, existing saved records, and local-only privacy stance.
 - Bump app shell/cache versions when runtime app assets change.
 - If app naming or branding changes, preserve the same live URL and installed PWA continuity.

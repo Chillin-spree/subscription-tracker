@@ -10,6 +10,8 @@ v1.7.9 shipped as the date ranges and end-date release. Category/payment range t
 
 Later v1.9 work added Range category/payment sub-modes without changing the v1.7 decisions that Range dates are non-persisted and top-level Items/Categories/Payment stay monthly normalized.
 
+Historical note: CSV/JSON compatibility notes in this file describe the v1.7 release context. v1.10.0 later removed CSV export and JSON backup/restore from the current runtime.
+
 ## User-Facing Scope
 
 - Add an optional `End date` field to manual subscription records.
@@ -59,8 +61,7 @@ Later v1.9 work added Range category/payment sub-modes without changing the v1.7
   - `subscription-tracker-v1-activity-log`
   - `subscription-tracker-v1-payment-method-presets`
   - `subscription-tracker-v1-category-presets`
-- Preserve CSV header exactly: `name,price,currency,billingDate,occurrence,paymentMethod,category,notes`.
-- Preserve JSON backup `schemaVersion: 2`.
+- At v1.7 release time, CSV header and JSON backup schema compatibility were preserved.
 - Older saved records and older backups without `endDate` remain valid.
 - New JSON backups may include `endDate` inside subscription objects and activity snapshots without changing the backup envelope.
 - Preserve `manifest.webmanifest` `start_url: "./"` and `scope: "./"`.
@@ -119,7 +120,7 @@ Later v1.9 work added Range category/payment sub-modes without changing the v1.7
 - `Range` preserves zero-price subscriptions with selected-range occurrences.
 - `Range` shows a clear empty state when there are no scheduled charges in the selected range.
 - CSV header remains exactly `name,price,currency,billingDate,occurrence,paymentMethod,category,notes`.
-- JSON backup `schemaVersion` remains `2`.
+- JSON backup schema notes above are historical; JSON backup/restore is not a current compatibility path after v1.10.0.
 - App shell versions are all `v1.7.9`.
 
 ## Open Follow-Ups

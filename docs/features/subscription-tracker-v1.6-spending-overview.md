@@ -8,6 +8,8 @@ Improve Spending overview so users can understand monthly normalized recurring s
 
 Released to `main` in commit `03b64ff` (`Add spending overview breakdown tabs`). v1.7 date ranges and end dates built on this released v1.6 baseline.
 
+Historical note: CSV/JSON compatibility notes in this file describe the v1.6 release context. v1.10.0 later removed CSV export and JSON backup/restore from the current runtime.
+
 ## User-Facing Scope
 
 - Keep the current Spending overview totals:

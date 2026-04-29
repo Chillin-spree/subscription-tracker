@@ -1,14 +1,14 @@
-# subscription-tracker-v1.9-import-safety-hardening
+# subscription-tracker-v1.9.2-import-render-safety-patch
 
 ## Summary
 
-Harden local import/render safety around stored or restored subscription data while preserving the local-only app model, backup compatibility, and installed PWA continuity.
+Harden local import/render safety around stored or restored subscription data while preserving the local-only app model, plain text backup behavior, and installed PWA continuity.
 
 ## Current Release State
 
 v1.9.2 Pass 1 shipped in commit `a55cac1` (`Harden imported subscription rendering`). It is the narrow subscription action attribute escaping and import/render verifier release.
 
-Remaining import-safety follow-ups are still tracked separately and are not part of the shipped v1.9.2 Pass 1 scope.
+Remaining storage/plain-text safety follow-ups are tracked separately and are not part of the shipped v1.9.2 Pass 1 scope. v1.10.0 later removed legacy CSV export and JSON backup/restore from runtime.
 
 ## User-Facing Scope
 
@@ -21,26 +21,21 @@ Remaining import-safety follow-ups are still tracked separately and are not part
 
 ## Non-Goals
 
-- No backup parser, format, schema, storage, copy, download, preview, or restore behavior changes.
-- No JSON backup schema version change.
+- No plain text backup parser, format, storage, copy, download, preview, or restore behavior changes.
 - No localStorage key changes.
 - No raw localStorage normalization yet.
 - No import size/count limits yet.
-- No CSV formula hardening yet.
-- No CSV/JSON legacy controls restored to the visible UI.
 - No broad renderer refactor.
 - No auth, cloud sync, analytics, payment processing, bank/card import, OCR/email scanning, paid services, or push notifications.
 
 ## Compatibility / Preservation Rules
 
-- Backup parser, format, schema, copy, download, preview, restore, and storage behavior are unchanged.
-- JSON backup `schemaVersion` remains `2`.
+- Plain text backup parser, format, copy, download, preview, restore, and storage behavior are unchanged.
 - Existing localStorage keys remain unchanged:
   - `subscription-tracker-v1-subscriptions`
   - `subscription-tracker-v1-activity-log`
   - `subscription-tracker-v1-payment-method-presets`
   - `subscription-tracker-v1-category-presets`
-- Legacy CSV/JSON controls remain hidden in the main UI.
 - Range dates and Range sub-mode settings remain non-persisted.
 
 ## User-Facing Behavior
@@ -84,6 +79,4 @@ Remaining import-safety follow-ups are still tracked separately and are not part
 ## Open Follow-Ups
 
 - Add defensive handling for corrupted localStorage records.
-- Add import size/count and field-length limits for pasted text and JSON preview paths.
-- Harden hidden legacy CSV export against spreadsheet formula interpretation before re-exposing CSV.
-- Consider a broader import-safety verifier for hidden JSON restore validation cases.
+- Add import size/count and field-length limits for pasted text backup paths.

@@ -8,6 +8,8 @@ Add user-defined payment method presets and user-defined category presets while 
 
 v1.5 shipped as the saved payment label and category presets release. It was later followed by v1.6 Spending overview work.
 
+Historical note: v1.5 included JSON backup schema version 2 and CSV compatibility work at the time. v1.10.0 later removed JSON backup/restore and CSV export from the current runtime.
+
 ## User-Facing Scope
 
 Users can keep reusable payment label and category choices for faster manual entry, while still being able to type one-off values that are not saved as presets.
@@ -139,4 +141,4 @@ Runtime passes that change `index.html` or `app.js` must update the script URL v
 
 ## Open Follow-Ups
 
-- Future backup schema changes must keep schema version 1 and 2 restore compatibility clear.
+- JSON backup schema notes above are historical; JSON backup/restore is not a current compatibility path after v1.10.0.

@@ -37,11 +37,11 @@ The app has no account system, server, analytics, cloud sync, upload, data sale,
 
 Do not enter sensitive payment details such as credit card numbers, CVV/CVC, bank account numbers, IBAN, passwords, payment provider login details, identity numbers, or any data needed to make, authorize, or process a payment.
 
-Plain text backups use a readable `Subscription Tracker Backup` v1 template and currently carry subscription records only; pasted text can replace local subscriptions after validation and explicit confirmation while keeping activity log and saved presets unchanged. CSV compatibility is preserved internally with the `paymentMethod` header, which means payment label/nickname only. Current JSON backup compatibility is preserved internally with schema version 2 for subscriptions, activity log, and saved presets.
+Plain text backups use a readable `Subscription Tracker Backup` v1 template and currently carry subscription records only; pasted text can replace local subscriptions after validation and explicit confirmation while keeping activity log and saved presets unchanged. Plain text copy/download and pasted-text restore are the only supported backup/export/restore workflow.
 
 ## Project Status
 
-Current stable app shell is v1.9.2. The app supports manual subscription tracking, local presets, selected-range spending breakdowns, plain text backup copy/download and confirmed pasted-text restore, PWA install/offline shell behavior, and narrow import/render safety hardening. Detailed version history lives in `docs/features/`; future not-now ideas are tracked in `docs/BACKLOG.md`.
+Current stable app shell is v1.10.0. The app supports manual subscription tracking, local presets, selected-range spending breakdowns, plain text backup copy/download and confirmed pasted-text restore, PWA install/offline shell behavior, and narrow import/render safety hardening. Legacy CSV export and JSON backup/restore were removed from the current runtime. Detailed version history lives in `docs/features/`; future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 

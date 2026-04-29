@@ -8,6 +8,8 @@ Let users download and later restore a local JSON backup of their subscription r
 
 Released to `main` in commit `8b50371` (`Add JSON backup and restore`). GitHub Pages deployment succeeded and live assets verified `app.js?v=1.4.2`, cache `subscription-tracker-v1.4.2-static`, manifest reachability, and unchanged manifest start/scope.
 
+Historical note: JSON backup/restore was removed from the current runtime in local v1.10.0. Plain text backup copy/download and pasted-text restore are now the only supported backup/export/restore workflow.
+
 ## User-Facing Scope
 
 - Download a JSON backup from the Export section.
@@ -100,9 +102,9 @@ Restore writes are gated behind explicit user confirmation. If confirmed, the ap
 ## Release History
 
 - v1.4 added local JSON backup download and validated confirmed restore for subscriptions and activity log.
+- v1.10.0 removed JSON backup/restore from the current runtime after the product moved to text-only backup.
 
 ## Open Follow-Ups
 
 - v1.4 backups use schema version 1 and include subscriptions plus activity log only.
-- v1.5 restore keeps schema version 1 accepted as legacy input; restoring a v1.4 backup replaces subscriptions and activity log after confirmation while leaving v1.5 saved preset preferences unchanged.
-- Empty-account JSON backup export remains a later candidate.
+- These notes are historical; JSON restore is not a current compatibility path after v1.10.0.

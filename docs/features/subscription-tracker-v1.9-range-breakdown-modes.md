@@ -12,6 +12,8 @@ Live GitHub Pages asset verification passed for `app.js?v=1.9.0`, the Range sub-
 
 v1.9.1 shipped in commit `16cec61` (`Add range helper verification`) and added a dependency-free range/date helper verification harness in `scripts/verify-range-helpers.js`. It did not change runtime behavior or app shell/cache versioning.
 
+Current note: v1.10.0 later removed legacy CSV export and JSON backup/restore from runtime. The v1.9 release notes below describe preservation at the time v1.9 shipped.
+
 ## User-Facing Scope
 
 - Add Range-only sub-mode controls:
@@ -32,22 +34,18 @@ v1.9.1 shipped in commit `16cec61` (`Add range helper verification`) and added a
 - No persisted Range dates.
 - No persisted Range sub-mode setting.
 - No changes to top-level normalized overview behavior.
-- No backup parser, format, schema, storage, copy, download, preview, or restore changes.
-- No JSON backup schema version change.
+- No backup parser, format, storage, copy, download, preview, or restore changes.
 - No localStorage key changes.
-- No CSV/JSON legacy controls restored to the visible UI.
 - No broad dashboard redesign.
 
 ## Compatibility / Preservation Rules
 
-- Backup parser, format, schema, copy, download, preview, restore, and storage behavior are unchanged.
-- JSON backup `schemaVersion` remains `2`.
+- Backup parser, format, copy, download, preview, restore, and storage behavior are unchanged.
 - Existing localStorage keys remain unchanged:
   - `subscription-tracker-v1-subscriptions`
   - `subscription-tracker-v1-activity-log`
   - `subscription-tracker-v1-payment-method-presets`
   - `subscription-tracker-v1-category-presets`
-- Legacy CSV/JSON controls remain hidden in the main UI.
 - Range dates and Range sub-mode settings remain non-persisted.
 - Top-level `Items`, `Categories`, and `Payment` remain normalized monthly/yearly views.
 

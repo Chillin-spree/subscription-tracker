@@ -29,7 +29,7 @@
 
 ## Roadmap
 
-- `subscription-tracker-import-safety-followups`: Continue import/storage hardening after v1.9.2. Candidate follow-ups include corrupted localStorage handling, pasted text/JSON size and count limits, hidden CSV formula hardening before any CSV re-exposure, and broader JSON restore verifier coverage.
+<!-- Empty. Active v1.10 import/storage safety planning lives in docs/STATUS.md and docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md. -->
 
 ## Parked / Later
 
@@ -46,7 +46,6 @@
 - `subscription-tracker-ocr-email-scanning`: Detect subscriptions from screenshots, receipts, or email.
 - `subscription-tracker-notifications`: Investigate browser/PWA notification feasibility, permission UX, and offline expectations before adding reminders.
 - `subscription-tracker-pdf-export`: Export subscription records as PDF.
-- `subscription-tracker-xlsx-export`: Export a real `.xlsx` workbook instead of CSV.
+- `subscription-tracker-xlsx-export`: Explore a real `.xlsx` workbook as a separate future export.
 - `subscription-tracker-merge-restore`: Add an explicit merge/deduplicate restore mode instead of full replacement only.
-- `subscription-tracker-empty-json-backup`: Allow downloading an empty JSON backup template when there is no subscription or activity data.
-- `subscription-tracker-data-import`: Import subscription records from portable files beyond the v1.4 JSON backup schema.
+- `subscription-tracker-data-import`: Import subscription records from portable text-based formats beyond the supported plain text backup template.

@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-04-30 — Make plain text the only supported backup workflow
+
+- **Type**: Product
+- **Status**: active
+- **Context**: v1.8 made readable plain text backup the primary visible workflow while legacy summary text, CSV export, and JSON backup/restore remained hidden internally. v1.10.0 simplifies the product by removing those legacy runtime paths.
+- **Decision**: Plain text backup copy/download and pasted-text restore are the only supported backup/export/restore workflow. Legacy CSV export, JSON backup/restore, and the old summary text export should not be restored without a new product decision. Pasted-text restore replaces subscriptions only and keeps activity log and saved presets.
+- **Why**: Text backup is the simplest local-only portability path, avoids maintaining hidden restore/export code, and keeps the phone-first product easier to reason about.
+- **Consequences**: Current docs should not claim CSV header compatibility, JSON schema version preservation, hidden JSON restore coverage, or CSV formula hardening as active requirements. Future safety work should focus on localStorage and plain text backup parsing, validation, size/count limits, and recovery behavior.
+- **Related**: `docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md`, `docs/features/subscription-tracker-v1.8-simple-text-backup.md`, `docs/features/subscription-tracker-v1.4-json-backup-restore.md`
+
 ### 2026-04-29 — Bundle related small fixes into reviewed local releases
 
 - **Type**: Workflow
@@ -46,11 +56,11 @@
 ### 2026-04-28 — Make plain text backup the future primary portability workflow
 
 - **Type**: UX
-- **Status**: active
+- **Status**: superseded by `2026-04-30 — Make plain text the only supported backup workflow`
 - **Context**: v1.8 starts simplifying data portability after v1.7.9. The app already has a one-way readable text summary, CSV export, and JSON backup/restore, but raw JSON should not be the primary visible workflow for normal users.
 - **Decision**: The normal v1.8 backup/import direction is a human-readable plain text backup format. v1.8.0 exposes backup text export first, v1.8.1 adds paste preview/validation without restore/write behavior, and v1.8.2 restores from validated pasted text only after explicit confirmation. Pasted-text restore replaces local subscriptions while keeping activity log and saved presets because the text format carries subscription records only. In v1.8.3, plain text backup/restore becomes the primary visible workflow; summary text, CSV, and legacy JSON backup/restore UI are hidden while code compatibility remains.
 - **Why**: A plain text backup can open anywhere, be copied between browsers/devices, and stay readable/editable without asking users to handle raw JSON.
-- **Consequences**: Future passes can decide whether to delete legacy code or expose an advanced fallback separately. JSON schema version 2 remains the legacy compatibility path for full backups with activity log and presets.
+- **Consequences**: At the time, future passes could decide whether to delete legacy code or expose an advanced fallback separately. v1.10.0 later removed those legacy runtime paths.
 - **Related**: `docs/features/subscription-tracker-v1.8-simple-text-backup.md`
 
 ### 2026-04-28 — Distinguish selected-range spending from normalized overview
@@ -136,21 +146,21 @@
 ### 2026-04-26 — Add backup schema version 2 for preset preferences
 
 - **Type**: Technical
-- **Status**: active
+- **Status**: superseded by `2026-04-30 — Make plain text the only supported backup workflow`
 - **Context**: v1.5 adds saved payment method and category preset preferences, while v1.4 JSON backups contain only subscriptions and activity log under schema version 1.
 - **Decision**: New JSON backups use schema version 2 and include normalized `data.paymentMethodPresets` and `data.categoryPresets`. Restore accepts schema versions 1 and 2. Schema version 1 restores subscriptions and activity log while keeping current presets unchanged; schema version 2 restores subscriptions, activity log, and saved presets after confirmation.
 - **Why**: A versioned schema makes preset backup behavior explicit without breaking existing v1.4 backups.
-- **Consequences**: Future backup schema changes must preserve clear restore semantics for older versions or provide a documented migration path.
+- **Consequences**: This decision was valid for v1.5 through v1.9.2. v1.10.0 later removed JSON backup/restore from the current runtime.
 - **Related**: `docs/features/subscription-tracker-v1.5-presets.md`, `docs/features/subscription-tracker-v1.4-json-backup-restore.md`
 
 ### 2026-04-26 — Use separate local preset preferences for v1.5
 
 - **Type**: Technical
 - **Status**: active
-- **Context**: v1.5 will add reusable payment method and category presets, but existing subscription records, CSV exports, v1.4 JSON backups, and installed-PWA continuity must remain compatible.
+- **Context**: v1.5 will add reusable payment method and category presets, while preserving existing subscription records and installed-PWA continuity.
 - **Decision**: Store preset preferences in new localStorage keys, `subscription-tracker-v1-payment-method-presets` and `subscription-tracker-v1-category-presets`, while keeping subscription records unchanged. Keep existing `paymentMethod` and `category` fields, derive suggestions from both saved presets and existing records, and keep free-text values valid even when they are not presets.
-- **Why**: Separate preference storage avoids destructive migration, preserves current records and exports, and lets existing user-entered labels become useful suggestions without forcing schema changes.
-- **Consequences**: Future implementation must handle missing preset keys, dedupe suggestions, avoid editing subscription values when presets change, and preserve v1.4 JSON restore compatibility before release.
+- **Why**: Separate preference storage avoids destructive migration, preserves current records, and lets existing user-entered labels become useful suggestions without forcing schema changes.
+- **Consequences**: Future implementation must handle missing preset keys, dedupe suggestions, and avoid editing subscription values when presets change.
 - **Related**: `docs/features/subscription-tracker-v1.5-presets.md`
 
 ### 2026-04-26 — Require documentation sweep after meaningful changes

@@ -2,9 +2,6 @@ const STORAGE_KEY = "subscription-tracker-v1-subscriptions";
 const ACTIVITY_STORAGE_KEY = "subscription-tracker-v1-activity-log";
 const PAYMENT_METHOD_PRESETS_STORAGE_KEY = "subscription-tracker-v1-payment-method-presets";
 const CATEGORY_PRESETS_STORAGE_KEY = "subscription-tracker-v1-category-presets";
-const BACKUP_SCHEMA = "subscription-tracker.backup";
-const BACKUP_SCHEMA_VERSION = 2;
-const BACKUP_APP_RELEASE = "v1.5";
 const OCCURRENCE_LABELS = {
   weekly: "Weekly",
   monthly: "Monthly",
@@ -59,16 +56,10 @@ const exportEmpty = document.querySelector("[data-export-empty]");
 const exportNote = document.querySelector("[data-export-note]");
 const exportPlainTextBackupButton = document.querySelector("[data-export-plain-text-backup]");
 const copyPlainTextBackupButton = document.querySelector("[data-copy-plain-text-backup]");
-const exportTextButton = document.querySelector("[data-export-text]");
-const exportCsvButton = document.querySelector("[data-export-csv]");
-const exportJsonButton = document.querySelector("[data-export-json]");
 const plainTextBackupInput = document.querySelector("[data-plain-text-backup-input]");
 const plainTextBackupPreviewButton = document.querySelector("[data-preview-plain-text-backup]");
 const plainTextBackupPreview = document.querySelector("[data-plain-text-backup-preview]");
 const restorePlainTextBackupButton = document.querySelector("[data-restore-plain-text-backup]");
-const backupFileInput = document.querySelector("[data-backup-file]");
-const backupPreview = document.querySelector("[data-backup-preview]");
-const restoreBackupButton = document.querySelector("[data-restore-backup]");
 const paymentMethodSuggestions = document.querySelector("[data-payment-method-suggestions]");
 const categorySuggestions = document.querySelector("[data-category-suggestions]");
 const paymentPresetInput = document.querySelector("[data-payment-preset-input]");
@@ -87,7 +78,6 @@ let paymentMethodPresets = loadPresetList(PAYMENT_METHOD_PRESETS_STORAGE_KEY);
 let categoryPresets = loadPresetList(CATEGORY_PRESETS_STORAGE_KEY);
 let editingId = null;
 let validatedPlainTextBackupRecords = null;
-let validatedBackup = null;
 let selectedOverviewMode = "items";
 let selectedOverviewRange = getCurrentMonthRange();
 let selectedOverviewRangeMode = "items";
@@ -104,20 +94,6 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
-
-exportTextButton?.addEventListener("click", () => {
-  if (!subscriptions.length) {
-    setStatus("Add a subscription before exporting.");
-    return;
-  }
-
-  downloadFile(
-    "subscription-tracker-export.txt",
-    "text/plain;charset=utf-8",
-    buildTextExport(),
-  );
-  setStatus("Text export downloaded.");
-});
 
 exportPlainTextBackupButton.addEventListener("click", () => {
   if (!subscriptions.length) {
@@ -153,47 +129,11 @@ copyPlainTextBackupButton.addEventListener("click", async () => {
   }
 });
 
-exportCsvButton?.addEventListener("click", () => {
-  if (!subscriptions.length) {
-    setStatus("Add a subscription before exporting.");
-    return;
-  }
-
-  downloadFile(
-    "subscription-tracker-export.csv",
-    "text/csv;charset=utf-8",
-    buildCsvExport(),
-  );
-  setStatus("CSV export downloaded.");
-});
-
-exportJsonButton?.addEventListener("click", () => {
-  if (!hasBackupData()) {
-    setStatus("Add a subscription before downloading a backup.");
-    return;
-  }
-
-  const exportedAt = new Date().toISOString();
-
-  downloadFile(
-    buildJsonBackupFilename(exportedAt),
-    "application/json;charset=utf-8",
-    JSON.stringify(buildJsonBackup(exportedAt), null, 2),
-  );
-  setStatus("JSON backup downloaded.");
-});
-
 plainTextBackupPreviewButton.addEventListener("click", previewPlainTextBackupInput);
 
 plainTextBackupInput.addEventListener("input", clearPlainTextBackupPreview);
 
 restorePlainTextBackupButton.addEventListener("click", restoreValidatedPlainTextBackup);
-
-backupFileInput?.addEventListener("change", () => {
-  previewBackupFile(backupFileInput.files[0]);
-});
-
-restoreBackupButton?.addEventListener("click", restoreValidatedBackup);
 
 addPaymentPresetButton.addEventListener("click", () => {
   addPreset("paymentMethod", paymentPresetInput.value);
@@ -688,21 +628,11 @@ function renderSubscriptions() {
 
 function renderExportControls() {
   const hasSubscriptions = subscriptions.length > 0;
-  const hasExportData = hasBackupData();
-  exportEmpty.hidden = hasExportData;
-  exportActions.hidden = !hasExportData;
-  exportNote.hidden = !hasExportData;
+  exportEmpty.hidden = hasSubscriptions;
+  exportActions.hidden = !hasSubscriptions;
+  exportNote.hidden = !hasSubscriptions;
   exportPlainTextBackupButton.hidden = !hasSubscriptions;
   copyPlainTextBackupButton.hidden = !hasSubscriptions;
-  if (exportTextButton) {
-    exportTextButton.hidden = true;
-  }
-  if (exportCsvButton) {
-    exportCsvButton.hidden = true;
-  }
-  if (exportJsonButton) {
-    exportJsonButton.hidden = true;
-  }
 }
 
 function renderSpendingOverview() {
@@ -1322,36 +1252,6 @@ function sortBreakdownRows(a, b) {
   return b.sortAmount - a.sortAmount || a.label.localeCompare(b.label);
 }
 
-function buildTextExport() {
-  const totals = getOverviewTotals();
-  const lines = [
-    "Subscription Tracker",
-    `Export date: ${new Date().toLocaleString()}`,
-    "",
-    "Totals",
-    `Active subscriptions: ${subscriptions.length}`,
-    `Monthly equivalent: ${totals.hasSingleCurrency ? `${totals.currency} ${totals.totalMonthly.toFixed(2)}` : "Multiple currencies"}`,
-    `Yearly equivalent: ${totals.hasSingleCurrency ? `${totals.currency} ${totals.totalYearly.toFixed(2)}` : "Multiple currencies"}`,
-    "",
-    "Subscriptions",
-  ];
-
-  subscriptions.forEach((subscription, index) => {
-    lines.push(
-      "",
-      `${index + 1}. ${subscription.name}`,
-      `Price: ${formatPrice(subscription)}`,
-      `Billing date: ${subscription.billingDate}`,
-      `Billing cycle: ${OCCURRENCE_LABELS[subscription.occurrence] || subscription.occurrence}`,
-      `Payment label: ${subscription.paymentMethod}`,
-      `Category: ${subscription.category || ""}`,
-      `Notes: ${subscription.notes || ""}`,
-    );
-  });
-
-  return lines.join("\n");
-}
-
 function buildPlainTextBackup(subscriptionRecords) {
   const lines = [
     "Subscription Tracker Backup",
@@ -1576,55 +1476,6 @@ function unescapePlainTextBackupNotes(notes) {
   return String(notes || "").replace(/^\\---$/gm, "---");
 }
 
-function buildCsvExport() {
-  const headers = [
-    "name",
-    "price",
-    "currency",
-    "billingDate",
-    "occurrence",
-    "paymentMethod",
-    "category",
-    "notes",
-  ];
-  const rows = subscriptions.map((subscription) => headers.map((key) => csvEscape(subscription[key] ?? "")));
-
-  return [
-    headers.map(csvEscape).join(","),
-    ...rows.map((row) => row.join(",")),
-  ].join("\r\n");
-}
-
-function buildJsonBackup(exportedAt) {
-  return {
-    schema: BACKUP_SCHEMA,
-    schemaVersion: BACKUP_SCHEMA_VERSION,
-    app: {
-      name: "Subscription Tracker",
-      release: BACKUP_APP_RELEASE,
-    },
-    exportedAt,
-    data: {
-      subscriptions,
-      activityLog,
-      paymentMethodPresets: normalizePresetList(paymentMethodPresets),
-      categoryPresets: normalizePresetList(categoryPresets),
-    },
-  };
-}
-
-function buildJsonBackupFilename(exportedAt) {
-  const date = exportedAt.slice(0, 10);
-  return `subscription-tracker-backup-v1.5-${date}.json`;
-}
-
-function hasBackupData() {
-  return subscriptions.length > 0
-    || activityLog.length > 0
-    || paymentMethodPresets.length > 0
-    || categoryPresets.length > 0;
-}
-
 function previewPlainTextBackupInput() {
   clearValidatedPlainTextBackup();
   const backupText = plainTextBackupInput.value;
@@ -1777,301 +1628,6 @@ function buildSubscriptionsFromPlainTextBackupRecords(records, timestamp) {
   }));
 }
 
-async function previewBackupFile(file) {
-  clearValidatedBackup();
-
-  if (!file) {
-    clearBackupPreview();
-    return;
-  }
-
-  try {
-    let parsedBackup;
-
-    try {
-      parsedBackup = JSON.parse(await file.text());
-    } catch (error) {
-      throw new Error("Selected file must be valid JSON.");
-    }
-
-    const backup = validateBackupData(parsedBackup);
-    validatedBackup = backup;
-    renderBackupPreview(backup);
-  } catch (error) {
-    renderBackupPreviewError(error.message || "This backup file could not be checked.");
-  }
-}
-
-function restoreValidatedBackup() {
-  if (!validatedBackup) {
-    setStatus("Preview a valid backup before restoring.");
-    return;
-  }
-
-  const subscriptionCount = validatedBackup.data.subscriptions.length;
-  const activityCount = validatedBackup.data.activityLog.length;
-  const includesPresets = backupIncludesPresets(validatedBackup);
-  const paymentPresetCount = includesPresets ? validatedBackup.data.paymentMethodPresets.length : 0;
-  const categoryPresetCount = includesPresets ? validatedBackup.data.categoryPresets.length : 0;
-  const presetReplacementText = includesPresets
-    ? `, ${paymentPresetCount} payment label presets, and ${categoryPresetCount} category presets.`
-    : ". Current saved presets will be kept because this is a schema version 1 backup.";
-  const confirmed = window.confirm(
-    `Replace local data with this backup?\n\nThis will replace ${subscriptions.length} current subscriptions and ${activityLog.length} activity entries with ${subscriptionCount} backup subscriptions and ${activityCount} backup activity entries${presetReplacementText}`,
-  );
-
-  if (!confirmed) {
-    setStatus("Restore canceled. No local data was changed.");
-    return;
-  }
-
-  const nextSubscriptions = validatedBackup.data.subscriptions;
-  const nextActivityLog = validatedBackup.data.activityLog;
-  const nextPaymentMethodPresets = validatedBackup.data.paymentMethodPresets;
-  const nextCategoryPresets = validatedBackup.data.categoryPresets;
-  const previousSubscriptionsValue = localStorage.getItem(STORAGE_KEY);
-  const previousActivityLogValue = localStorage.getItem(ACTIVITY_STORAGE_KEY);
-  const previousPaymentMethodPresetsValue = localStorage.getItem(PAYMENT_METHOD_PRESETS_STORAGE_KEY);
-  const previousCategoryPresetsValue = localStorage.getItem(CATEGORY_PRESETS_STORAGE_KEY);
-
-  try {
-    const nextSubscriptionsValue = JSON.stringify(nextSubscriptions);
-    const nextActivityLogValue = JSON.stringify(nextActivityLog);
-
-    localStorage.setItem(STORAGE_KEY, nextSubscriptionsValue);
-    localStorage.setItem(ACTIVITY_STORAGE_KEY, nextActivityLogValue);
-
-    if (includesPresets) {
-      localStorage.setItem(PAYMENT_METHOD_PRESETS_STORAGE_KEY, JSON.stringify(nextPaymentMethodPresets));
-      localStorage.setItem(CATEGORY_PRESETS_STORAGE_KEY, JSON.stringify(nextCategoryPresets));
-    }
-
-    subscriptions = nextSubscriptions;
-    activityLog = nextActivityLog;
-
-    if (includesPresets) {
-      paymentMethodPresets = nextPaymentMethodPresets;
-      categoryPresets = nextCategoryPresets;
-    }
-
-    renderSubscriptions();
-    renderActivityLog();
-    renderPresetSuggestions();
-    renderPresetManager();
-    resetBackupRestorePreview();
-    setStatus(`Backup restored: ${subscriptionCount} subscriptions and ${activityCount} activity entries${includesPresets ? ", plus saved presets" : ""}.`);
-  } catch (error) {
-    try {
-      restoreStorageSnapshot(
-        previousSubscriptionsValue,
-        previousActivityLogValue,
-        previousPaymentMethodPresetsValue,
-        previousCategoryPresetsValue,
-      );
-      setStatus("Restore failed. Existing local data was kept.");
-    } catch (rollbackError) {
-      setStatus("Restore failed. Please reload before making more changes.");
-      console.warn("Could not roll back failed restore.", rollbackError);
-    }
-    console.warn("Could not restore backup.", error);
-  }
-}
-
-function validateBackupData(backup) {
-  if (!isPlainObject(backup)) {
-    throw new Error("Backup must be a JSON object.");
-  }
-
-  if (backup.schema !== BACKUP_SCHEMA) {
-    throw new Error("This file is not a Subscription Tracker backup.");
-  }
-
-  if (![1, 2].includes(backup.schemaVersion)) {
-    throw new Error("This backup version is not supported. Supported versions are 1 and 2.");
-  }
-
-  if (!isValidTimestamp(backup.exportedAt)) {
-    throw new Error("Backup export date is missing or invalid.");
-  }
-
-  if (!isPlainObject(backup.data)) {
-    throw new Error("Backup data is missing.");
-  }
-
-  if (!Array.isArray(backup.data.subscriptions)) {
-    throw new Error("Backup subscriptions must be an array.");
-  }
-
-  if (!Array.isArray(backup.data.activityLog)) {
-    throw new Error("Backup activity log must be an array.");
-  }
-
-  backup.data.subscriptions.forEach(validateBackupSubscription);
-  backup.data.activityLog.forEach(validateBackupActivityEntry);
-
-  if (backup.schemaVersion === 1) {
-    return {
-      ...backup,
-      data: {
-        ...backup.data,
-        paymentMethodPresets: [],
-        categoryPresets: [],
-      },
-    };
-  }
-
-  return {
-    ...backup,
-    data: {
-      ...backup.data,
-      paymentMethodPresets: normalizePresetList(backup.data.paymentMethodPresets),
-      categoryPresets: normalizePresetList(backup.data.categoryPresets),
-    },
-  };
-}
-
-function backupIncludesPresets(backup) {
-  return backup.schemaVersion === 2;
-}
-
-function describeBackupPresetBehavior(backup) {
-  if (!backupIncludesPresets(backup)) {
-    return "Saved presets: not included; current saved presets will be kept if restored.";
-  }
-
-  return `Saved presets: ${backup.data.paymentMethodPresets.length} payment labels and ${backup.data.categoryPresets.length} categories; these will replace current saved presets if restored.`;
-}
-
-function describeBackupRestoreScope(backup) {
-  return backupIncludesPresets(backup)
-    ? "Restoring will replace local subscriptions, activity log, and saved presets after confirmation."
-    : "Restoring will replace local subscriptions and activity log after confirmation; saved presets are not changed.";
-}
-
-function validateBackupSubscription(subscription, index) {
-  const label = `Subscription ${index + 1}`;
-
-  if (!isPlainObject(subscription)) {
-    throw new Error(`${label} must be an object.`);
-  }
-
-  requireNonEmptyString(subscription.id, `${label} id`);
-  requireNonEmptyString(subscription.name, `${label} name`);
-
-  if (!Number.isFinite(subscription.price) || subscription.price < 0) {
-    throw new Error(`${label} price must be a valid number.`);
-  }
-
-  requireValidDateString(subscription.billingDate, `${label} billing date`);
-  requireOptionalDateString(subscription.endDate, `${label} end date`);
-  if (subscription.endDate && compareDateOnly(subscription.endDate, subscription.billingDate) < 0) {
-    throw new Error(`${label} end date cannot be before billing date.`);
-  }
-  requireValidOccurrence(subscription.occurrence, `${label} billing cycle`);
-  requireNonEmptyString(subscription.paymentMethod, `${label} payment label`);
-  requireValidTimestamp(subscription.createdAt, `${label} created date`);
-  requireValidTimestamp(subscription.updatedAt, `${label} updated date`);
-  requireOptionalString(subscription.currency, `${label} currency`);
-  requireOptionalString(subscription.category, `${label} category`);
-  requireOptionalString(subscription.notes, `${label} notes`);
-}
-
-function validateBackupActivityEntry(entry, index) {
-  const label = `Activity entry ${index + 1}`;
-
-  if (!isPlainObject(entry)) {
-    throw new Error(`${label} must be an object.`);
-  }
-
-  requireNonEmptyString(entry.id, `${label} id`);
-
-  if (!EVENT_LABELS[entry.eventType]) {
-    throw new Error(`${label} event type is not supported.`);
-  }
-
-  requireNonEmptyString(entry.subscriptionId, `${label} subscription id`);
-  requireValidTimestamp(entry.createdAt, `${label} date`);
-  validateBackupActivitySnapshot(entry.subscriptionSnapshot, `${label} snapshot`);
-}
-
-function validateBackupActivitySnapshot(snapshot, label) {
-  if (!isPlainObject(snapshot)) {
-    throw new Error(`${label} must be an object.`);
-  }
-
-  requireNonEmptyString(snapshot.name, `${label} name`);
-
-  if (!Number.isFinite(snapshot.price) || snapshot.price < 0) {
-    throw new Error(`${label} price must be a valid number.`);
-  }
-
-  requireValidDateString(snapshot.billingDate, `${label} billing date`);
-  requireOptionalDateString(snapshot.endDate, `${label} end date`);
-  if (snapshot.endDate && compareDateOnly(snapshot.endDate, snapshot.billingDate) < 0) {
-    throw new Error(`${label} end date cannot be before billing date.`);
-  }
-  requireValidOccurrence(snapshot.occurrence, `${label} billing cycle`);
-  requireNonEmptyString(snapshot.paymentMethod, `${label} payment label`);
-  requireOptionalString(snapshot.currency, `${label} currency`);
-  requireOptionalString(snapshot.category, `${label} category`);
-}
-
-function renderBackupPreview(backup) {
-  backupPreview.hidden = false;
-  backupPreview.classList.remove("is-error");
-  restoreBackupButton.hidden = false;
-  backupPreview.innerHTML = `
-    <strong>Backup preview</strong>
-    <span>Exported: ${escapeHtml(formatTimestamp(backup.exportedAt))}</span>
-    <span>Schema version: ${backup.schemaVersion}</span>
-    <span>Subscriptions: ${backup.data.subscriptions.length}</span>
-    <span>Activity entries: ${backup.data.activityLog.length}</span>
-    <span>${escapeHtml(describeBackupPresetBehavior(backup))}</span>
-    <span>${escapeHtml(describeBackupRestoreScope(backup))}</span>
-    <em>No data has been restored yet.</em>
-  `;
-}
-
-function renderBackupPreviewError(message) {
-  clearValidatedBackup();
-  backupPreview.hidden = false;
-  backupPreview.classList.add("is-error");
-  backupPreview.innerHTML = `
-    <strong>Backup could not be previewed</strong>
-    <span>${escapeHtml(message)}</span>
-    <em>No data has been restored.</em>
-  `;
-}
-
-function clearBackupPreview() {
-  backupPreview.hidden = true;
-  backupPreview.classList.remove("is-error");
-  backupPreview.textContent = "";
-}
-
-function clearValidatedBackup() {
-  validatedBackup = null;
-  restoreBackupButton.hidden = true;
-}
-
-function resetBackupRestorePreview() {
-  backupFileInput.value = "";
-  clearValidatedBackup();
-  clearBackupPreview();
-}
-
-function restoreStorageSnapshot(
-  subscriptionsValue,
-  activityLogValue,
-  paymentMethodPresetsValue,
-  categoryPresetsValue,
-) {
-  restoreStorageValue(STORAGE_KEY, subscriptionsValue);
-  restoreStorageValue(ACTIVITY_STORAGE_KEY, activityLogValue);
-  restoreStorageValue(PAYMENT_METHOD_PRESETS_STORAGE_KEY, paymentMethodPresetsValue);
-  restoreStorageValue(CATEGORY_PRESETS_STORAGE_KEY, categoryPresetsValue);
-}
-
 function restoreStorageValue(storageKey, value) {
   if (value === undefined) {
     return;
@@ -2081,48 +1637,6 @@ function restoreStorageValue(storageKey, value) {
     localStorage.removeItem(storageKey);
   } else {
     localStorage.setItem(storageKey, value);
-  }
-}
-
-function isPlainObject(value) {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
-function requireNonEmptyString(value, label) {
-  if (typeof value !== "string" || !value.trim()) {
-    throw new Error(`${label} must be a non-empty string.`);
-  }
-}
-
-function requireOptionalString(value, label) {
-  if (value !== undefined && typeof value !== "string") {
-    throw new Error(`${label} must be a string.`);
-  }
-}
-
-function requireValidDateString(value, label) {
-  if (!isValidDateString(value)) {
-    throw new Error(`${label} must be a valid YYYY-MM-DD date.`);
-  }
-}
-
-function requireOptionalDateString(value, label) {
-  if (value === undefined || value === null || value === "") {
-    return;
-  }
-
-  requireValidDateString(value, label);
-}
-
-function requireValidOccurrence(value, label) {
-  if (!OCCURRENCE_LABELS[value]) {
-    throw new Error(`${label} is not supported.`);
-  }
-}
-
-function requireValidTimestamp(value, label) {
-  if (!isValidTimestamp(value)) {
-    throw new Error(`${label} must be a valid date.`);
   }
 }
 
@@ -2175,10 +1689,6 @@ function getDaysInMonth(year, month) {
 
 function isLeapYear(year) {
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-}
-
-function isValidTimestamp(value) {
-  return typeof value === "string" && !Number.isNaN(new Date(value).getTime());
 }
 
 function renderActivityLog() {
@@ -2621,16 +2131,6 @@ function formatTimestamp(value) {
     dateStyle: "medium",
     timeStyle: "short",
   });
-}
-
-function csvEscape(value) {
-  const normalizedValue = String(value);
-
-  if (/[",\r\n]/.test(normalizedValue)) {
-    return `"${normalizedValue.replaceAll('"', '""')}"`;
-  }
-
-  return normalizedValue;
 }
 
 function downloadFile(filename, type, contents) {

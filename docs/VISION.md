@@ -69,5 +69,5 @@ Subscription Tracker may broaden from subscriptions toward recurring bills and p
 
 - The app must never collect or imply that users should enter real payment authorization details.
 - Payment-related fields are labels/nicknames only, not card, bank, login, identity, or authorization details.
-- Preserve installed PWA continuity: same live URL, relative manifest start/scope, root service worker registration, offline shell behavior, saved local data, and CSV compatibility.
+- Preserve installed PWA continuity: same live URL, relative manifest start/scope, root service worker registration, offline shell behavior, saved local data, and supported plain text backup behavior.
 - Storage changes require backward-compatible migration; cached app shell changes require a static cache name bump.
