@@ -40,6 +40,14 @@ Report:
 
 Use this when a feature brief is too large for one focused implementation pass.
 
+Prompt sizing guidance:
+
+- Large feature briefs are not Codex build prompts.
+- A Codex prompt should target one focused implementation outcome.
+- If a task combines more than 5-7 meaningful implementation requirements, first create a Build Pass Plan.
+- Prefer investigation-only first when repo structure is unknown, behavior is unclear, or risk is high.
+- Keep full feature details in feature files; keep build prompts limited to the current pass.
+
 Split the work if it includes multiple of:
 
 - New navigation/app shell.
@@ -73,9 +81,10 @@ Rules:
 - Each pass should have one clear outcome.
 - Do not combine shell, provider logic, persistence, and secondary features in one pass.
 - Use investigation-first when repo structure is unknown.
+- Report safe pass boundaries before implementation begins.
 ```
 
-## Build Instructions
+## Codex Implementation Prompt
 
 ```text
 Task:
@@ -120,6 +129,27 @@ Report:
 - Documentation sweep: updated docs; inspected docs with no changes; key docs intentionally unchanged
 - Checks run
 - Anything blocked or risky
+```
+
+## New Chat Startup
+
+```text
+Task:
+Continue work on <project/feature>.
+
+Startup rules:
+- Use repo docs as the source of truth.
+- Read AGENTS.md and docs/STATUS.md first.
+- Read the active feature file if docs/STATUS.md lists one.
+- Read docs/DECISIONS.md only when durable decisions matter.
+- Read docs/BUGS.md only for bugfix/regression work.
+- Do not rely on pasted history if repo docs conflict.
+
+Report:
+- Current state
+- Active feature or pass
+- Any mismatch between pasted context and repo docs
+- Recommended next step
 ```
 
 ## Bug Investigation
@@ -277,6 +307,16 @@ Documentation sweep:
 - docs/BUGS.md: confirmed bugs, regressions, fixes, and regression checks.
 - docs/HANDOFFS.md: reusable workflow templates and checklists.
 - docs/features/*: per-feature scope, risks, QA, and release state.
+
+Update when:
+- A feature, bugfix, release, roadmap item, process rule, durable decision, or known risk changes.
+- A confirmed bug, regression, production issue, PWA cache issue, or data compatibility issue is found or fixed.
+- The active feature, owner, blocker, current step, or next step changes.
+
+Do not update when:
+- The doc is unaffected by the current pass.
+- The change is runtime-only and already captured by a more specific feature file or status note.
+- The change is an idea that belongs in backlog rather than a decision.
 
 Report:
 - Docs updated:
