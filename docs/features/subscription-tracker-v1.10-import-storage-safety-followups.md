@@ -2,15 +2,15 @@
 
 ## Summary
 
-Track v1.10 text-only backup simplification and storage/plain-text safety follow-ups after the narrow v1.9.2 import/render safety patch.
+Track v1.10 text-only backup simplification and final/simple storage safety stabilization after the narrow v1.9.2 import/render safety patch.
 
 ## Current Release State
 
 Runtime Pass 1 shipped in v1.10.0. It removed legacy CSV export, JSON backup/restore, and the hidden old summary text export from runtime. Plain text backup copy/download and pasted-text restore are now the only supported backup/export/restore workflow.
 
-Runtime Pass 2 is implemented locally. v1.10.1 adds defensive startup handling for corrupted localStorage values: malformed subscription and activity entries are ignored in memory, existing invalid JSON/non-array fallbacks remain empty, preset fallback behavior remains intact, and `scripts/verify-storage-safety.js` covers these cases.
+Runtime Pass 2 shipped in v1.10.1. It adds defensive startup handling for corrupted localStorage values: malformed subscription and activity entries are ignored in memory, existing invalid JSON/non-array fallbacks remain empty, preset fallback behavior remains intact, and `scripts/verify-storage-safety.js` covers these cases.
 
-v1.9.2 shipped the narrow import/render safety patch in commit `a55cac1`: generated subscription action `data-id` attributes are escaped, and `scripts/verify-import-safety.js` covers malicious imported/stored display fields. Broader import/storage hardening remains future work.
+v1.10.x is now treated as the final/simple stabilization line. Stop runtime work unless a real bug appears. Future product work should move to separate v1.11 UI/UX polish planning and later v1.12 grouped multi-currency totals planning.
 
 ## Relevant Safety Surfaces
 
@@ -33,7 +33,7 @@ v1.9.2 shipped the narrow import/render safety patch in commit `a55cac1`: genera
 
 ## Non-Goals
 
-- No further runtime implementation in this docs finalization pass.
+- No further runtime implementation unless a real bug appears.
 - No plain text backup parser, format, storage, copy, download, preview, or restore behavior changes in this docs pass.
 - No localStorage key changes.
 - No CSV/JSON legacy controls or helper paths restored.
@@ -71,24 +71,16 @@ Completed passes:
    - Preserve storage keys and avoid deleting or rewriting stored data unless explicitly approved in that pass.
    - Not in this pass: backup import limits, visible UI redesign, schema changes.
 
-Remaining recommended passes:
+Deferred ideas:
 
-3. Plain text size/count limits design and implementation
-   - Define conservative caps for pasted plain text backup size, parsed record count, and field lengths.
-   - Implement preview-time rejection before restore is exposed.
-   - Add verifier coverage for over-limit text paths.
-   - Not in this pass: merge restore or alternate import formats.
+3. Plain text size/count limits
+   - Parked unless a real bug or concrete user need appears.
+   - If revived, define conservative caps for pasted plain text backup size, parsed record count, and field lengths.
+   - Not now: merge restore, alternate import formats, or a broader import system.
 
-4. v1.10 documentation and final checks
-   - Update README/status/feature docs only after implemented behavior actually ships.
-   - Run relevant static checks and all safety verifiers.
-   - Confirm runtime app shell/cache versions are bumped only when runtime assets change.
+## Recommended Next Step
 
-## Recommended First Pass
-
-Next, review and commit the v1.10.1 storage corruption handling pass when approved, then design plain text size/count limits as a separate pass.
-
-Reason: startup storage parsing is now guarded and covered, so the remaining higher-value safety work is preview-time rejection for oversized pasted backup text.
+Stop v1.10.x runtime work unless a real bug appears. Use `docs/BACKLOG.md` for the future v1.11 UI/UX polish and v1.12 grouped multi-currency totals tracks.
 
 ## QA Checklist
 
@@ -100,14 +92,15 @@ Reason: startup storage parsing is now guarded and covered, so the remaining hig
 - [x] Existing localStorage keys remain unchanged.
 - [x] CSV/JSON controls and helpers are not present in current runtime.
 - [x] PWA app shell/cache versions are bumped when runtime assets change.
+- [x] Live/manual smoke verification passed with no runtime bugs found.
 
 ## Open Questions
 
-- What exact record count and byte-size limits are appropriate for the phone-first v1 app?
-- Should future alternate import formats be treated as separate products rather than backup compatibility?
+- Cancel-restore and installed PWA/home-screen remain manual human confirmations after automation smoke testing.
 
 ## Release History
 
 - 2026-04-29: Created the v1.10 planning scope and build-pass plan. No runtime files changed.
 - 2026-04-30: Runtime Pass 1 removed legacy CSV export, JSON backup/restore, and hidden summary text export. Plain text backup remains the only supported backup/export/restore workflow.
 - 2026-04-30: Runtime Pass 2 added startup storage corruption handling and `scripts/verify-storage-safety.js`; app shell/cache moved to `v1.10.1`.
+- 2026-04-30: Live/manual v1.10.1 smoke passed with no runtime bugs found. v1.10.x is now the final/simple stabilization line; future product work moves to separate v1.11 and v1.12 tracks.

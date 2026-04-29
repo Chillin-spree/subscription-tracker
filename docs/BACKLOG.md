@@ -29,7 +29,21 @@
 
 ## Roadmap
 
-<!-- Empty. Active v1.10 storage/plain-text safety follow-ups live in docs/STATUS.md and docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md. -->
+<!-- v1.10.x is the final/simple stabilization line. Do not reopen runtime work unless a real bug appears. -->
+
+### v1.11 UI/UX Polish
+
+- `subscription-tracker-v1.11-ui-ux-polish`: Future UI/UX polish should be handled as a separate v1.11 track after v1.10.x final stabilization. v1.11 should be split into multiple focused passes and should preserve existing product behavior, text-only backup format, localStorage keys, Range logic, PWA continuity, and local-only data behavior.
+- Candidate ideas: hideable/collapsible lower-frequency sections such as Activity/history and Backup, visual hierarchy polish, mobile spacing/readability polish, form/input clarity, backup workflow clarity, and an accessibility/focus/contrast pass.
+
+### Bills Rename Compatibility
+
+- `subscription-tracker-bills-rename-compatibility`: Consider renaming the app to Bills as a dedicated compatibility pass, not casual copy churn. Preserve the same live URL, installed PWA continuity, local data, and text backup restore compatibility. If a future backup header changes, the parser should support both the historical `Subscription Tracker Backup` header and any new `Bills Backup` header.
+
+### v1.12 Grouped Multi-Currency Totals
+
+- `subscription-tracker-v1.12-grouped-multi-currency-totals`: Explore grouped totals by currency as a separate v1.12 track. Chosen direction is Option A: no exchange rates, no live currency data, no converted grand total, and no base currency setting in the first pass. Show TRY, USD, EUR, and other entered-currency totals separately where relevant.
+- Must preserve local-only behavior, text backup compatibility, localStorage keys, the existing per-subscription currency field, Range date/sub-mode behavior, PWA continuity, and current manual-entry privacy boundaries.
 
 ## Parked / Later
 
@@ -37,7 +51,6 @@
 - `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
 - `subscription-tracker-local-only-privacy-modal`: Turn the local-only privacy message into an accessible modal or detail view using the current wording as the source of truth.
 - `subscription-tracker-general-customization`: Explore user customization for labels, display preferences, categories, and summary views.
-- `subscription-tracker-bills-rename`: Consider renaming the app to Bills after broader recurring-payment scope is designed; not decided.
 - `subscription-tracker-empty-wallet-icon`: Consider an empty wallet icon as part of any future visual identity change; not decided.
 - `subscription-tracker-cloud-sync`: Sync records across devices.
 - `subscription-tracker-bank-import`: Automatically import subscription charges from banks or cards; remains out of scope unless explicitly redesigned with privacy/security review.
