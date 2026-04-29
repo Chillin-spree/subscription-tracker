@@ -70,6 +70,8 @@ Add compact selected Range breakdown modes so users can review actual scheduled 
 - [x] `node --check service-worker.js` passes.
 - [x] `node --check scripts/verify-plain-text-backup.js` passes.
 - [x] `node scripts/verify-plain-text-backup.js` passes.
+- [x] `node --check scripts/verify-range-helpers.js` passes.
+- [x] `node scripts/verify-range-helpers.js` passes.
 
 ## Risks
 
@@ -79,7 +81,11 @@ Add compact selected Range breakdown modes so users can review actual scheduled 
 
 ## Release State
 
-v1.9.0 is implemented locally and documented. It is pending review and has not been committed or pushed.
+v1.9.0 shipped in commit `310c1cf` (`Release v1.9.0 range breakdown modes`) and was pushed to `main`.
+
+Live GitHub Pages asset verification passed for `app.js?v=1.9.0`, the Range sub-mode code, `BACKUP_SCHEMA_VERSION = 2`, existing storage keys, `subscription-tracker-v1.9.0-static`, and the versioned cached app script. Browser/PWA smoke was not performed, so installed-app behavior remains a follow-up QA gap rather than a known issue.
+
+v1.9.1 adds a local dependency-free range/date helper verification harness in `scripts/verify-range-helpers.js`. It does not change runtime behavior or app shell/cache versioning.
 
 ## Compatibility Confirmation
 
