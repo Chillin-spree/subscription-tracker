@@ -73,6 +73,7 @@ Recommended passes:
 5. UI simplification — make text backup/import primary and hide or de-emphasize legacy CSV/JSON/file options after text export/import is proven.
 6. Final QA and docs — verify exports, restores, legacy compatibility, PWA shell versions, and release docs.
 7. Preview polish — improve pasted backup preview clarity without changing parser, format, storage, or restore behavior.
+8. Helper verification — add a lightweight local script for serializer/parser round trips and validation cases without changing runtime behavior.
 ```
 
 ## QA Checklist
@@ -102,6 +103,7 @@ Recommended passes:
 - Existing subscriptions are not modified by previewing pasted text.
 - App shell versions are all `v1.8.4`.
 - JSON backup `schemaVersion` remains `2`.
+- Plain text backup helper verification passes with `node scripts/verify-plain-text-backup.js`.
 
 ## Build Notes
 
@@ -111,7 +113,8 @@ Recommended passes:
 - 2026-04-29 pass 4: Added confirmed restore from validated pasted plain text backups. The restore action appears only after valid preview, requires browser confirmation, replaces current local subscriptions with normalized records using fresh local IDs/timestamps, keeps activity log and saved presets, clears stale pasted preview state after success, and leaves CSV/JSON/summary options visible. Runtime app shell versioning moved to `app.js?v=1.8.2` and cache `subscription-tracker-v1.8.2-static`.
 - 2026-04-29 pass 5: Simplified the main import/export UI so plain text backup download, paste preview, and confirmed pasted restore are the only visible workflow. Legacy summary text, CSV export, JSON backup download, and JSON file restore UI are hidden, while the existing helpers/handlers remain internally available for compatibility and rollback. Runtime app shell versioning moved to `app.js?v=1.8.3` and cache `subscription-tracker-v1.8.3-static`.
 - 2026-04-29 v1.8.4 polish: Improved pasted backup preview clarity. Valid previews now show compact summaries for up to five records with name, price/currency, billing date, occurrence, and optional end date while omitting notes; invalid previews show grouped validation errors. Parser, backup format, restore/write behavior, CSV, JSON schema, localStorage keys, and hidden legacy UI behavior remain unchanged. Runtime app shell versioning moved to `app.js?v=1.8.4` and cache `subscription-tracker-v1.8.4-static`.
+- 2026-04-29 v1.8.5 QA: Added `scripts/verify-plain-text-backup.js`, a dependency-free Node verification harness for plain text backup helpers. It loads the current app code in a stubbed browser-like sandbox and verifies one-record and multi-record round trips, multiline notes, blank lines in notes, escaped literal `---` note lines, optional end dates, invalid dates, invalid occurrences, and missing required fields. No app runtime files, parser behavior, backup format, storage keys, CSV, JSON schema, restore behavior, visible UI, or app shell versioning changed.
 
 ## Release State
 
-v1.8.4 is implemented locally as pasted backup preview polish. Final release prep, broader validation coverage, backup UX follow-ups, and any future legacy code deletion remain separate future passes.
+v1.8.5 is implemented locally as helper verification only. Final release prep, backup UX follow-ups, v1.9 planning, and any future legacy code deletion remain separate future passes.
