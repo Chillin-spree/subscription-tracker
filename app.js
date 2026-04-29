@@ -2241,8 +2241,8 @@ function renderSubscriptionCard(subscription) {
         ${notes}
       </div>
       <div class="subscription-actions">
-        <button class="record-action" type="button" data-action="edit" data-id="${subscription.id}">Edit</button>
-        <button class="record-action danger" type="button" data-action="delete" data-id="${subscription.id}">Delete</button>
+        <button class="record-action" type="button" data-action="edit" data-id="${escapeHtml(subscription.id)}">Edit</button>
+        <button class="record-action danger" type="button" data-action="delete" data-id="${escapeHtml(subscription.id)}">Delete</button>
       </div>
     </article>
   `;
