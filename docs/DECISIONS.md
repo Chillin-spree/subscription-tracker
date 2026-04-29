@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-04-28 — Make plain text backup the future primary portability workflow
+
+- **Type**: UX
+- **Status**: active
+- **Context**: v1.8 starts simplifying data portability after v1.7.9. The app already has a one-way readable text summary, CSV export, and JSON backup/restore, but raw JSON should not be the primary visible workflow for normal users.
+- **Decision**: The normal v1.8 backup/import direction is a human-readable plain text backup format. v1.8.0 exposes backup text export first, v1.8.1 adds paste preview/validation without restore/write behavior, and v1.8.2 restores from validated pasted text only after explicit confirmation. Pasted-text restore replaces local subscriptions while keeping activity log and saved presets because the text format carries subscription records only. In v1.8.3, plain text backup/restore becomes the primary visible workflow; summary text, CSV, and legacy JSON backup/restore UI are hidden while code compatibility remains.
+- **Why**: A plain text backup can open anywhere, be copied between browsers/devices, and stay readable/editable without asking users to handle raw JSON.
+- **Consequences**: Future passes can decide whether to delete legacy code or expose an advanced fallback separately. JSON schema version 2 remains the legacy compatibility path for full backups with activity log and presets.
+- **Related**: `docs/features/subscription-tracker-v1.8-simple-text-backup.md`
+
 ### 2026-04-28 — Distinguish selected-range spending from normalized overview
 
 - **Type**: UX

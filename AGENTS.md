@@ -148,14 +148,14 @@ Every report after a meaningful change must list which docs were updated, which 
 - Subscription records: user-entered subscriptions with name, price, billing date, payment occurrence, payment label/nickname, optional category/notes/currency, activity log history, edit, and delete behavior.
 - Upcoming payments: next-7-days view for near-term subscription charges.
 - Spending summary: small infographic/pie chart for subscription distribution.
-- Export: text and CSV data output.
+- Export/import: primary visible plain text backup download, paste preview, and confirmed local restore; legacy summary text, CSV, and JSON backup/restore compatibility remain internal unless explicitly re-exposed.
 
 ### Naming Conventions
 
 <!-- Add project-specific naming rules for files, branches, features, APIs, or tickets. -->
 
-- Active v1 feature file: `docs/features/subscription-tracker-v1.md`.
-- Use `subscription-tracker-v1` for the first app feature lifecycle unless explicitly renamed.
+- Current active feature file is listed in `docs/STATUS.md`.
+- Use `subscription-tracker-v1` for the original app feature lifecycle unless explicitly renamed.
 
 ### Implementation Guardrails
 

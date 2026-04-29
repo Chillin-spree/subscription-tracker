@@ -141,20 +141,43 @@
       <section class="panel" aria-labelledby="export-title">
         <div class="section-heading">
           <h2 id="export-title">Export</h2>
-          <span class="section-meta">Text / CSV / JSON</span>
+          <span class="section-meta">Backup text</span>
         </div>
         <div class="empty-state compact" data-export-empty>
           <p>No subscription data to export.</p>
         </div>
         <div class="export-actions" data-export-actions hidden>
-          <button class="secondary-button" type="button" data-export-text>Export text</button>
-          <button class="primary-button" type="button" data-export-csv>Export CSV</button>
-          <button class="secondary-button wide-button" type="button" data-export-json>Download JSON backup</button>
+          <button class="primary-button" type="button" data-export-plain-text-backup>Download backup text</button>
+          <button class="secondary-button" type="button" data-export-text hidden>Download summary text</button>
+          <button class="primary-button" type="button" data-export-csv hidden>Export CSV</button>
+          <button class="secondary-button wide-button" type="button" data-export-json hidden>Download JSON backup</button>
         </div>
         <p class="export-note" data-export-note hidden>
-          JSON backups are local downloads only. Nothing is uploaded or synced.
+          Backup text is readable, editable, and checked locally before replacing local subscriptions. Nothing is
+          uploaded or synced.
         </p>
         <div class="backup-preview">
+          <label class="file-field">
+            <span>Preview backup text</span>
+            <textarea
+              name="plainTextBackup"
+              rows="8"
+              placeholder="Paste Subscription Tracker Backup text"
+              data-plain-text-backup-input
+            ></textarea>
+          </label>
+          <button class="secondary-button" type="button" data-preview-plain-text-backup>
+            Preview pasted backup
+          </button>
+          <p class="export-note">
+            Pasted backup text is checked locally in this browser. Restore appears only after a valid preview.
+          </p>
+          <div class="backup-preview-result" data-plain-text-backup-preview hidden aria-live="polite"></div>
+          <button class="restore-button" type="button" data-restore-plain-text-backup hidden>
+            Replace subscriptions with pasted backup
+          </button>
+        </div>
+        <div class="backup-preview" hidden>
           <label class="file-field">
             <span>Preview JSON backup</span>
             <input name="backupFile" type="file" accept="application/json,.json" data-backup-file>
@@ -296,6 +319,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.7.9"></script>
+    <script src="app.js?v=1.8.3"></script>
   </body>
 </html>

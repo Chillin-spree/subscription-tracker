@@ -55,9 +55,14 @@ const overviewEmptyMessage = document.querySelector("[data-overview-empty-messag
 const exportActions = document.querySelector("[data-export-actions]");
 const exportEmpty = document.querySelector("[data-export-empty]");
 const exportNote = document.querySelector("[data-export-note]");
+const exportPlainTextBackupButton = document.querySelector("[data-export-plain-text-backup]");
 const exportTextButton = document.querySelector("[data-export-text]");
 const exportCsvButton = document.querySelector("[data-export-csv]");
 const exportJsonButton = document.querySelector("[data-export-json]");
+const plainTextBackupInput = document.querySelector("[data-plain-text-backup-input]");
+const plainTextBackupPreviewButton = document.querySelector("[data-preview-plain-text-backup]");
+const plainTextBackupPreview = document.querySelector("[data-plain-text-backup-preview]");
+const restorePlainTextBackupButton = document.querySelector("[data-restore-plain-text-backup]");
 const backupFileInput = document.querySelector("[data-backup-file]");
 const backupPreview = document.querySelector("[data-backup-preview]");
 const restoreBackupButton = document.querySelector("[data-restore-backup]");
@@ -78,6 +83,7 @@ let activityLog = loadActivityLog();
 let paymentMethodPresets = loadPresetList(PAYMENT_METHOD_PRESETS_STORAGE_KEY);
 let categoryPresets = loadPresetList(CATEGORY_PRESETS_STORAGE_KEY);
 let editingId = null;
+let validatedPlainTextBackupRecords = null;
 let validatedBackup = null;
 let selectedOverviewMode = "items";
 let selectedOverviewRange = getCurrentMonthRange();
@@ -95,7 +101,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-exportTextButton.addEventListener("click", () => {
+exportTextButton?.addEventListener("click", () => {
   if (!subscriptions.length) {
     setStatus("Add a subscription before exporting.");
     return;
@@ -109,7 +115,21 @@ exportTextButton.addEventListener("click", () => {
   setStatus("Text export downloaded.");
 });
 
-exportCsvButton.addEventListener("click", () => {
+exportPlainTextBackupButton.addEventListener("click", () => {
+  if (!subscriptions.length) {
+    setStatus("Add a subscription before downloading a backup.");
+    return;
+  }
+
+  downloadFile(
+    buildPlainTextBackupFilename(),
+    "text/plain;charset=utf-8",
+    buildPlainTextBackup(subscriptions),
+  );
+  setStatus("Plain text backup downloaded.");
+});
+
+exportCsvButton?.addEventListener("click", () => {
   if (!subscriptions.length) {
     setStatus("Add a subscription before exporting.");
     return;
@@ -123,7 +143,7 @@ exportCsvButton.addEventListener("click", () => {
   setStatus("CSV export downloaded.");
 });
 
-exportJsonButton.addEventListener("click", () => {
+exportJsonButton?.addEventListener("click", () => {
   if (!hasBackupData()) {
     setStatus("Add a subscription before downloading a backup.");
     return;
@@ -139,11 +159,17 @@ exportJsonButton.addEventListener("click", () => {
   setStatus("JSON backup downloaded.");
 });
 
-backupFileInput.addEventListener("change", () => {
+plainTextBackupPreviewButton.addEventListener("click", previewPlainTextBackupInput);
+
+plainTextBackupInput.addEventListener("input", clearPlainTextBackupPreview);
+
+restorePlainTextBackupButton.addEventListener("click", restoreValidatedPlainTextBackup);
+
+backupFileInput?.addEventListener("change", () => {
   previewBackupFile(backupFileInput.files[0]);
 });
 
-restoreBackupButton.addEventListener("click", restoreValidatedBackup);
+restoreBackupButton?.addEventListener("click", restoreValidatedBackup);
 
 addPaymentPresetButton.addEventListener("click", () => {
   addPreset("paymentMethod", paymentPresetInput.value);
@@ -631,9 +657,16 @@ function renderExportControls() {
   exportEmpty.hidden = hasExportData;
   exportActions.hidden = !hasExportData;
   exportNote.hidden = !hasExportData;
-  exportTextButton.hidden = !hasSubscriptions;
-  exportCsvButton.hidden = !hasSubscriptions;
-  exportJsonButton.hidden = !hasExportData;
+  exportPlainTextBackupButton.hidden = !hasSubscriptions;
+  if (exportTextButton) {
+    exportTextButton.hidden = true;
+  }
+  if (exportCsvButton) {
+    exportCsvButton.hidden = true;
+  }
+  if (exportJsonButton) {
+    exportJsonButton.hidden = true;
+  }
 }
 
 function renderSpendingOverview() {
@@ -1245,6 +1278,230 @@ function buildTextExport() {
   return lines.join("\n");
 }
 
+function buildPlainTextBackup(subscriptionRecords) {
+  const lines = [
+    "Subscription Tracker Backup",
+    "Version: 1",
+    "",
+  ];
+
+  subscriptionRecords.forEach((subscription) => {
+    lines.push(
+      "---",
+      subscription.name || "",
+      `Price: ${subscription.price ?? ""}`,
+      `Currency: ${subscription.currency || "TRY"}`,
+      `Billing date: ${subscription.billingDate || ""}`,
+      `Occurrence: ${subscription.occurrence || ""}`,
+      `Payment method: ${subscription.paymentMethod || ""}`,
+      `Category: ${subscription.category || ""}`,
+      `End date: ${subscription.endDate || ""}`,
+      "Notes:",
+      escapePlainTextBackupNotes(subscription.notes || ""),
+    );
+  });
+
+  return lines.join("\n");
+}
+
+function buildPlainTextBackupFilename() {
+  const date = new Date().toISOString().slice(0, 10);
+  return `subscription-tracker-backup-v1.8-${date}.txt`;
+}
+
+function parsePlainTextBackup(text) {
+  const normalizedText = String(text || "").replace(/\r\n?/g, "\n");
+  const lines = normalizedText.split("\n");
+  const errors = [];
+
+  if (normalize(lines[0]) !== "Subscription Tracker Backup") {
+    return {
+      ok: false,
+      records: [],
+      errors: ["Backup header must be Subscription Tracker Backup."],
+    };
+  }
+
+  if (normalize(lines[1]) !== "Version: 1") {
+    return {
+      ok: false,
+      records: [],
+      errors: ["Backup version must be Version: 1."],
+    };
+  }
+
+  const sections = [];
+  let currentSection = null;
+
+  lines.slice(2).forEach((line) => {
+    if (line === "---") {
+      if (currentSection) {
+        sections.push(currentSection);
+      }
+      currentSection = [];
+      return;
+    }
+
+    if (currentSection) {
+      currentSection.push(line);
+    } else if (line.trim()) {
+      errors.push("Backup records must start with a --- separator.");
+    }
+  });
+
+  if (currentSection) {
+    sections.push(currentSection);
+  }
+
+  const records = sections
+    .filter((section) => section.some((line) => line.trim()))
+    .map((section, index) => {
+      const record = parsePlainTextBackupSection(section, index, errors);
+      const recordErrors = validatePlainTextBackupRecord(record, index);
+      errors.push(...recordErrors);
+      return record;
+    });
+
+  if (!records.length && !errors.length) {
+    errors.push("Backup must include at least one subscription record.");
+  }
+
+  if (errors.length) {
+    return {
+      ok: false,
+      records: [],
+      errors,
+    };
+  }
+
+  return {
+    ok: true,
+    records,
+    errors: [],
+  };
+}
+
+function parsePlainTextBackupSection(section, index, errors) {
+  const recordNumber = index + 1;
+  const workingLines = [...section];
+
+  while (workingLines.length && !workingLines[0].trim()) {
+    workingLines.shift();
+  }
+
+  while (workingLines.length && !workingLines[workingLines.length - 1].trim()) {
+    workingLines.pop();
+  }
+
+  const record = {
+    name: normalize(workingLines.shift()),
+    price: Number.NaN,
+    currency: "TRY",
+    billingDate: "",
+    endDate: "",
+    occurrence: "",
+    paymentMethod: "",
+    category: "",
+    notes: "",
+  };
+  const fieldSetters = {
+    "Price": (value) => {
+      record.price = parseLocalizedPrice(value);
+    },
+    "Currency": (value) => {
+      record.currency = normalize(value) || "TRY";
+    },
+    "Billing date": (value) => {
+      record.billingDate = normalize(value);
+    },
+    "Occurrence": (value) => {
+      record.occurrence = normalize(value).toLowerCase();
+    },
+    "Payment method": (value) => {
+      record.paymentMethod = normalize(value);
+    },
+    "Category": (value) => {
+      record.category = normalize(value);
+    },
+    "End date": (value) => {
+      record.endDate = normalize(value);
+    },
+  };
+
+  for (let lineIndex = 0; lineIndex < workingLines.length; lineIndex += 1) {
+    const line = workingLines[lineIndex];
+    const fieldMatch = line.match(/^([^:]+):(.*)$/);
+
+    if (!fieldMatch) {
+      errors.push(`Record ${recordNumber}: expected a Field: value line.`);
+      continue;
+    }
+
+    const fieldName = fieldMatch[1].trim();
+    const fieldValue = fieldMatch[2].trim();
+
+    if (fieldName === "Notes") {
+      const noteLines = fieldValue ? [fieldValue, ...workingLines.slice(lineIndex + 1)] : workingLines.slice(lineIndex + 1);
+      record.notes = unescapePlainTextBackupNotes(noteLines.join("\n"));
+      break;
+    }
+
+    if (!fieldSetters[fieldName]) {
+      errors.push(`Record ${recordNumber}: ${fieldName} is not a supported field.`);
+      continue;
+    }
+
+    fieldSetters[fieldName](fieldValue);
+  }
+
+  return record;
+}
+
+function validatePlainTextBackupRecord(record, index) {
+  const label = `Record ${index + 1}`;
+  const errors = [];
+
+  if (!record.name) {
+    errors.push(`${label}: name is required.`);
+  }
+
+  if (!Number.isFinite(record.price) || record.price < 0) {
+    errors.push(`${label}: price must be a valid number.`);
+  }
+
+  if (!record.billingDate) {
+    errors.push(`${label}: billing date is required.`);
+  } else if (!isValidDateString(record.billingDate)) {
+    errors.push(`${label}: billing date must be a valid YYYY-MM-DD date.`);
+  }
+
+  if (record.endDate && !isValidDateString(record.endDate)) {
+    errors.push(`${label}: end date must be a valid YYYY-MM-DD date.`);
+  }
+
+  if (record.endDate && record.billingDate && compareDateOnly(record.endDate, record.billingDate) < 0) {
+    errors.push(`${label}: end date cannot be before billing date.`);
+  }
+
+  if (!OCCURRENCE_LABELS[record.occurrence]) {
+    errors.push(`${label}: occurrence must be weekly, monthly, quarterly, or yearly.`);
+  }
+
+  if (!record.paymentMethod) {
+    errors.push(`${label}: payment method is required.`);
+  }
+
+  return errors;
+}
+
+function escapePlainTextBackupNotes(notes) {
+  return String(notes || "").replace(/^---$/gm, "\\---");
+}
+
+function unescapePlainTextBackupNotes(notes) {
+  return String(notes || "").replace(/^\\---$/gm, "---");
+}
+
 function buildCsvExport() {
   const headers = [
     "name",
@@ -1292,6 +1549,138 @@ function hasBackupData() {
     || activityLog.length > 0
     || paymentMethodPresets.length > 0
     || categoryPresets.length > 0;
+}
+
+function previewPlainTextBackupInput() {
+  clearValidatedPlainTextBackup();
+  const backupText = plainTextBackupInput.value;
+
+  if (!normalize(backupText)) {
+    renderPlainTextBackupPreviewError(["Paste backup text before previewing."]);
+    setStatus("Paste backup text before previewing. No local data was changed.");
+    return;
+  }
+
+  const result = parsePlainTextBackup(backupText);
+
+  if (!result.ok) {
+    renderPlainTextBackupPreviewError(result.errors);
+    setStatus("Backup text could not be previewed. No local data was changed.");
+    return;
+  }
+
+  validatedPlainTextBackupRecords = result.records;
+  renderPlainTextBackupPreview(result.records);
+  setStatus(`Backup text previewed: ${result.records.length} ${result.records.length === 1 ? "record" : "records"}. No local data was changed.`);
+}
+
+function renderPlainTextBackupPreview(records) {
+  const previewLimit = 5;
+  const visibleRecords = records.slice(0, previewLimit);
+  const remainingCount = records.length - visibleRecords.length;
+  const previewItems = visibleRecords
+    .map((record) => `<span>${escapeHtml(record.name)}</span>`)
+    .join("");
+  const remainingText = remainingCount > 0
+    ? `<span>And ${remainingCount} more ${remainingCount === 1 ? "record" : "records"}.</span>`
+    : "";
+
+  plainTextBackupPreview.hidden = false;
+  plainTextBackupPreview.classList.remove("is-error");
+  restorePlainTextBackupButton.hidden = false;
+  plainTextBackupPreview.innerHTML = `
+    <strong>Backup text preview</strong>
+    <span>Subscriptions: ${records.length}</span>
+    ${previewItems}
+    ${remainingText}
+    <em>No data has been restored yet.</em>
+  `;
+}
+
+function renderPlainTextBackupPreviewError(errors) {
+  clearValidatedPlainTextBackup();
+  const errorItems = errors
+    .map((error) => `<span>${escapeHtml(error)}</span>`)
+    .join("");
+
+  plainTextBackupPreview.hidden = false;
+  plainTextBackupPreview.classList.add("is-error");
+  plainTextBackupPreview.innerHTML = `
+    <strong>Backup text could not be previewed</strong>
+    ${errorItems}
+    <em>No data has been imported or restored.</em>
+  `;
+}
+
+function clearPlainTextBackupPreview() {
+  clearValidatedPlainTextBackup();
+  plainTextBackupPreview.hidden = true;
+  plainTextBackupPreview.classList.remove("is-error");
+  plainTextBackupPreview.textContent = "";
+}
+
+function clearValidatedPlainTextBackup() {
+  validatedPlainTextBackupRecords = null;
+  restorePlainTextBackupButton.hidden = true;
+}
+
+function resetPlainTextBackupPreview() {
+  plainTextBackupInput.value = "";
+  clearPlainTextBackupPreview();
+}
+
+function restoreValidatedPlainTextBackup() {
+  if (!validatedPlainTextBackupRecords) {
+    setStatus("Preview valid backup text before restoring.");
+    return;
+  }
+
+  const subscriptionCount = validatedPlainTextBackupRecords.length;
+  const confirmed = window.confirm(
+    `Replace local subscriptions with this pasted backup?\n\nThis will replace ${subscriptions.length} current subscriptions with ${subscriptionCount} backup subscriptions. Activity log and saved presets will be kept.`,
+  );
+
+  if (!confirmed) {
+    setStatus("Text restore canceled. No local data was changed.");
+    return;
+  }
+
+  const previousSubscriptionsValue = localStorage.getItem(STORAGE_KEY);
+  const restoredAt = new Date().toISOString();
+  const nextSubscriptions = buildSubscriptionsFromPlainTextBackupRecords(
+    validatedPlainTextBackupRecords,
+    restoredAt,
+  );
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextSubscriptions));
+    subscriptions = nextSubscriptions;
+    renderSubscriptions();
+    renderPresetSuggestions();
+    resetPlainTextBackupPreview();
+    setStatus(`Backup text restored: ${subscriptionCount} ${subscriptionCount === 1 ? "subscription" : "subscriptions"}. Activity log and saved presets were kept.`);
+  } catch (error) {
+    restoreStorageValue(STORAGE_KEY, previousSubscriptionsValue);
+    setStatus("Text restore failed. Existing subscriptions were kept.");
+    console.warn("Could not restore pasted backup text.", error);
+  }
+}
+
+function buildSubscriptionsFromPlainTextBackupRecords(records, timestamp) {
+  return records.map((record) => ({
+    id: crypto.randomUUID(),
+    name: record.name,
+    price: record.price,
+    currency: record.currency || "TRY",
+    billingDate: record.billingDate,
+    endDate: record.endDate || "",
+    occurrence: record.occurrence,
+    paymentMethod: record.paymentMethod,
+    category: record.category || "",
+    notes: record.notes || "",
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  }));
 }
 
 async function previewBackupFile(file) {

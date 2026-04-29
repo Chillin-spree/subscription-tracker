@@ -258,6 +258,7 @@ h2 {
 .overview-range-summary[hidden],
 .spending-bar[hidden],
 .export-actions[hidden],
+.backup-preview[hidden],
 .restore-button[hidden],
 .backup-preview-result[hidden],
 .export-note[hidden] {
