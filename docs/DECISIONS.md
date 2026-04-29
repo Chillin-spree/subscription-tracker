@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-04-29 — Bundle related small fixes into reviewed local releases
+
+- **Type**: Workflow
+- **Status**: active
+- **Context**: v1.8 backup-panel stabilization showed that several tiny related fixes can be safer as focused local passes reviewed and released together, instead of committing and pushing each tiny fix separately.
+- **Decision**: Related small fixes should usually be bundled into one local release package before pushing. Use an audit or planning pass when several fixes are possible, split implementation into focused local passes when a bundle has multiple concerns, avoid committing or pushing between local passes unless explicitly asked, and push once after checks and documentation sweep pass. Do not bundle unrelated or high-risk categories just to reduce pushes.
+- **Why**: Bundling keeps release history coherent while preserving small, reviewable implementation steps and reducing avoidable live churn.
+- **Consequences**: Separate releases remain preferred when combining changes would increase risk, especially across parser/format changes, restore/write behavior, schema or localStorage migrations, export/import compatibility, service worker/PWA shell changes, broad UI redesign, or data-loss-risk changes. Large bundles should produce a Build Pass Plan with safe pass boundaries.
+- **Related**: `AGENTS.md`, `docs/HANDOFFS.md`
+
 ### 2026-04-28 — Make plain text backup the future primary portability workflow
 
 - **Type**: UX

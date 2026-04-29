@@ -32,9 +32,27 @@
 - Build instructions must name the current pass and what is not included in this pass.
 - Unknown repos or unclear features should start with investigation-only work.
 - Full feature details belong in the feature file; build instructions should contain only the current pass.
+- Any non-trivial feature should first create a Build Pass Plan.
+- If a build prompt includes more than 5-7 meaningful implementation requirements, split it into smaller passes.
 - If a handoff feels too large for one focused session, stop and propose a smaller Build Pass Plan.
 
 Use `docs/HANDOFFS.md` for the full Build Pass Plan template.
+
+## Release Bundling Policy
+
+- Prefer bundling related small fixes into one local release package before pushing.
+- Start with an audit or planning pass when multiple fixes are possible.
+- Split implementation into focused local passes when a bundle has multiple concerns.
+- Codex prompts should target one focused implementation outcome.
+- Do not commit or push between local passes unless explicitly asked.
+- Run checks and the Documentation Sweep before the final commit.
+- Push once after the bundled work is reviewed, checked, documented, and safe.
+- Do not bundle unrelated or high-risk categories just to reduce pushes.
+- Keep separate releases when combining changes would increase risk, especially when mixing parser or format changes, restore/write behavior, schema or localStorage migrations, export/import compatibility changes, service worker or PWA shell changes, broad UI redesign, or data-loss-risk changes.
+- If a bundle gets large, produce a Build Pass Plan and recommend safe pass boundaries.
+- Preserve installed/home-screen PWA continuity, local-only data behavior, and backup compatibility unless explicitly planned otherwise.
+- Bump cache/app shell versions when app assets change.
+- Run relevant checks before the final commit.
 
 ## Risk Levels
 
