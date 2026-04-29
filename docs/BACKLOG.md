@@ -33,7 +33,6 @@
 
 ## Parked / Later
 
-- `subscription-tracker-spending-by-category-date-range`: Expand spending overview filters to compare subscription, category, and date-range views.
 - `subscription-tracker-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
 - `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
 - `subscription-tracker-local-only-privacy-modal`: Turn the local-only privacy message into an accessible modal or detail view using the current wording as the source of truth.

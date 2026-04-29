@@ -108,6 +108,17 @@
             Range
           </button>
         </div>
+        <div class="overview-range-modes" data-overview-range-modes hidden role="group" aria-label="Range breakdown">
+          <button class="overview-range-mode is-active" type="button" data-overview-range-mode="items" aria-pressed="true">
+            By item
+          </button>
+          <button class="overview-range-mode" type="button" data-overview-range-mode="categories" aria-pressed="false">
+            By category
+          </button>
+          <button class="overview-range-mode" type="button" data-overview-range-mode="payment" aria-pressed="false">
+            By payment
+          </button>
+        </div>
         <div class="spending-bar" data-spending-bar hidden aria-label="Spending breakdown"></div>
         <div class="payment-method-list" data-payment-method-list aria-live="polite"></div>
         <div class="empty-state compact" data-overview-empty>
@@ -323,6 +334,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.8.8"></script>
+    <script src="app.js?v=1.9.0"></script>
   </body>
 </html>

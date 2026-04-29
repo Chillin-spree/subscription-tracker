@@ -48,6 +48,8 @@ const overviewRangeCount = document.querySelector("[data-overview-range-count]")
 const overviewRangeDates = document.querySelector("[data-overview-range-dates]");
 const overviewTabs = document.querySelector("[data-overview-tabs]");
 const overviewTabButtons = document.querySelectorAll("[data-overview-tab]");
+const overviewRangeModes = document.querySelector("[data-overview-range-modes]");
+const overviewRangeModeButtons = document.querySelectorAll("[data-overview-range-mode]");
 const spendingBar = document.querySelector("[data-spending-bar]");
 const paymentMethodList = document.querySelector("[data-payment-method-list]");
 const overviewEmpty = document.querySelector("[data-overview-empty]");
@@ -88,6 +90,7 @@ let validatedPlainTextBackupRecords = null;
 let validatedBackup = null;
 let selectedOverviewMode = "items";
 let selectedOverviewRange = getCurrentMonthRange();
+let selectedOverviewRangeMode = "items";
 
 renderSubscriptions();
 renderActivityLog();
@@ -236,6 +239,17 @@ overviewTabs.addEventListener("click", (event) => {
   }
 
   selectedOverviewMode = tab.dataset.overviewTab;
+  renderSpendingOverview();
+});
+
+overviewRangeModes.addEventListener("click", (event) => {
+  const modeButton = event.target.closest("[data-overview-range-mode]");
+
+  if (!modeButton) {
+    return;
+  }
+
+  selectedOverviewRangeMode = modeButton.dataset.overviewRangeMode;
   renderSpendingOverview();
 });
 
@@ -708,6 +722,7 @@ function renderSpendingOverview() {
   overviewStats.hidden = !hasSubscriptions || showsRangeOverview;
   overviewTabs.hidden = !hasSubscriptions;
   overviewRangeControls.hidden = !hasSubscriptions || !showsRangeOverview;
+  overviewRangeModes.hidden = !hasSubscriptions || !showsRangeOverview;
   overviewRangeSummary.hidden = !hasSubscriptions || !showsRangeOverview;
   spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency || !hasBreakdownRows;
   overviewCurrency.textContent = showsRangeOverview
@@ -725,6 +740,7 @@ function renderSpendingOverview() {
   renderOverviewRangeControls();
   renderOverviewRangeSummary(breakdownRows, rangeState);
   renderOverviewTabs();
+  renderOverviewRangeModes();
   spendingBar.setAttribute("aria-label", getOverviewBreakdownLabel());
   spendingBar.innerHTML = hasSingleCurrency ? breakdownRows.map(renderSpendingSegment).join("") : "";
   paymentMethodList.innerHTML = breakdownRows.map(renderOverviewBreakdownRow).join("");
@@ -846,7 +862,7 @@ function getOverviewBreakdownRows(mode) {
     }
 
     const { rangeStart, rangeEnd } = range;
-    return getRangeSpendingBreakdownByItem(subscriptions, rangeStart, rangeEnd).map(addBreakdownColor);
+    return getRangeBreakdownRows(rangeStart, rangeEnd).map(addBreakdownColor);
   }
 
   if (mode === "categories") {
@@ -858,6 +874,18 @@ function getOverviewBreakdownRows(mode) {
   }
 
   return getSpendingBreakdownByItem(subscriptions).map(addBreakdownColor);
+}
+
+function getRangeBreakdownRows(rangeStart, rangeEnd) {
+  if (selectedOverviewRangeMode === "categories") {
+    return getRangeSpendingBreakdownByCategory(subscriptions, rangeStart, rangeEnd);
+  }
+
+  if (selectedOverviewRangeMode === "payment") {
+    return getRangeSpendingBreakdownByPaymentMethod(subscriptions, rangeStart, rangeEnd);
+  }
+
+  return getRangeSpendingBreakdownByItem(subscriptions, rangeStart, rangeEnd);
 }
 
 function addBreakdownColor(row, index) {
@@ -876,9 +904,26 @@ function renderOverviewTabs() {
   });
 }
 
+function renderOverviewRangeModes() {
+  overviewRangeModeButtons.forEach((button) => {
+    const isSelected = button.dataset.overviewRangeMode === selectedOverviewRangeMode;
+
+    button.classList.toggle("is-active", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+}
+
 function getOverviewBreakdownLabel() {
   if (selectedOverviewMode === "this-month") {
-    return "Actual selected-range spending";
+    if (selectedOverviewRangeMode === "categories") {
+      return "Actual selected-range spending by category";
+    }
+
+    if (selectedOverviewRangeMode === "payment") {
+      return "Actual selected-range spending by payment label";
+    }
+
+    return "Actual selected-range spending by item";
   }
 
   if (selectedOverviewMode === "categories") {
@@ -923,6 +968,13 @@ function renderOverviewBreakdownRow(group) {
 
 function getOverviewRowSecondaryLabel(group) {
   if (selectedOverviewMode === "this-month") {
+    if (selectedOverviewRangeMode === "categories" || selectedOverviewRangeMode === "payment") {
+      return [
+        getOccurrenceCountLabel(group.occurrenceCount || 0),
+        `${group.itemCount} ${group.itemCount === 1 ? "item" : "items"}`,
+      ].join(" · ");
+    }
+
     return group.secondaryLabel || getOccurrenceCountLabel(group.occurrenceCount || 0);
   }
 
