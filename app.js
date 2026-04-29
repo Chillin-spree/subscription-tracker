@@ -56,6 +56,7 @@ const exportActions = document.querySelector("[data-export-actions]");
 const exportEmpty = document.querySelector("[data-export-empty]");
 const exportNote = document.querySelector("[data-export-note]");
 const exportPlainTextBackupButton = document.querySelector("[data-export-plain-text-backup]");
+const copyPlainTextBackupButton = document.querySelector("[data-copy-plain-text-backup]");
 const exportTextButton = document.querySelector("[data-export-text]");
 const exportCsvButton = document.querySelector("[data-export-csv]");
 const exportJsonButton = document.querySelector("[data-export-json]");
@@ -127,6 +128,26 @@ exportPlainTextBackupButton.addEventListener("click", () => {
     buildPlainTextBackup(subscriptions),
   );
   setStatus("Plain text backup downloaded.");
+});
+
+copyPlainTextBackupButton.addEventListener("click", async () => {
+  if (!subscriptions.length) {
+    setStatus("Add a subscription before copying a backup.");
+    return;
+  }
+
+  if (!navigator.clipboard?.writeText) {
+    setStatus("Copy is not available in this browser. Use Download backup text instead.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(buildPlainTextBackup(subscriptions));
+    setStatus("Plain text backup copied.");
+  } catch (error) {
+    setStatus("Backup text could not be copied. Use Download backup text instead.");
+    console.warn("Could not copy plain text backup.", error);
+  }
 });
 
 exportCsvButton?.addEventListener("click", () => {
@@ -658,6 +679,7 @@ function renderExportControls() {
   exportActions.hidden = !hasExportData;
   exportNote.hidden = !hasExportData;
   exportPlainTextBackupButton.hidden = !hasSubscriptions;
+  copyPlainTextBackupButton.hidden = !hasSubscriptions;
   if (exportTextButton) {
     exportTextButton.hidden = true;
   }

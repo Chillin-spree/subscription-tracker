@@ -7,6 +7,7 @@ Make the normal user-facing backup workflow a simple, human-readable plain text 
 ## User-Facing Scope
 
 - Add a visible `.txt` plain text backup export using the v1 backup template.
+- Add clipboard copy for the same plain text backup while keeping download as the fallback.
 - Add paste-based preview and validation for v1 plain text backups.
 - Hide the older one-way summary text export from the main UI after the text backup workflow is proven.
 - Hide CSV export from the main UI while preserving compatibility internally.
@@ -76,11 +77,14 @@ Recommended passes:
 8. Helper verification — add a lightweight local script for serializer/parser round trips and validation cases without changing runtime behavior.
 9. Accessibility polish — connect pasted backup help text, preview output, and restore controls without changing backup behavior.
 10. Backup panel stabilization — clarify the final visible panel heading, restore safety copy, and preview status semantics without changing backup behavior.
+11. Copy backup text — add clipboard copy for the same plain text backup while keeping download as fallback.
 ```
 
 ## QA Checklist
 
 - New plain text backup export produces the v1 text backup format.
+- Users can copy or download the v1 text backup format.
+- Download remains available when clipboard copy is unavailable or fails.
 - Pasting valid backup text previews parsed records and count.
 - Valid pasted backup preview shows compact summaries for up to five records, including name, price/currency, billing date, occurrence, and optional end date.
 - Pasted backup preview rows do not show notes.
@@ -105,7 +109,7 @@ Recommended passes:
 - Pasted restore safety copy states that restore replaces current subscriptions while keeping activity log and saved presets.
 - Existing subscriptions are not modified by exporting.
 - Existing subscriptions are not modified by previewing pasted text.
-- App shell versions are all `v1.8.7`.
+- App shell versions are all `v1.8.8`.
 - Pasted backup textarea help is exposed through `aria-describedby`, preview/restore controls identify the preview result they affect, and the preview result exposes status semantics.
 - JSON backup `schemaVersion` remains `2`.
 - Plain text backup helper verification passes with `node scripts/verify-plain-text-backup.js`.
@@ -121,7 +125,8 @@ Recommended passes:
 - 2026-04-29 v1.8.5 QA: Added `scripts/verify-plain-text-backup.js`, a dependency-free Node verification harness for plain text backup helpers. It loads the current app code in a stubbed browser-like sandbox and verifies one-record and multi-record round trips, multiline notes, blank lines in notes, escaped literal `---` note lines, optional end dates, invalid dates, invalid occurrences, and missing required fields. No app runtime files, parser behavior, backup format, storage keys, CSV, JSON schema, restore behavior, visible UI, or app shell versioning changed.
 - 2026-04-29 v1.8.6 accessibility polish: Connected the pasted backup textarea to its help text with `aria-describedby` and gave preview/restore controls explicit relationships to the preview result. Visible labels, restore gating, confirmation behavior, parser behavior, backup format, storage keys, CSV, JSON schema, and hidden legacy UI behavior remain unchanged. Runtime app shell versioning moved to `app.js?v=1.8.6` and cache `subscription-tracker-v1.8.6-static`.
 - 2026-04-29 v1.8.7 stabilization: Finalized the backup panel by changing the visible heading from `Export` to `Backup`, clarifying that pasted restore replaces current subscriptions while keeping activity log and saved presets, and adding status semantics to the plain text backup preview result. Parser behavior, backup format, restore/write behavior, CSV, JSON schema, localStorage keys, and hidden legacy UI behavior remain unchanged. Runtime app shell versioning moved to `app.js?v=1.8.7` and cache `subscription-tracker-v1.8.7-static`.
+- 2026-04-29 v1.8.8 copy-backup export: Added `Copy backup text` beside `Download backup text`. Copy uses the same v1 plain text backup content as download through the Clipboard API when available; unsupported or failed copy shows fallback guidance to use download. Parser behavior, backup format, restore/write behavior, CSV, JSON schema, localStorage keys, and hidden legacy UI behavior remain unchanged. Runtime app shell versioning moved to `app.js?v=1.8.8` and cache `subscription-tracker-v1.8.8-static`.
 
 ## Release State
 
-v1.8.7 is implemented locally as final backup-panel stabilization. Final release prep, backup UX follow-ups, v1.9 planning, and any future legacy code deletion remain separate future passes.
+v1.8.8 is implemented locally as copy-backup export polish. Final release prep, backup UX follow-ups, v1.9 planning, and any future legacy code deletion remain separate future passes.
