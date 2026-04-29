@@ -29,7 +29,7 @@
 
 ## Roadmap
 
-<!-- Empty. Active v1.10 import/storage safety planning lives in docs/STATUS.md and docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md. -->
+<!-- Empty. Active v1.10 storage/plain-text safety follow-ups live in docs/STATUS.md and docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md. -->
 
 ## Parked / Later
 

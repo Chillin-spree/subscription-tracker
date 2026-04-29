@@ -306,7 +306,7 @@ function loadSubscriptions() {
   try {
     const storedValue = localStorage.getItem(STORAGE_KEY);
     const parsedValue = storedValue ? JSON.parse(storedValue) : [];
-    return Array.isArray(parsedValue) ? parsedValue : [];
+    return Array.isArray(parsedValue) ? parsedValue.filter(isValidStoredSubscription) : [];
   } catch (error) {
     console.warn("Could not read saved subscriptions.", error);
     return [];
@@ -317,11 +317,72 @@ function loadActivityLog() {
   try {
     const storedValue = localStorage.getItem(ACTIVITY_STORAGE_KEY);
     const parsedValue = storedValue ? JSON.parse(storedValue) : [];
-    return Array.isArray(parsedValue) ? parsedValue : [];
+    return Array.isArray(parsedValue) ? parsedValue.filter(isValidStoredActivityEntry) : [];
   } catch (error) {
     console.warn("Could not read saved activity log.", error);
     return [];
   }
+}
+
+function isValidStoredSubscription(subscription) {
+  if (!isPlainObject(subscription) || !isNonEmptyString(subscription.id)) {
+    return false;
+  }
+
+  if (!isOptionalString(subscription.currency)
+    || !isOptionalString(subscription.category)
+    || !isOptionalString(subscription.notes)
+    || !isOptionalString(subscription.createdAt)
+    || !isOptionalString(subscription.updatedAt)) {
+    return false;
+  }
+
+  return validateSubscription(subscription) === "";
+}
+
+function isValidStoredActivityEntry(entry) {
+  if (!isPlainObject(entry)
+    || !isNonEmptyString(entry.id)
+    || !isNonEmptyString(entry.subscriptionId)
+    || !isNonEmptyString(entry.createdAt)
+    || !EVENT_LABELS[entry.eventType]
+    || !isValidStoredSubscriptionSnapshot(entry.subscriptionSnapshot)) {
+    return false;
+  }
+
+  return true;
+}
+
+function isValidStoredSubscriptionSnapshot(snapshot) {
+  if (!isPlainObject(snapshot)
+    || !isNonEmptyString(snapshot.name)
+    || !Number.isFinite(snapshot.price)
+    || !isNonEmptyString(snapshot.billingDate)
+    || !isValidDateString(snapshot.billingDate)
+    || !OCCURRENCE_LABELS[snapshot.occurrence]
+    || !isNonEmptyString(snapshot.paymentMethod)) {
+    return false;
+  }
+
+  if (!isOptionalString(snapshot.currency)
+    || !isOptionalString(snapshot.category)
+    || !isOptionalString(snapshot.endDate)) {
+    return false;
+  }
+
+  return !snapshot.endDate || isValidDateString(snapshot.endDate);
+}
+
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function isNonEmptyString(value) {
+  return typeof value === "string" && value.trim() !== "";
+}
+
+function isOptionalString(value) {
+  return value === undefined || typeof value === "string";
 }
 
 function saveSubscriptions() {

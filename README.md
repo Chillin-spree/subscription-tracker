@@ -41,7 +41,7 @@ Plain text backups use a readable `Subscription Tracker Backup` v1 template and 
 
 ## Project Status
 
-Current stable app shell is v1.10.0. The app supports manual subscription tracking, local presets, selected-range spending breakdowns, plain text backup copy/download and confirmed pasted-text restore, PWA install/offline shell behavior, and narrow import/render safety hardening. Legacy CSV export and JSON backup/restore were removed from the current runtime. Detailed version history lives in `docs/features/`; future not-now ideas are tracked in `docs/BACKLOG.md`.
+Current stable app shell is v1.10.1. The app supports manual subscription tracking, local presets, selected-range spending breakdowns, plain text backup copy/download and confirmed pasted-text restore, PWA install/offline shell behavior, narrow import/render safety hardening, and defensive startup handling for corrupted local storage values. Legacy CSV export and JSON backup/restore were removed from the current runtime. Detailed version history lives in `docs/features/`; future not-now ideas are tracked in `docs/BACKLOG.md`.
 
 ## License
 

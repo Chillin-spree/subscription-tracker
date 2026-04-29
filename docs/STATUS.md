@@ -17,30 +17,31 @@
 
 ## Workflow State
 
-- **Mode**: implementation/docs finalization
-- **Active feature**: v1.10 text-only backup simplification
+- **Mode**: implementation/checks
+- **Active feature**: v1.10.1 storage corruption handling
 - **Feature file**: `docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: Runtime Pass 1 removed legacy CSV export and JSON backup/restore; docs finalization is aligning current product state to text-only backup/export/restore.
-- **Waiting on**: Final review of v1.10 runtime and docs diff.
+- **Current step**: Runtime now filters malformed stored subscriptions/activity entries at startup and keeps preset fallback handling; `scripts/verify-storage-safety.js` covers corrupted localStorage cases.
+- **Waiting on**: Final checks for the v1.10.1 storage safety pass.
 - **Blockers**: none
-- **Next recommended step**: Review and commit the v1.10.0 text-only backup simplification package when approved.
-- **Recent touch points**: v1.10.0 local runtime removes legacy CSV export, JSON backup/restore, and the hidden old summary text export. Plain text backup copy/download/paste/preview/restore remains, pasted restore writes subscriptions only, and activity log/presets are preserved.
+- **Next recommended step**: Review the v1.10.1 storage safety diff and commit when approved.
+- **Recent touch points**: v1.10.1 local runtime defensively ignores malformed stored subscription/activity entries, preserves existing localStorage keys and text-only backup behavior, and bumps app shell/cache to `v1.10.1`.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-04-30
-- **Handoff type**: v1.10 docs finalization
-- **Summary**: Align docs after runtime removed legacy CSV/JSON backup surfaces and made plain text backup the only supported workflow.
+- **Handoff type**: v1.10.1 implementation
+- **Summary**: Add defensive startup handling and verifier coverage for corrupted localStorage without changing storage keys, Range behavior, or the text-only backup workflow.
 - **Where full handoff lives**: `docs/features/subscription-tracker-v1.10-import-storage-safety-followups.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-04-30: Implementing v1.10.1 storage corruption handling. Startup now ignores malformed stored subscription/activity entries, preset fallbacks remain intact, and a dependency-free storage safety verifier covers corrupted localStorage cases.
 - 2026-04-30: Finalizing docs for v1.10.0 text-only backup simplification. Current runtime now supports only readable plain text backup copy/download and pasted-text restore; legacy CSV export, JSON backup/restore, and hidden summary text export were removed from runtime.
 - 2026-04-29: Started v1.10 import/storage safety follow-up planning. After the v1.10.0 text-only product decision, remaining candidates are storage corruption handling, plain text backup size/count limits, and final docs/checks.
 - 2026-04-29: Started documentation cleanup Pass 4. Final consistency review is checking source-of-truth ownership, stale wording, feature-file structure, and runtime-file boundaries before the docs cleanup package is committed.
@@ -48,4 +49,3 @@
 - 2026-04-29: Started documentation cleanup Pass 2. Feature files are being normalized toward the shared structure while preserving meaningful compatibility details, QA notes, and release history. Runtime files remain unchanged.
 - 2026-04-29: Started documentation cleanup Pass 1 after a documentation architecture audit. This pass only corrects stale/conflicting release-state wording and leaves runtime files unchanged.
 - 2026-04-29: Shipped v1.9.2 import/render safety hardening in commit `a55cac1`. Subscription action `data-id` attributes now escape stored IDs, `scripts/verify-import-safety.js` covers malicious IDs and HTML-like user fields, and app shell/cache moved to `v1.9.2`. Plain text backup behavior, localStorage keys, and range behavior remained unchanged.
-- 2026-04-29: Shipped v1.9.1 QA/docs baseline in commit `16cec61`. Added `scripts/verify-range-helpers.js` and updated v1.9 release-state docs without changing runtime behavior; app shell/cache remained `v1.9.0`.
