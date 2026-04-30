@@ -31,10 +31,7 @@
 
 <!-- v1.10.x is the final/simple stabilization line. Do not reopen runtime work unless a real bug appears. -->
 
-### v1.11 UI/UX Polish
-
-- `subscription-tracker-v1.11-ui-ux-polish`: Future UI/UX polish should be handled as a separate v1.11 track after v1.10.x final stabilization. v1.11 should be split into multiple focused passes and should preserve existing product behavior, text-only backup format, localStorage keys, Range logic, PWA continuity, and local-only data behavior.
-- Candidate ideas: hideable/collapsible lower-frequency sections such as Activity/history and Backup, visual hierarchy polish, mobile spacing/readability polish, form/input clarity, backup workflow clarity, and an accessibility/focus/contrast pass.
+<!-- Active work lives in docs/STATUS.md. v1.11 UI/UX polish is active and tracked in docs/features/subscription-tracker-v1.11-ui-ux-polish.md. -->
 
 ### Bills Rename Compatibility
 

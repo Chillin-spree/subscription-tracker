@@ -70,6 +70,7 @@ const paymentPresetList = document.querySelector("[data-payment-preset-list]");
 const categoryPresetList = document.querySelector("[data-category-preset-list]");
 const paymentPresetEmpty = document.querySelector("[data-payment-preset-empty]");
 const categoryPresetEmpty = document.querySelector("[data-category-preset-empty]");
+const collapsiblePanels = document.querySelectorAll("[data-collapsible-panel]");
 const SEGMENT_COLORS = ["#147d64", "#b85d2a", "#263a63", "#7c5c2e", "#5b6f63", "#8b4a62"];
 
 let subscriptions = loadSubscriptions();
@@ -86,6 +87,7 @@ renderSubscriptions();
 renderActivityLog();
 renderPresetSuggestions();
 renderPresetManager();
+initializeCollapsiblePanels();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -301,6 +303,35 @@ subscriptionList.addEventListener("click", (event) => {
     deleteSubscription(id);
   }
 });
+
+function initializeCollapsiblePanels() {
+  collapsiblePanels.forEach((panel) => {
+    const toggle = panel.querySelector("[data-collapsible-toggle]");
+    const body = panel.querySelector("[data-collapsible-body]");
+
+    if (!toggle || !body) {
+      return;
+    }
+
+    const setExpanded = (isExpanded) => {
+      const label = toggle.dataset.collapsibleLabel || "section";
+      const visibleLabel = isExpanded
+        ? toggle.dataset.expandedLabel || "Collapse"
+        : toggle.dataset.collapsedLabel || "Expand";
+
+      body.hidden = !isExpanded;
+      toggle.setAttribute("aria-expanded", String(isExpanded));
+      toggle.setAttribute("aria-label", `${visibleLabel} ${label}`);
+      toggle.textContent = visibleLabel;
+    };
+
+    setExpanded(toggle.getAttribute("aria-expanded") !== "false");
+
+    toggle.addEventListener("click", () => {
+      setExpanded(toggle.getAttribute("aria-expanded") !== "true");
+    });
+  });
+}
 
 function loadSubscriptions() {
   try {

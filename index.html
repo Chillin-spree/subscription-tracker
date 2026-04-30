@@ -138,56 +138,86 @@
         <div class="subscription-list" data-subscription-list aria-live="polite"></div>
       </section>
 
-      <section class="panel" aria-labelledby="activity-title">
+      <section class="panel" aria-labelledby="activity-title" data-collapsible-panel>
         <div class="section-heading">
           <h2 id="activity-title">Activity</h2>
-          <span class="section-meta">History</span>
+          <div class="section-heading-actions">
+            <button
+              class="collapsible-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="activity-panel-body"
+              data-collapsible-toggle
+              data-collapsible-label="Activity"
+              data-expanded-label="Collapse"
+              data-collapsed-label="Expand"
+            >
+              Collapse
+            </button>
+          </div>
         </div>
-        <div class="empty-state compact" data-activity-empty>
-          <p>No activity yet.</p>
+        <div id="activity-panel-body" data-collapsible-body>
+          <div class="empty-state compact" data-activity-empty>
+            <p>No activity yet.</p>
+          </div>
+          <div class="activity-list" data-activity-list aria-live="polite"></div>
         </div>
-        <div class="activity-list" data-activity-list aria-live="polite"></div>
       </section>
 
-      <section class="panel" aria-labelledby="export-title">
+      <section class="panel" aria-labelledby="export-title" data-collapsible-panel>
         <div class="section-heading">
           <h2 id="export-title">Backup</h2>
-          <span class="section-meta">Backup text</span>
+          <div class="section-heading-actions">
+            <button
+              class="collapsible-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="backup-panel-body"
+              data-collapsible-toggle
+              data-collapsible-label="Backup"
+              data-expanded-label="Collapse"
+              data-collapsed-label="Expand"
+            >
+              Collapse
+            </button>
+          </div>
         </div>
-        <div class="empty-state compact" data-export-empty>
-          <p>No subscription data to export.</p>
-        </div>
-        <div class="export-actions" data-export-actions hidden>
-          <button class="primary-button" type="button" data-export-plain-text-backup>Download backup text</button>
-          <button class="secondary-button" type="button" data-copy-plain-text-backup>Copy backup text</button>
-        </div>
-        <p class="export-note" data-export-note hidden>
-          Backup text is readable, editable, and checked locally before replacing local subscriptions. Nothing is
-          uploaded or synced.
-        </p>
-        <div class="backup-preview">
-          <label class="file-field">
-            <span>Preview backup text</span>
-            <textarea
-              id="plain-text-backup-input"
-              name="plainTextBackup"
-              rows="8"
-              placeholder="Paste Subscription Tracker Backup text"
-              aria-describedby="plain-text-backup-help"
-              data-plain-text-backup-input
-            ></textarea>
-          </label>
-          <button class="secondary-button" type="button" aria-controls="plain-text-backup-preview" data-preview-plain-text-backup>
-            Preview pasted backup
-          </button>
-          <p class="export-note" id="plain-text-backup-help">
-            Pasted backup text is checked locally in this browser. Restore appears only after a valid preview and
-            replaces current subscriptions while keeping activity log and saved presets.
+        <div id="backup-panel-body" data-collapsible-body>
+          <div class="empty-state compact" data-export-empty>
+            <p>No subscription data to export.</p>
+          </div>
+          <div class="export-actions" data-export-actions hidden>
+            <button class="primary-button" type="button" data-export-plain-text-backup>Download backup text</button>
+            <button class="secondary-button" type="button" data-copy-plain-text-backup>Copy backup text</button>
+          </div>
+          <p class="export-note" data-export-note hidden>
+            Backup text is readable, editable, and checked locally before replacing local subscriptions. Nothing is
+            uploaded or synced.
           </p>
-          <div class="backup-preview-result" id="plain-text-backup-preview" data-plain-text-backup-preview hidden role="status" aria-live="polite"></div>
-          <button class="restore-button" type="button" aria-controls="plain-text-backup-preview" aria-describedby="plain-text-backup-help" data-restore-plain-text-backup hidden>
-            Replace subscriptions with pasted backup
-          </button>
+          <div class="backup-preview">
+            <label class="file-field">
+              <span>Preview backup text</span>
+              <textarea
+                id="plain-text-backup-input"
+                name="plainTextBackup"
+                rows="8"
+                placeholder="Paste Subscription Tracker Backup text"
+                aria-describedby="plain-text-backup-help"
+                data-plain-text-backup-input
+              ></textarea>
+            </label>
+            <button class="secondary-button" type="button" aria-controls="plain-text-backup-preview" data-preview-plain-text-backup>
+              Preview pasted backup
+            </button>
+            <p class="export-note" id="plain-text-backup-help">
+              Pasted backup text is checked locally in this browser. Restore appears only after a valid preview and
+              replaces current subscriptions while keeping activity log and saved presets.
+            </p>
+            <div class="backup-preview-result" id="plain-text-backup-preview" data-plain-text-backup-preview hidden role="status" aria-live="polite"></div>
+            <button class="restore-button" type="button" aria-controls="plain-text-backup-preview" aria-describedby="plain-text-backup-help" data-restore-plain-text-backup hidden>
+              Replace subscriptions with pasted backup
+            </button>
+          </div>
         </div>
       </section>
 
@@ -318,6 +348,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.10.1"></script>
+    <script src="app.js?v=1.11.1"></script>
   </body>
 </html>

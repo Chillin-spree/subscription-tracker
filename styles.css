@@ -226,8 +226,27 @@ h2 {
   min-width: 0;
 }
 
+.section-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .section-meta {
   white-space: nowrap;
+}
+
+.collapsible-toggle {
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 760;
+  padding: 0 10px;
 }
 
 .empty-state {
@@ -262,7 +281,8 @@ h2 {
 .backup-preview[hidden],
 .restore-button[hidden],
 .backup-preview-result[hidden],
-.export-note[hidden] {
+.export-note[hidden],
+[data-collapsible-body][hidden] {
   display: none;
 }
 
