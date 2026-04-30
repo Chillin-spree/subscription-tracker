@@ -9,7 +9,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 - Repo: `Chillin-spree/subscription-tracker`
 - Branch baseline: `main`
 - Planning baseline commit: `8088004412544174e16912affade84a77c0463c8` (`Document v1.10.x wrap-up roadmap`)
-- Current runtime/app shell: `v1.11.1` locally after the collapsible low-frequency sections pass.
+- Current runtime/app shell: `v1.11.3` locally after the Subscriptions collapse and Add button polish pass.
 - Current stable state: v1.10.x is the final/simple stabilization line. Runtime work should stop unless a real bug appears.
 - Current backup model: readable `Subscription Tracker Backup` v1 plain text copy/download and pasted-text preview/confirmed restore only.
 - Current storage model: local browser/device storage only through existing localStorage keys.
@@ -18,7 +18,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 
 ### Header / Summary / Privacy Note
 
-- Header shows `Next 7 days`, app title, and a circular add button.
+- Header shows `Next 7 days`, app title, and a rounded-square add button.
 - Summary strip shows due-soon total and active subscription count.
 - Privacy note states that records stay in browser storage and are not uploaded, synced, or used to process payments.
 
@@ -39,6 +39,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 
 - Shows saved subscription records with price, billing details, optional category/payment tags, optional notes, and edit/delete actions.
 - Includes an empty state and an inline Add button.
+- Uses the same non-persisted collapse pattern as Activity and Backup.
 
 ### Activity / History
 
@@ -74,7 +75,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 
 ### Collapsible Low-Frequency Sections
 
-- Make Activity/history and Backup easier to tuck away after the user has reviewed them.
+- Make lower-frequency and long body sections easier to tuck away after the user has reviewed them.
 - First implementation should use non-persisted collapsed state only.
 - Keep section content, backup controls, activity rendering, and restore behavior unchanged.
 
@@ -149,26 +150,34 @@ Risk: Medium overall because later passes touch visible UI, backup presentation,
    - Not in this pass: visual redesign, form changes, spending overview changes, persistence.
 
 3. v1.11.2 visual hierarchy/mobile spacing
+   - Implemented locally.
    - Refine spacing, panel rhythm, summary density, and mobile readability.
    - Keep current section order and core behaviors.
    - Not in this pass: form copy overhaul, backup workflow rewrite, spending calculation changes.
 
-4. v1.11.3 form/input clarity
+4. v1.11.3 Subscriptions collapse and Add button polish
+   - Implemented locally.
+   - Add non-persisted collapse/expand behavior to the Subscriptions panel.
+   - Change the top add control from a dark circular plus to a rounded-square add button.
+   - Preserve add/edit/delete behavior, list rendering, empty state behavior, storage keys, and app structure.
+   - Not in this pass: form copy overhaul, backup workflow changes, spending calculation changes, persistence.
+
+5. v1.11.4 form/input clarity
    - Polish add/edit dialog copy, labels, helper text placement, and preset manager clarity.
    - Preserve all fields, validation rules, storage shape, and sensitive-payment-data warnings.
    - Not in this pass: schema changes, new fields, import/export behavior.
 
-5. v1.11.4 backup workflow polish
+6. v1.11.5 backup workflow polish
    - Improve clarity of copy/download, pasted preview, restore confirmation context, and local-only messaging.
    - Preserve exact plain text format/parser/restore behavior.
    - Not in this pass: CSV/JSON, merge restore, backup format changes, remote storage.
 
-6. v1.11.5 spending overview polish
+7. v1.11.6 spending overview polish
    - Clarify normalized totals versus actual selected-range charges.
    - Preserve current calculations, top-level normalized overview behavior, Range date behavior, and Range sub-mode behavior.
    - Not in this pass: multi-currency grouped totals; that belongs to v1.12 planning.
 
-7. v1.11.6 accessibility/final QA
+8. v1.11.7 accessibility/final QA
    - Run keyboard, focus, contrast, aria/live-region, dialog, collapse, backup, and PWA continuity checks.
    - Sweep docs and release notes after implementation passes.
    - Not in this pass: new feature scope beyond final QA fixes.
@@ -201,15 +210,19 @@ Suggested scope:
 - [x] v1.11.1 verifies Activity and Backup collapse/expand by pointer activation.
 - [ ] v1.11.1 verifies Activity and Backup collapse/expand by keyboard activation in a human browser pass.
 - [x] v1.11.1 verifies collapsed state is not persisted across refresh.
+- [x] v1.11.3 adds non-persisted Subscriptions collapse/expand behavior without changing list rendering or add/edit/delete behavior.
 - [ ] Backup copy/download/preview/confirmed restore behavior remains unchanged.
 - [ ] Plain text backup format and parser remain unchanged.
 - [ ] LocalStorage keys remain unchanged.
 - [ ] Range date and Range sub-mode behavior remain unchanged.
 - [ ] Top-level normalized overview behavior remains unchanged.
 - [ ] PWA installed/home-screen continuity is preserved.
+- [x] v1.11.2 keeps visual changes CSS-first and behavior-preserving.
 - [ ] Accessibility/focus/contrast pass completed before final v1.11 release wrap-up.
 
 ## Release / History
 
 - 2026-04-30: Created v1.11.0 audit/planning docs pass from the v1.10.1 stable baseline. No runtime files changed.
 - 2026-04-30: Implemented v1.11.1 collapsible Activity and Backup panels locally. Sections are expanded by default, collapse state is not persisted, and Activity/Backup body visibility changes without changing activity data, backup format/parser/restore semantics, storage keys, Range behavior, or PWA continuity. Pointer collapse/expand and refresh reset were smoke-tested in the browser; keyboard activation remains a human-browser QA item because automation keypresses did not activate the focused native buttons. Runtime app shell/cache moved to `v1.11.1`.
+- 2026-04-30: Implemented v1.11.2 visual hierarchy and mobile spacing polish locally. CSS-only layout refinements tightened panel rhythm, balanced section-heading actions, improved row/card readability, reduced empty-state weight, and made overview/collapse segmented controls 44px touch targets. Behavior, storage keys, backup format/parser/restore semantics, Range behavior, and app structure remain unchanged. Runtime app shell/cache moved to `v1.11.2`.
+- 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the same non-persisted collapse pattern as Activity and Backup, defaults expanded after reload, and hides only the subscription panel body. The top add control is now a rounded-square accent button while preserving its aria label and `data-open-form` behavior. Runtime app shell/cache moved to `v1.11.3`.

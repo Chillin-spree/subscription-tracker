@@ -22,25 +22,27 @@
 - **Feature file**: `docs/features/subscription-tracker-v1.11-ui-ux-polish.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.11.1 collapsible Activity and Backup sections, non-persisted, implemented locally.
-- **Waiting on**: Review of the v1.11.1 local implementation before commit/push.
+- **Current step**: v1.11.3 Subscriptions collapse and Add button polish, implemented locally.
+- **Waiting on**: Review of the v1.11.3 local implementation before commit/push.
 - **Blockers**: none
-- **Next recommended step**: v1.11.2 visual hierarchy/mobile spacing.
-- **Recent touch points**: v1.11.1 adds non-persisted collapsible Activity and Backup panel bodies. Preserve localStorage keys, text-only backup behavior, Range behavior, normalized overview behavior, PWA continuity, and local-only data behavior.
+- **Next recommended step**: v1.11.4 form/input clarity.
+- **Recent touch points**: v1.11.3 adds non-persisted Subscriptions collapse/expand and changes the top add button to a rounded-square accent style. Preserve localStorage keys, text-only backup behavior, Range behavior, normalized overview behavior, PWA continuity, and local-only data behavior.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-04-30
-- **Handoff type**: v1.11.1 collapsible low-frequency sections
-- **Summary**: Add non-persisted accessible collapse/expand controls for Activity and Backup panels while preserving existing Activity and Backup behavior.
+- **Handoff type**: v1.11.3 Subscriptions collapse and Add button polish
+- **Summary**: Add non-persisted Subscriptions collapse/expand behavior and restyle the top add button while preserving existing behavior.
 - **Where full handoff lives**: `docs/features/subscription-tracker-v1.11-ui-ux-polish.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the existing non-persisted collapse pattern and the top add control is a rounded-square accent button; app shell/cache references moved to v1.11.3.
+- 2026-04-30: Implemented v1.11.2 visual hierarchy/mobile spacing polish locally. CSS refinements improve panel rhythm, section action alignment, row/card readability, empty-state weight, and overview/collapse touch targets while preserving behavior.
 - 2026-04-30: Implemented v1.11.1 collapsible Activity and Backup sections locally. Both sections remain expanded by default, collapse state is non-persisted, and app shell/cache references moved to v1.11.1.
 - 2026-04-30: Started v1.11.0 audit/planning docs pass for UI/UX polish. v1.11 is now the active planning track; next recommended implementation pass is v1.11.1 collapsible Activity and Backup sections, non-persisted.
 - 2026-04-30: v1.10.1 live/manual smoke passed with no runtime bugs found. Verified live load/refresh, add/edit, overview modes, text backup copy/download/preview/confirmed restore, restore preserving activity and presets, CSV/JSON controls absent, refresh persistence, and no console errors. Cancel-restore and installed PWA/home-screen remain manual human confirmations because browser automation auto-accepted the native confirm and cannot verify the installed app surface.

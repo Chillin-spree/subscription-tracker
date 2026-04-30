@@ -126,16 +126,32 @@
         </div>
       </section>
 
-      <section class="panel" aria-labelledby="list-title">
+      <section class="panel" aria-labelledby="list-title" data-collapsible-panel>
         <div class="section-heading">
           <h2 id="list-title">Subscriptions</h2>
-          <button class="text-button" type="button" data-open-form>Add</button>
+          <div class="section-heading-actions">
+            <button class="text-button" type="button" data-open-form>Add</button>
+            <button
+              class="collapsible-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="subscriptions-panel-body"
+              data-collapsible-toggle
+              data-collapsible-label="Subscriptions"
+              data-expanded-label="Collapse"
+              data-collapsed-label="Expand"
+            >
+              Collapse
+            </button>
+          </div>
         </div>
-        <div class="empty-state" data-empty-state>
-          <p>Your subscription list is empty.</p>
-          <span>Add your first manual record to start tracking.</span>
+        <div id="subscriptions-panel-body" data-collapsible-body>
+          <div class="empty-state" data-empty-state>
+            <p>Your subscription list is empty.</p>
+            <span>Add your first manual record to start tracking.</span>
+          </div>
+          <div class="subscription-list" data-subscription-list aria-live="polite"></div>
         </div>
-        <div class="subscription-list" data-subscription-list aria-live="polite"></div>
       </section>
 
       <section class="panel" aria-labelledby="activity-title" data-collapsible-panel>
@@ -348,6 +364,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.11.1"></script>
+    <script src="app.js?v=1.11.3"></script>
   </body>
 </html>
