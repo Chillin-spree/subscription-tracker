@@ -36,9 +36,10 @@
         </div>
       </section>
 
-      <p class="privacy-note">
-        Local only: your records stay in this browser's storage. Nothing is uploaded, synced, or used to process payments.
-      </p>
+      <div class="app-note">
+        <p>Minimal by design: manual records, clear totals, readable backups, and no accounts or sync.</p>
+        <button class="note-link" type="button" data-open-local-notice>Local-only privacy</button>
+      </div>
 
       <section class="panel" aria-labelledby="upcoming-title">
         <div class="section-heading">
@@ -240,6 +241,38 @@
       <p class="placeholder-note" data-status-message role="status" aria-live="polite"></p>
     </main>
 
+    <div class="dialog-backdrop notice-backdrop" data-local-notice hidden>
+      <section
+        class="dialog notice-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="local-notice-title"
+        aria-describedby="local-notice-body"
+      >
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Local only</p>
+            <h2 id="local-notice-title">Your data stays on this device</h2>
+          </div>
+        </div>
+
+        <div class="notice-copy" id="local-notice-body">
+          <p>
+            Subscription records are saved only in this browser's local storage. Nothing is uploaded, synced, sold, or
+            used to process payments.
+          </p>
+          <p>
+            Use labels only. Do not enter card numbers, bank details, passwords, or payment login information.
+          </p>
+          <p>
+            This app is intentionally minimal: manual tracking, clear totals, and readable text backups.
+          </p>
+        </div>
+
+        <button class="primary-button wide-button" type="button" data-acknowledge-local-notice>I understand</button>
+      </section>
+    </div>
+
     <div class="dialog-backdrop" data-dialog hidden>
       <section
         class="dialog"
@@ -364,6 +397,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.11.3"></script>
+    <script src="app.js?v=1.11.4"></script>
   </body>
 </html>

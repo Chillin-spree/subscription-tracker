@@ -197,15 +197,34 @@ h2 {
   font-size: 1.28rem;
 }
 
-.privacy-note {
+.app-note {
+  display: grid;
+  gap: 8px;
   margin-bottom: 10px;
   padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface-soft);
+  color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 720;
+}
+
+.app-note p {
+  margin: 0;
+}
+
+.note-link {
+  min-height: 44px;
+  justify-self: start;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 760;
+  padding: 0;
+  text-align: left;
 }
 
 .panel {
@@ -661,6 +680,23 @@ h2 {
   align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
+}
+
+.notice-dialog {
+  display: grid;
+  gap: 14px;
+}
+
+.notice-copy {
+  display: grid;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.notice-copy p {
+  margin: 0;
 }
 
 .form-help {

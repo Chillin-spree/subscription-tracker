@@ -2,6 +2,7 @@ const STORAGE_KEY = "subscription-tracker-v1-subscriptions";
 const ACTIVITY_STORAGE_KEY = "subscription-tracker-v1-activity-log";
 const PAYMENT_METHOD_PRESETS_STORAGE_KEY = "subscription-tracker-v1-payment-method-presets";
 const CATEGORY_PRESETS_STORAGE_KEY = "subscription-tracker-v1-category-presets";
+const LOCAL_ONLY_NOTICE_ACKNOWLEDGED_KEY = "subscription-tracker-v1-local-only-notice-acknowledged";
 const OCCURRENCE_LABELS = {
   weekly: "Weekly",
   monthly: "Monthly",
@@ -21,6 +22,9 @@ const form = document.querySelector("[data-subscription-form]");
 const formTitle = document.querySelector("#form-title");
 const formError = document.querySelector("[data-form-error]");
 const statusMessage = document.querySelector("[data-status-message]");
+const localOnlyNotice = document.querySelector("[data-local-notice]");
+const openLocalNoticeButton = document.querySelector("[data-open-local-notice]");
+const acknowledgeLocalNoticeButton = document.querySelector("[data-acknowledge-local-notice]");
 const subscriptionList = document.querySelector("[data-subscription-list]");
 const emptyState = document.querySelector("[data-empty-state]");
 const activeCount = document.querySelector("[data-active-count]");
@@ -88,6 +92,7 @@ renderActivityLog();
 renderPresetSuggestions();
 renderPresetManager();
 initializeCollapsiblePanels();
+initializeLocalOnlyNotice();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -218,6 +223,12 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", closeForm);
 });
 
+openLocalNoticeButton.addEventListener("click", () => {
+  openLocalOnlyNotice();
+});
+
+acknowledgeLocalNoticeButton.addEventListener("click", acknowledgeLocalOnlyNotice);
+
 dialog.addEventListener("click", (event) => {
   if (event.target === dialog) {
     closeForm();
@@ -331,6 +342,37 @@ function initializeCollapsiblePanels() {
       setExpanded(toggle.getAttribute("aria-expanded") !== "true");
     });
   });
+}
+
+function initializeLocalOnlyNotice() {
+  if (!isLocalOnlyNoticeAcknowledged()) {
+    openLocalOnlyNotice();
+  }
+}
+
+function isLocalOnlyNoticeAcknowledged() {
+  try {
+    return localStorage.getItem(LOCAL_ONLY_NOTICE_ACKNOWLEDGED_KEY) === "true";
+  } catch (error) {
+    console.warn("Could not read local-only notice acknowledgement.", error);
+    return false;
+  }
+}
+
+function openLocalOnlyNotice() {
+  localOnlyNotice.hidden = false;
+  acknowledgeLocalNoticeButton.focus();
+}
+
+function acknowledgeLocalOnlyNotice() {
+  try {
+    localStorage.setItem(LOCAL_ONLY_NOTICE_ACKNOWLEDGED_KEY, "true");
+  } catch (error) {
+    console.warn("Could not save local-only notice acknowledgement.", error);
+  }
+
+  localOnlyNotice.hidden = true;
+  openLocalNoticeButton.focus();
 }
 
 function loadSubscriptions() {
