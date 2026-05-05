@@ -38,7 +38,6 @@
 
       <div class="app-note">
         <p>Minimal by design: manual records, clear totals, readable backups, and no accounts or sync.</p>
-        <button class="note-link" type="button" data-open-local-notice>Local-only privacy</button>
       </div>
 
       <section class="panel" aria-labelledby="upcoming-title">
@@ -239,6 +238,10 @@
       </section>
 
       <p class="placeholder-note" data-status-message role="status" aria-live="polite"></p>
+
+      <div class="app-footer-note">
+        <button class="note-link" type="button" data-open-local-notice>Local-only privacy</button>
+      </div>
     </main>
 
     <div class="dialog-backdrop notice-backdrop" data-local-notice hidden>
@@ -290,10 +293,11 @@
         </div>
 
         <p id="form-help" class="form-help">
-          Required fields are marked with an asterisk.
+          Add one manual recurring payment. Required fields are marked with an asterisk.
         </p>
         <p id="form-safety" class="form-safety">
-          Use labels only. Do not enter card numbers, CVV/CVC, IBAN, bank account numbers, passwords, or payment login details.
+          Payment fields are labels only. Do not enter card numbers, CVV/CVC, IBAN, bank account numbers, passwords, or
+          payment login details.
         </p>
 
         <details class="preset-manager">
@@ -341,11 +345,13 @@
             <label>
               <span>Price *</span>
               <input name="price" type="text" inputmode="decimal" required>
+              <span class="field-help">Enter the amount in the currency shown.</span>
             </label>
 
             <label>
-              <span>Currency</span>
+              <span>Currency code</span>
               <input name="currency" type="text" maxlength="3" value="TRY">
+              <span class="field-help">Use a 3-letter code, such as TRY, USD, or EUR.</span>
             </label>
           </div>
 
@@ -355,8 +361,9 @@
           </label>
 
           <label>
-            <span>End date (optional)</span>
+            <span>End date</span>
             <input name="endDate" type="date">
+            <span class="field-help">Optional. Leave blank for an ongoing subscription.</span>
           </label>
 
           <label>
@@ -371,20 +378,23 @@
           </label>
 
           <label>
-            <span>Payment label *</span>
+            <span>Payment label / nickname *</span>
             <input name="paymentMethod" type="text" autocomplete="off" list="payment-method-suggestions" required>
+            <span class="field-help">Examples: Main card, Work card, Bank transfer, Cash. Do not enter numbers.</span>
             <datalist id="payment-method-suggestions" data-payment-method-suggestions></datalist>
           </label>
 
           <label>
             <span>Category</span>
             <input name="category" type="text" autocomplete="off" list="category-suggestions">
+            <span class="field-help">Optional. Use broad groups such as Media, Software, or Home.</span>
             <datalist id="category-suggestions" data-category-suggestions></datalist>
           </label>
 
           <label>
             <span>Notes</span>
             <textarea name="notes" rows="3"></textarea>
+            <span class="field-help">Optional. Keep it to reminders or context, not sensitive payment details.</span>
           </label>
 
           <p class="form-error" data-form-error role="alert"></p>
@@ -397,6 +407,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.11.4"></script>
+    <script src="app.js?v=1.11.5"></script>
   </body>
 </html>

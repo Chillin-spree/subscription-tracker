@@ -372,7 +372,7 @@ function acknowledgeLocalOnlyNotice() {
   }
 
   localOnlyNotice.hidden = true;
-  openLocalNoticeButton.focus();
+  openLocalNoticeButton.focus({ preventScroll: true });
 }
 
 function loadSubscriptions() {

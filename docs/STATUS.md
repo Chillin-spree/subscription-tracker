@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/subscription-tracker-v1.11-ui-ux-polish.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.11.4 local-only first-run notice and minimal design note, implemented locally.
-- **Waiting on**: Review of the v1.11.4 local implementation before commit/push.
+- **Current step**: v1.11.5 form/input clarity and bottom local-only privacy control, implemented locally.
+- **Waiting on**: Review of the v1.11.5 local implementation before commit/push.
 - **Blockers**: none
-- **Next recommended step**: v1.11.5 form/input clarity.
-- **Recent touch points**: v1.11.4 moves the local-only privacy banner into a first-run acknowledgment notice, adds a small reopen control, and adds a minimal-design note. Preserve subscription/activity/preset localStorage keys, text-only backup behavior, Range behavior, normalized overview behavior, PWA continuity, and local-only data behavior.
+- **Next recommended step**: v1.11.6 backup workflow polish.
+- **Recent touch points**: v1.11.5 clarifies add/edit form helper text and moves the `Local-only privacy` reopen control to the bottom of the main app shell. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, text-only backup behavior, Range behavior, normalized overview behavior, PWA continuity, and local-only data behavior.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-05
-- **Handoff type**: v1.11.4 local-only first-run notice
-- **Summary**: Move the local-only privacy banner into an acknowledged first-run notice, keep a reopen control, and add a concise minimal-design note.
+- **Handoff type**: v1.11.5 form/input clarity and bottom privacy control
+- **Summary**: Polish add/edit form clarity and move the local-only privacy reopen control to the bottom of the main page without changing behavior.
 - **Where full handoff lives**: `docs/features/subscription-tracker-v1.11-ui-ux-polish.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-05: Implemented v1.11.5 form/input clarity locally. Clarified manual-entry helper copy, optional field guidance, payment-label safety wording, and moved the `Local-only privacy` reopen control to the bottom of the main app shell; app shell/cache references moved to v1.11.5.
 - 2026-05-05: Implemented v1.11.4 local-only first-run notice locally. Added one acknowledgment key, `subscription-tracker-v1-local-only-notice-acknowledged`, kept the app usable if that write fails, and moved app shell/cache references to v1.11.4.
 - 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the existing non-persisted collapse pattern and the top add control is a rounded-square accent button; app shell/cache references moved to v1.11.3.
 - 2026-04-30: Implemented v1.11.2 visual hierarchy/mobile spacing polish locally. CSS refinements improve panel rhythm, section action alignment, row/card readability, empty-state weight, and overview/collapse touch targets while preserving behavior.
