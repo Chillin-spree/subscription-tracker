@@ -197,27 +197,20 @@ h2 {
   font-size: 1.28rem;
 }
 
-.app-note {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-.app-note p {
-  margin: 0;
-}
-
 .app-footer-note {
-  display: flex;
-  justify-content: center;
-  margin-top: 6px;
-  padding-bottom: 4px;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 4px 12px 6px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.app-footer-note p {
+  max-width: 32rem;
+  margin: 0;
 }
 
 .note-link {
@@ -233,8 +226,6 @@ h2 {
   font-weight: 760;
   padding: 0 13px;
   text-align: left;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .panel {

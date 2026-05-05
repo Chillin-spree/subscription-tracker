@@ -22,6 +22,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 - Summary strip shows due-soon total and active subscription count.
 - A lightweight minimal-design note stays near the top.
 - A bottom `Local-only privacy details` control reopens the local-only notice.
+- The minimal-design sentence appears below that footer privacy control.
 - The local-only notice appears on first run until acknowledged.
 
 ### Upcoming Payments
@@ -254,4 +255,5 @@ Suggested scope:
 - 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the same non-persisted collapse pattern as Activity and Backup, defaults expanded after reload, and hides only the subscription panel body. The top add control is now a rounded-square accent button while preserving its aria label and `data-open-form` behavior. Runtime app shell/cache moved to `v1.11.3`.
 - 2026-05-05: Implemented v1.11.4 local-only first-run notice locally. The always-visible privacy banner moved into an acknowledged first-run notice, the app keeps a small `Local-only privacy` reopen control, and the top note now states the minimal-design direction. Only `subscription-tracker-v1-local-only-notice-acknowledged` was added for notice persistence. Runtime app shell/cache moved to `v1.11.4`.
 - 2026-05-05: Implemented v1.11.5 form/input clarity locally. Add/edit form labels and helper text now clarify manual entry, price/currency expectations, optional fields, and payment-label safety without changing field names, data attributes, validation rules, storage schema, or preset wiring. The `Local-only privacy` reopen control moved to the bottom of the main app shell while preserving first-run notice behavior. Runtime app shell/cache moved to `v1.11.5`.
-- 2026-05-05: Implemented v1.11.6 final microcopy locally. Empty states now use concise next-step wording, the overview no-data copy avoids currency conversion implications, Activity and Backup empty states clarify what appears after records exist, and the bottom privacy reopen control now reads `Local-only privacy details` with a subtle pill/underline affordance. Runtime app shell/cache moved to `v1.11.6`.
+- 2026-05-05: Implemented v1.11.6 final microcopy locally. Empty states now use concise next-step wording, the overview no-data copy avoids currency conversion implications, Activity and Backup empty states clarify what appears after records exist, and the bottom privacy reopen control now reads `Local-only privacy details` with a subtle pill affordance. Runtime app shell/cache moved to `v1.11.6`.
+- 2026-05-05: Implemented v1.11.6 footer copy follow-up locally. The minimal-design sentence moved from the top area to the footer below `Local-only privacy details`, and the privacy control keeps its pill styling without an underline. Runtime app shell/cache references remain `v1.11.6`.
