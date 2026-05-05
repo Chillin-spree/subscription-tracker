@@ -46,8 +46,8 @@
           <span class="section-meta">Next 7 days</span>
         </div>
         <div class="empty-state" data-upcoming-empty>
-          <p>No upcoming payments yet.</p>
-          <span>Add subscriptions later to see what is due soon.</span>
+          <p>Nothing due in the next 7 days.</p>
+          <span>Add records to see upcoming charges here.</span>
         </div>
         <div class="upcoming-list" data-upcoming-list aria-live="polite"></div>
       </section>
@@ -122,7 +122,7 @@
         <div class="spending-bar" data-spending-bar hidden aria-label="Spending breakdown"></div>
         <div class="payment-method-list" data-payment-method-list aria-live="polite"></div>
         <div class="empty-state compact" data-overview-empty>
-          <p data-overview-empty-message>No spending breakdown yet.</p>
+          <p data-overview-empty-message>No overview yet.</p>
         </div>
       </section>
 
@@ -147,8 +147,8 @@
         </div>
         <div id="subscriptions-panel-body" data-collapsible-body>
           <div class="empty-state" data-empty-state>
-            <p>Your subscription list is empty.</p>
-            <span>Add your first manual record to start tracking.</span>
+            <p>No subscriptions yet.</p>
+            <span>Add your first manual record when you're ready.</span>
           </div>
           <div class="subscription-list" data-subscription-list aria-live="polite"></div>
         </div>
@@ -175,6 +175,7 @@
         <div id="activity-panel-body" data-collapsible-body>
           <div class="empty-state compact" data-activity-empty>
             <p>No activity yet.</p>
+            <span>Created, edited, and deleted records will appear here.</span>
           </div>
           <div class="activity-list" data-activity-list aria-live="polite"></div>
         </div>
@@ -200,7 +201,8 @@
         </div>
         <div id="backup-panel-body" data-collapsible-body>
           <div class="empty-state compact" data-export-empty>
-            <p>No subscription data to export.</p>
+            <p>No backup yet.</p>
+            <span>Add a subscription to enable backup text.</span>
           </div>
           <div class="export-actions" data-export-actions hidden>
             <button class="primary-button" type="button" data-export-plain-text-backup>Download backup text</button>
@@ -240,7 +242,7 @@
       <p class="placeholder-note" data-status-message role="status" aria-live="polite"></p>
 
       <div class="app-footer-note">
-        <button class="note-link" type="button" data-open-local-notice>Local-only privacy</button>
+        <button class="note-link" type="button" data-open-local-notice>Local-only privacy details</button>
       </div>
     </main>
 
@@ -407,6 +409,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.11.5"></script>
+    <script src="app.js?v=1.11.6"></script>
   </body>
 </html>

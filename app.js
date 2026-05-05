@@ -811,8 +811,8 @@ function renderSpendingOverview() {
   overviewEmptyMessage.textContent = showsRangeOverview && !rangeState.isValid
     ? "Choose a valid date range."
     : showsRangeOverview
-      ? "No scheduled charges in this range."
-      : "No spending breakdown yet.";
+      ? "No charges scheduled in this range."
+      : "No overview yet.";
 }
 
 function renderOverviewRangeControls() {

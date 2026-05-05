@@ -9,7 +9,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 - Repo: `Chillin-spree/subscription-tracker`
 - Branch baseline: `main`
 - Planning baseline commit: `8088004412544174e16912affade84a77c0463c8` (`Document v1.10.x wrap-up roadmap`)
-- Current runtime/app shell: `v1.11.5` locally after the form/input clarity pass.
+- Current runtime/app shell: `v1.11.6` locally after the final microcopy and empty-state polish pass.
 - Current stable state: v1.10.x is the final/simple stabilization line. Runtime work should stop unless a real bug appears.
 - Current backup model: readable `Subscription Tracker Backup` v1 plain text copy/download and pasted-text preview/confirmed restore only.
 - Current storage model: local browser/device storage only through existing localStorage keys.
@@ -21,7 +21,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 - Header shows `Next 7 days`, app title, and a rounded-square add button.
 - Summary strip shows due-soon total and active subscription count.
 - A lightweight minimal-design note stays near the top.
-- A bottom `Local-only privacy` control reopens the local-only notice.
+- A bottom `Local-only privacy details` control reopens the local-only notice.
 - The local-only notice appears on first run until acknowledged.
 
 ### Upcoming Payments
@@ -183,17 +183,24 @@ Risk: Medium overall because later passes touch visible UI, backup presentation,
    - Preserve all fields, validation rules, storage shape, and sensitive-payment-data warnings.
    - Not in this pass: schema changes, new fields, import/export behavior.
 
-7. v1.11.6 backup workflow polish
+7. v1.11.6 final microcopy, empty-state polish, and privacy-link affordance
+   - Implemented locally.
+   - Tighten empty-state wording for upcoming payments, overview, subscriptions, activity, and backup.
+   - Make the bottom local-only privacy reopen control more visibly clickable without making it a primary action.
+   - Preserve all selectors, form fields, storage keys, backup behavior, Range behavior, overview calculations, and PWA continuity.
+   - Not in this pass: backup workflow semantics, schema changes, new features, CSV/JSON, remote storage.
+
+8. v1.11.7 backup workflow polish
    - Improve clarity of copy/download, pasted preview, restore confirmation context, and local-only messaging.
    - Preserve exact plain text format/parser/restore behavior.
    - Not in this pass: CSV/JSON, merge restore, backup format changes, remote storage.
 
-8. v1.11.7 spending overview polish
+9. v1.11.8 spending overview polish
    - Clarify normalized totals versus actual selected-range charges.
    - Preserve current calculations, top-level normalized overview behavior, Range date behavior, and Range sub-mode behavior.
    - Not in this pass: multi-currency grouped totals; that belongs to v1.12 planning.
 
-9. v1.11.8 accessibility/final QA
+10. v1.11.9 accessibility/final QA
    - Run keyboard, focus, contrast, aria/live-region, dialog, collapse, backup, and PWA continuity checks.
    - Sweep docs and release notes after implementation passes.
    - Not in this pass: new feature scope beyond final QA fixes.
@@ -229,6 +236,7 @@ Suggested scope:
 - [x] v1.11.3 adds non-persisted Subscriptions collapse/expand behavior without changing list rendering or add/edit/delete behavior.
 - [x] v1.11.4 uses only the new local-only notice acknowledgment key for notice persistence.
 - [x] v1.11.5 preserves form field names/data attributes while improving visible labels and helper text.
+- [x] v1.11.6 keeps empty-state/privacy-link polish behavior-preserving.
 - [ ] Backup copy/download/preview/confirmed restore behavior remains unchanged.
 - [ ] Plain text backup format and parser remain unchanged.
 - [ ] LocalStorage keys remain unchanged.
@@ -246,3 +254,4 @@ Suggested scope:
 - 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the same non-persisted collapse pattern as Activity and Backup, defaults expanded after reload, and hides only the subscription panel body. The top add control is now a rounded-square accent button while preserving its aria label and `data-open-form` behavior. Runtime app shell/cache moved to `v1.11.3`.
 - 2026-05-05: Implemented v1.11.4 local-only first-run notice locally. The always-visible privacy banner moved into an acknowledged first-run notice, the app keeps a small `Local-only privacy` reopen control, and the top note now states the minimal-design direction. Only `subscription-tracker-v1-local-only-notice-acknowledged` was added for notice persistence. Runtime app shell/cache moved to `v1.11.4`.
 - 2026-05-05: Implemented v1.11.5 form/input clarity locally. Add/edit form labels and helper text now clarify manual entry, price/currency expectations, optional fields, and payment-label safety without changing field names, data attributes, validation rules, storage schema, or preset wiring. The `Local-only privacy` reopen control moved to the bottom of the main app shell while preserving first-run notice behavior. Runtime app shell/cache moved to `v1.11.5`.
+- 2026-05-05: Implemented v1.11.6 final microcopy locally. Empty states now use concise next-step wording, the overview no-data copy avoids currency conversion implications, Activity and Backup empty states clarify what appears after records exist, and the bottom privacy reopen control now reads `Local-only privacy details` with a subtle pill/underline affordance. Runtime app shell/cache moved to `v1.11.6`.

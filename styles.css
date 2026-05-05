@@ -223,15 +223,18 @@ h2 {
 .note-link {
   min-height: 44px;
   justify-self: start;
-  border: 0;
-  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
   color: var(--accent);
   cursor: pointer;
   font: inherit;
   font-size: 0.82rem;
   font-weight: 760;
-  padding: 0;
+  padding: 0 13px;
   text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .panel {
