@@ -193,6 +193,29 @@ const verificationSource = `
     "TRY 12.00",
     "single due-soon total should stay compact and keep blank currency fallback",
   );
+  const mixedRangeHtml = renderRangeSummaryTotal({ TRY: 75, USD: 12.5 });
+  assert.ok(
+    mixedRangeHtml.includes('class="summary-total-chip"'),
+    "mixed range summary totals should render grouped chip markup",
+  );
+  assert.ok(
+    !mixedRangeHtml.includes(" + "),
+    "mixed range summary totals should avoid equation-like plus signs",
+  );
+  assert.ok(
+    mixedRangeHtml.includes('aria-label="TRY 75.00, USD 12.50"'),
+    "mixed range summary totals should expose a readable comma-separated label",
+  );
+  assert.equal(
+    renderRangeSummaryTotal({ TRY: 75 }),
+    "TRY 75.00",
+    "single range summary total should stay compact",
+  );
+  assert.equal(
+    renderRangeSummaryTotal({}),
+    "TRY 0.00",
+    "empty range summary total should keep the current TRY fallback",
+  );
 })();
 `;
 

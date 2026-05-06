@@ -817,7 +817,7 @@ function renderOverviewRangeControls() {
 function renderOverviewRangeSummary(breakdownRows, rangeState) {
   const summary = getRangeSummaryFromRows(breakdownRows);
 
-  overviewRangeTotal.textContent = formatRangeSummaryTotal(summary.currencyTotals);
+  overviewRangeTotal.innerHTML = renderRangeSummaryTotal(summary.currencyTotals);
   overviewRangeCount.textContent = String(summary.occurrenceCount);
   overviewRangeDates.textContent = rangeState.isValid
     ? `${formatDate(rangeState.rangeStart)} to ${formatDate(rangeState.rangeEnd)}`
@@ -1087,6 +1087,21 @@ function getRangeSummaryFromRows(breakdownRows) {
 
 function formatRangeSummaryTotal(currencyTotals) {
   return formatCurrencyBreakdown(currencyTotals) || "TRY 0.00";
+}
+
+function renderRangeSummaryTotal(currencyTotals) {
+  const entries = Object.entries(currencyTotals);
+
+  if (!entries.length) {
+    return "TRY 0.00";
+  }
+
+  if (entries.length === 1) {
+    const [currency, total] = entries[0];
+    return escapeHtml(formatCurrencyAmount(currency, total));
+  }
+
+  return renderCurrencyTotalChips(currencyTotals);
 }
 
 function getSpendingBreakdownByItem(subscriptionRecords) {
@@ -2071,13 +2086,7 @@ function renderDueSoonTotal(upcomingPayments) {
     return escapeHtml(formatCurrencyAmount(currency, total));
   }
 
-  return `
-    <span class="summary-total-chips" aria-label="${escapeHtml(formatCurrencyList(totalByCurrency))}">
-      ${entries.map(([currency, total]) => (
-        `<span class="summary-total-chip">${escapeHtml(formatCurrencyAmount(currency, total))}</span>`
-      )).join("")}
-    </span>
-  `;
+  return renderCurrencyTotalChips(totalByCurrency);
 }
 
 function getUpcomingTotalsByCurrency(upcomingPayments) {
@@ -2096,6 +2105,16 @@ function formatCurrencyList(currencyTotals) {
   return Object.entries(currencyTotals)
     .map(([currency, total]) => formatCurrencyAmount(currency, total))
     .join(", ");
+}
+
+function renderCurrencyTotalChips(currencyTotals) {
+  return `
+    <span class="summary-total-chips" aria-label="${escapeHtml(formatCurrencyList(currencyTotals))}">
+      ${Object.entries(currencyTotals).map(([currency, total]) => (
+        `<span class="summary-total-chip">${escapeHtml(formatCurrencyAmount(currency, total))}</span>`
+      )).join("")}
+    </span>
+  `;
 }
 
 function getRelativeStatus(date) {

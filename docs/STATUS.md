@@ -18,29 +18,30 @@
 ## Workflow State
 
 - **Mode**: implementation
-- **Active feature**: v1.12 grouped multi-currency totals, Pass 2
+- **Active feature**: v1.12 grouped multi-currency totals, Pass 3
 - **Feature file**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: Polish header summary Due soon and Active cards.
-- **Waiting on**: User review of local v1.12.2 Pass 2 implementation.
+- **Current step**: Polish Selected Range Actual range grouped totals.
+- **Waiting on**: User review of local v1.12.3 final polish implementation.
 - **Blockers**: none
-- **Next recommended step**: Review v1.12.2 locally, then decide whether additional v1.12 QA/polish is needed before the final bundled push.
-- **Recent touch points**: v1.12.2 polishes the header summary cards: mixed-currency Due soon totals render as grouped chips instead of an equation-like string, and Active count gains a small descriptive label. No exchange rates, converted grand totals, storage changes, backup changes, or Range behavior changes were introduced. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, PWA continuity, and local-only data behavior.
+- **Next recommended step**: Review v1.12.3 locally, then push the bundled v1.12 commits if no blocker appears.
+- **Recent touch points**: v1.12.3 polishes the Selected Range Actual range total: mixed-currency range totals render as grouped chips instead of an equation-like string while single-currency totals stay compact. No calculation, storage, backup, recurrence, Range date, or Range sub-mode behavior changes were introduced. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, PWA continuity, and local-only data behavior.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.12 Pass 2 implementation
-- **Summary**: Polish the top summary cards so Due soon grouped currencies read as chips and Active count feels intentional while preserving existing calculations and behavior.
+- **Handoff type**: v1.12 final polish implementation
+- **Summary**: Polish the Selected Range Actual range grouped total presentation while preserving existing calculations and behavior.
 - **Where full handoff lives**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.12.3 final polish locally. Selected Range Actual range mixed-currency totals now render as compact grouped chips without plus signs, single-currency Actual range totals remain compact, and app shell/cache references moved to v1.12.3. Range calculations, Range dates/sub-modes, breakdown rows, storage, backup, and local-only behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.2 Pass 2 locally. Header Due soon totals now show mixed currencies as compact grouped chips without plus signs, single-currency due-soon totals remain compact, and the Active summary count includes a small `tracked records` detail. App shell/cache references moved to v1.12.2; calculations, storage, backup, Range, and local-only behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.1 Pass 1 locally. Spending Overview Monthly and Yearly totals now display grouped currency totals, single-currency totals stay compact, and app shell/cache references moved to v1.12.1. Backup format/parser/restore behavior, storage keys/schema, Range date/sub-mode behavior, upcoming totals, and local-only behavior remain unchanged.
 - 2026-05-06: Completed v1.11.7 final accessibility/QA audit and docs wrap-up as a docs-only pass. Live v1.11.6 smoke passed for load, local-only notice reopen, add-form validation/cancel, collapsibles with refresh reset, Range, backup controls, and app console errors; keyboard Tab focus reporting was inconclusive in automation and remains a small human spot-check, not a runtime blocker.

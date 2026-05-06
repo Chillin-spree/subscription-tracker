@@ -6,9 +6,10 @@ Show totals grouped by each subscription's entered currency anywhere a single mi
 
 ## Current State
 
-- Runtime/app shell: `v1.12.2`, local implementation pending user review.
+- Runtime/app shell: `v1.12.3`, local implementation pending user review.
 - Pass 1 updates Spending Overview Monthly and Yearly totals to display currency groups instead of `Multiple currencies`.
 - Pass 2 polishes the header summary cards so mixed-currency Due soon totals display as grouped chips instead of a plus-joined string.
+- Pass 3 polishes the Selected Range Actual range summary so mixed-currency totals display as grouped chips.
 - Existing upcoming due-soon totals, selected Range summary, and breakdown rows already group by currency.
 - Backup format/parser/restore behavior, localStorage keys/schema, Range date/sub-mode behavior, and local-only behavior are unchanged.
 
@@ -38,6 +39,12 @@ Show totals grouped by each subscription's entered currency anywhere a single mi
 - Keep due-soon calculations and active count meaning unchanged.
 - Bump app shell/cache references to `v1.12.2`.
 
+## Pass 3 Scope
+
+- Render mixed-currency Selected Range Actual range totals as compact grouped chips while keeping single-currency totals compact.
+- Keep Range calculations, date filtering, sub-modes, and breakdown rows unchanged.
+- Bump app shell/cache references to `v1.12.3`.
+
 ## Not In This Track
 
 - Exchange rates, conversion, or base currency settings.
@@ -57,6 +64,7 @@ Show totals grouped by each subscription's entered currency anywhere a single mi
 - [x] App shell/cache references are bumped for runtime asset changes.
 - [x] Header Due soon mixed-currency totals avoid plus signs and do not imply conversion.
 - [x] Active summary count meaning remains unchanged.
+- [x] Selected Range Actual range mixed-currency totals avoid plus signs and do not imply conversion.
 
 ## QA Notes
 
@@ -68,3 +76,4 @@ Show totals grouped by each subscription's entered currency anywhere a single mi
 - 2026-05-06: Completed Pass 0 investigation. The main missing behavior was Spending Overview Monthly/Yearly totals; upcoming due-soon totals, selected Range summary, and breakdown rows already grouped currency totals.
 - 2026-05-06: Implemented v1.12.1 Pass 1 locally. Monthly and Yearly overview totals now use grouped currency totals with line breaks for mixed currencies while preserving single-currency compact display and existing Range/backup/storage behavior.
 - 2026-05-06: Implemented v1.12.2 Pass 2 locally. Header Due soon totals now render mixed currencies as compact grouped chips, single-currency due-soon totals stay compact, and the Active summary card includes a small descriptive detail without changing the count.
+- 2026-05-06: Implemented v1.12.3 final polish locally. Selected Range Actual range totals now render mixed currencies as compact grouped chips, single-currency Actual range totals stay compact, and Range calculations/sub-modes/breakdown rows remain unchanged.
