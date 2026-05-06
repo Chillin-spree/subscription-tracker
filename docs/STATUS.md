@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 Pass 3 README refresh is implemented and verified locally.
+- **Current step**: v1.14 Pass 4 v1.13 rename-doc consolidation is implemented and verified locally.
 - **Waiting on**: User review before any push.
 - **Blockers**: none
-- **Next recommended step**: Review the local Pass 3 README refresh commit; do not push until explicitly approved.
-- **Recent touch points**: Local `main` is ahead of `origin/main` by two v1.14 commits. Pass 3 refreshes `README.md` into a polished finished-product overview without adding screenshots, media, new feature promises, or runtime changes.
+- **Next recommended step**: Review the local Pass 4 docs consolidation commit; do not push until explicitly approved.
+- **Recent touch points**: Local `main` is ahead of `origin/main` by three v1.14 commits. Pass 4 consolidates the v1.13 rename-track docs by making `bills-v1.13-app-rename.md` the summary and keeping v1.13.1/v1.13.2 as focused addenda.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final-build readiness Pass 3
-- **Summary**: Refresh `README.md` as a public-facing finished-product overview without screenshots or new feature promises.
+- **Handoff type**: v1.14 final-build readiness Pass 4
+- **Summary**: Consolidate duplicated v1.13 rename-track documentation while preserving patch-specific history and compatibility rationale.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented and verified v1.14 Pass 4 v1.13 rename-doc consolidation locally. `bills-v1.13-app-rename.md` is now the consolidated v1.13 rename-track summary, and the v1.13.1 GitHub rename and v1.13.2 final cleanup docs are focused addenda preserving unique patch scope, acceptance checks, compatibility rationale, and historical facts. No runtime files changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 3 README refresh locally. The README now presents Bills as a static, phone-first, local-only PWA with live link, principles, current capabilities, explicit non-goals, text-only backup/restore, offline/PWA behavior, development commands, project structure, release status, and documentation links. No runtime files, screenshots, icons, media, or new feature promises were added.
 - 2026-05-06: Implemented v1.14 Pass 2 backlog/docs integrity cleanup locally. The pass removes future-feature roadmap noise from `docs/BACKLOG.md`, keeps final-build readiness items only, preserves compatibility warnings for storage keys, historical backup headers, old cache cleanup, local-only/manual-only behavior, PWA continuity, Range, and multi-currency behavior, and does not change runtime files.
 - 2026-05-06: Started v1.14 final-build readiness locally from pushed v1.13.2. Scope is audit-first with no new features, no workflow redesign, no storage/schema/key changes, no CSV/JSON backup/restore, and no PWA contract changes. Found and fixed only obvious current-facing rename residue where billing-date labels said `Bills` instead of `Billed`; app shell/cache references moved to `v1.14.0`.

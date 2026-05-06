@@ -1,42 +1,30 @@
-# Bills v1.13.1 GitHub Rename
+# Bills v1.13.1 GitHub Rename Addendum
 
 ## Summary
 
-Moved the GitHub-facing project identity from Subscription Tracker to Bills after the v1.13 runtime app rename.
+v1.13.1 moved the GitHub-facing project identity from Subscription Tracker to Bills after the v1.13 runtime app rename.
 
-## Current State
+The consolidated rename-track summary lives in `docs/features/bills-v1.13-app-rename.md`.
 
-- Runtime/app shell remained `v1.13.0` during this pass.
-- App/browser/PWA identity already says Bills.
-- Canonical GitHub repo moved from `Chillin-spree/subscription-tracker` to `Chillin-spree/bills`.
-- Canonical live GitHub Pages URL moved from `https://chillin-spree.github.io/subscription-tracker/` to `https://chillin-spree.github.io/bills/`.
-- The old repo and Pages path are historical references.
+## Unique Patch Scope
 
-## Scope
-
-- Rename the GitHub repository to `Chillin-spree/bills`.
+- Rename the GitHub repository from `Chillin-spree/subscription-tracker` to `Chillin-spree/bills`.
 - Update local `origin` to `https://github.com/Chillin-spree/bills.git`.
+- Move canonical live GitHub Pages URL from `https://chillin-spree.github.io/subscription-tracker/` to `https://chillin-spree.github.io/bills/`.
 - Update current canonical docs to use `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`.
 - Verify live Pages under `/bills/`.
 
-## Not In This Pass
+## Preserved Contracts
 
-- Runtime UI terminology changes.
-- localStorage key or schema migration.
-- Backup header/parser/restore behavior changes.
-- Range behavior changes.
-- Multi-currency behavior changes.
-- Service worker file rename or manifest path changes.
-- CSV or JSON backup/restore.
-
-## Compatibility Guardrails
-
-- Keep manifest `start_url: "./"` and `scope: "./"`.
-- Keep root-level `service-worker.js`.
-- Keep relative app shell asset paths so Pages works under `/bills/`.
-- Keep `subscription-tracker-v1-*` localStorage keys for existing saved data.
-- Keep historical `Subscription Tracker Backup` restore support.
-- Keep ordinary UI terminology such as `Subscriptions` and `Add subscription`.
+- Runtime/app shell remained `v1.13.0` during this pass.
+- App/browser/PWA identity already said Bills.
+- Manifest `start_url` and `scope` remained `"./"`.
+- Root-level `service-worker.js` remained in place.
+- App shell paths stayed relative so Pages works under `/bills/`.
+- `subscription-tracker-v1-*` localStorage keys remained unchanged.
+- Historical `Subscription Tracker Backup` restore support remained unchanged.
+- Ordinary UI terminology such as `Subscriptions` and `Add subscription` remained unchanged.
+- Range behavior, multi-currency behavior, backup parser behavior, and CSV/JSON absence remained unchanged.
 
 ## Acceptance
 

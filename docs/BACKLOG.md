@@ -27,7 +27,6 @@
 - `bills-small-ui-polish`: Track only obvious low-risk visual or copy fixes found during final verification; no workflow redesign.
 - `bills-docs-integrity`: Keep `README.md`, `docs/STATUS.md`, `docs/VISION.md`, `docs/DECISIONS.md`, `docs/HANDOFFS.md`, `docs/BUGS.md`, and `docs/features/*` aligned with current Bills identity and final-build scope.
 - `bills-rename-residue-cleanup`: Remove only unintended current-facing old-name residue. Preserve compatibility and historical references.
-- `bills-version-doc-consolidation`: Later, consider consolidating duplicated v1.13, v1.13.1, and v1.13.2 rename docs without deleting historical release facts.
 - `bills-final-release-verification`: Before any v1.14 push, verify local-only behavior, PWA continuity, backup compatibility, Range behavior, Range sub-modes, multi-currency totals, and clean git state.
 
 ## Compatibility Warnings

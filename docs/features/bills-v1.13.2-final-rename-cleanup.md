@@ -1,12 +1,22 @@
-# Bills v1.13.2 Final Rename Cleanup
+# Bills v1.13.2 Final Rename Cleanup Addendum
 
 ## Summary
 
-Complete the safe remaining rename cleanup after v1.13 app/backup identity and v1.13.1 GitHub repo/Pages identity moved to Bills.
+v1.13.2 completed the safe remaining rename cleanup after v1.13 app/backup identity and v1.13.1 GitHub repo/Pages identity moved to Bills.
+
+The consolidated rename-track summary lives in `docs/features/bills-v1.13-app-rename.md`.
+
+## Unique Patch Scope
+
+- Move app shell references to `app.js?v=1.13.2`.
+- Move service worker cache namespace to `bills-v1.13.2-static`.
+- Keep service worker cleanup for old `subscription-tracker-*` app-shell caches.
+- Reconfirm current canonical docs point to `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`.
+- Reconfirm `subscription-tracker-v1-*` localStorage keys are legacy compatibility keys and should not be migrated without a future explicit backward-compatible migration plan.
 
 ## Inventory Classification
 
-- Safe to rename now: service worker cache namespace, versioned app shell references, current status docs, v1.13.1 completion notes, and current canonical project docs.
+- Safe to rename in this patch: service worker cache namespace, versioned app shell references, current status docs, v1.13.1 completion notes, and current canonical project docs.
 - Must remain for compatibility: `subscription-tracker-v1-*` localStorage keys, historical `Subscription Tracker Backup` parser support, backup validation copy that names both accepted headers, and storage verification fixtures.
 - Historical documentation/reference, keep unchanged: older `docs/features/subscription-tracker-*` release docs, old cache names in historical release notes, former repo/Pages URLs when describing old releases, and historical CSV/JSON decisions.
 - Ordinary UI/domain terminology, keep unchanged: `Subscriptions`, `Add subscription`, `Subscription name`, and subscription-related workflow language.
@@ -22,25 +32,7 @@ Keep existing localStorage keys unchanged:
 - `subscription-tracker-v1-category-presets`
 - `subscription-tracker-v1-local-only-notice-acknowledged`
 
-These are legacy compatibility keys and remain part of the durable local data contract. This pass does not add `bills-v1-*` storage keys, does not migrate stored records, and does not delete old keys.
-
-## Runtime Cleanup
-
-- App shell references move to `app.js?v=1.13.2`.
-- Service worker cache namespace moves to `bills-v1.13.2-static`.
-- Service worker activation continues clearing old `subscription-tracker-*` caches so users do not keep stale pre-rename app shells.
-- Service worker file path, manifest path, manifest `start_url`, and manifest `scope` remain unchanged.
-
-## Not In This Pass
-
-- App UI terminology changes.
-- localStorage key/schema migration.
-- Backup header/parser/restore behavior changes.
-- Range behavior changes.
-- Multi-currency behavior changes.
-- GitHub repo or Pages URL changes beyond current docs.
-- CSV or JSON backup/restore.
-- Cloud sync, accounts, analytics, payments, import, OCR, notifications, paid services, or remote storage.
+These are legacy compatibility keys and remain part of the durable local data contract. This pass did not add `bills-v1-*` storage keys, migrate stored records, or delete old keys.
 
 ## Acceptance
 

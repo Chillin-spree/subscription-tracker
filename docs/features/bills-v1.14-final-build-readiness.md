@@ -18,6 +18,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 - Audit app and PWA metadata for current Bills identity and stable PWA contracts.
 - Trim backlog content so v1.14 reads as final-build readiness work, not a future feature roadmap.
 - Refresh the README into a polished public-facing finished-product overview without screenshots, media assets, or new feature promises.
+- Consolidate duplicated v1.13 rename-track documentation where it improves clarity while preserving patch-specific release history.
 - Clean only obvious low-risk current-facing residue.
 
 ## Non-Goals
@@ -44,6 +45,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 - Updated status and README shell-version wording to reflect the local v1.14.0 readiness pass.
 - Pass 2 trims `docs/BACKLOG.md` to final-build readiness work only and preserves compatibility warnings instead of parked future-feature ideas.
 - Pass 3 refreshes `README.md` structure and presentation while preserving local-only, backup, PWA, compatibility, and no-new-features boundaries.
+- Pass 4 makes `docs/features/bills-v1.13-app-rename.md` the consolidated v1.13 rename-track summary and keeps v1.13.1/v1.13.2 docs as focused addenda.
 
 ## QA Checklist
 
@@ -63,11 +65,11 @@ Low. The runtime change is copy-only and the cache/app-shell bump is required to
 
 ## Release History
 
+- 2026-05-06: Implemented Pass 4 v1.13 rename-doc consolidation. The main v1.13 rename doc now holds the final v1.13.2 state, compatibility guardrails, intentional legacy references, pass history, acceptance, and verification notes. The v1.13.1 and v1.13.2 docs now preserve patch-specific scope and checks without repeating the whole rename story. Verification: `git diff --check`, `git status --short`, and reference search for the consolidated docs.
 - 2026-05-06: Implemented Pass 3 README refresh. The README now presents the live app, local-only principles, current capabilities, explicit non-goals, text-only backup/restore, offline/PWA behavior, development usage, project structure, current status, and documentation links. No runtime files, screenshots, icons, media, or new feature promises were added. Verification: `git diff --check` and `git status --short`.
 - 2026-05-06: Implemented Pass 2 backlog/docs integrity cleanup. The backlog now focuses on README/public presentation, icon/brand asset review, small UI polish/fixes, docs integrity, rename residue cleanup, version-doc consolidation, final release verification, and explicit final-build boundaries. Verification: `git diff --check` and `git status --short`.
 - 2026-05-06: Implemented local v1.14.0 readiness cleanup. Old-name audit found no unsafe compatibility changes needed. Fixed the current-facing billing-date label typo, updated app shell/cache references, and verified syntax, backup, storage, import/render, Range, grouped-currency totals, diff whitespace, and git status.
 
 ## Open Follow-Ups
 
-- Consider a later README/public-presentation pass for final-build wording.
-- Consider a later docs consolidation pass for the duplicated v1.13, v1.13.1, and v1.13.2 rename records.
+- None currently.
