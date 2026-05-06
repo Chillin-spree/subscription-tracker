@@ -171,6 +171,28 @@ const verificationSource = `
     "TRY 1252.00 + USD 10.00",
     "existing breakdown formatting should remain unchanged",
   );
+
+  const mixedDueSoonHtml = renderDueSoonTotal([
+    { subscription: records[1] },
+    { subscription: records[2] },
+  ]);
+  assert.ok(
+    mixedDueSoonHtml.includes('class="summary-total-chip"'),
+    "mixed due-soon totals should render grouped chip markup",
+  );
+  assert.ok(
+    !mixedDueSoonHtml.includes(" + "),
+    "mixed due-soon totals should avoid equation-like plus signs",
+  );
+  assert.ok(
+    mixedDueSoonHtml.includes('aria-label="USD 120.00, TRY 12.00"'),
+    "mixed due-soon totals should expose a readable comma-separated label",
+  );
+  assert.equal(
+    renderDueSoonTotal([{ subscription: { ...records[2], currency: "" } }]),
+    "TRY 12.00",
+    "single due-soon total should stay compact and keep blank currency fallback",
+  );
 })();
 `;
 

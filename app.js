@@ -866,7 +866,7 @@ function renderUpcomingPayments() {
 
   upcomingEmpty.hidden = upcomingPayments.length > 0;
   upcomingList.innerHTML = upcomingPayments.map(renderUpcomingPayment).join("");
-  dueSoonTotal.textContent = formatTotal(upcomingPayments);
+  dueSoonTotal.innerHTML = renderDueSoonTotal(upcomingPayments);
 }
 
 function renderUpcomingPayment({ subscription, nextPaymentDate }) {
@@ -2056,6 +2056,46 @@ function formatTotal(upcomingPayments) {
   return entries
     .map(([currency, total]) => `${currency} ${total.toFixed(2)}`)
     .join(" + ");
+}
+
+function renderDueSoonTotal(upcomingPayments) {
+  const totalByCurrency = getUpcomingTotalsByCurrency(upcomingPayments);
+  const entries = Object.entries(totalByCurrency);
+
+  if (!entries.length) {
+    return "TRY 0";
+  }
+
+  if (entries.length === 1) {
+    const [currency, total] = entries[0];
+    return escapeHtml(formatCurrencyAmount(currency, total));
+  }
+
+  return `
+    <span class="summary-total-chips" aria-label="${escapeHtml(formatCurrencyList(totalByCurrency))}">
+      ${entries.map(([currency, total]) => (
+        `<span class="summary-total-chip">${escapeHtml(formatCurrencyAmount(currency, total))}</span>`
+      )).join("")}
+    </span>
+  `;
+}
+
+function getUpcomingTotalsByCurrency(upcomingPayments) {
+  return upcomingPayments.reduce((totals, { subscription }) => {
+    const currency = subscription.currency || "TRY";
+    totals[currency] = (totals[currency] || 0) + Number(subscription.price || 0);
+    return totals;
+  }, {});
+}
+
+function formatCurrencyAmount(currency, total) {
+  return `${currency} ${total.toFixed(2)}`;
+}
+
+function formatCurrencyList(currencyTotals) {
+  return Object.entries(currencyTotals)
+    .map(([currency, total]) => formatCurrencyAmount(currency, total))
+    .join(", ");
 }
 
 function getRelativeStatus(date) {
