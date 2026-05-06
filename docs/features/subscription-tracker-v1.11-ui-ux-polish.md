@@ -9,8 +9,8 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 - Repo: `Chillin-spree/subscription-tracker`
 - Branch baseline: `main`
 - Planning baseline commit: `8088004412544174e16912affade84a77c0463c8` (`Document v1.10.x wrap-up roadmap`)
-- Current runtime/app shell: `v1.11.6` locally after the final microcopy and empty-state polish pass.
-- Current stable state: v1.10.x is the final/simple stabilization line. Runtime work should stop unless a real bug appears.
+- Current runtime/app shell: `v1.11.6`, pushed and live.
+- Current stable state: v1.11 UI/UX polish is complete through v1.11.6. Runtime work should stop unless a real bug appears.
 - Current backup model: readable `Subscription Tracker Backup` v1 plain text copy/download and pasted-text preview/confirmed restore only.
 - Current storage model: local browser/device storage only through existing localStorage keys.
 
@@ -20,7 +20,6 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 
 - Header shows `Next 7 days`, app title, and a rounded-square add button.
 - Summary strip shows due-soon total and active subscription count.
-- A lightweight minimal-design note stays near the top.
 - A bottom `Local-only privacy details` control reopens the local-only notice.
 - The minimal-design sentence appears below that footer privacy control.
 - The local-only notice appears on first run until acknowledged.
@@ -48,7 +47,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 
 - Shows created, updated, and deleted activity entries.
 - Includes a compact empty state.
-- Currently remains visible as a full panel even though it is a lower-frequency review surface.
+- Uses the same non-persisted collapse pattern as Subscriptions and Backup.
 
 ### Backup
 
@@ -56,6 +55,7 @@ Plan a focused v1.11 UI/UX polish track for the current static, phone-first Subs
 - Provides plain text backup download/copy actions when data exists.
 - Provides a paste textarea, preview action, local validation result, and restore button only after valid preview.
 - Explains that restore replaces subscriptions while keeping activity log and saved presets.
+- Uses the same non-persisted collapse pattern as Subscriptions and Activity.
 
 ### Add / Edit Dialog
 
@@ -191,20 +191,13 @@ Risk: Medium overall because later passes touch visible UI, backup presentation,
    - Preserve all selectors, form fields, storage keys, backup behavior, Range behavior, overview calculations, and PWA continuity.
    - Not in this pass: backup workflow semantics, schema changes, new features, CSV/JSON, remote storage.
 
-8. v1.11.7 backup workflow polish
-   - Improve clarity of copy/download, pasted preview, restore confirmation context, and local-only messaging.
-   - Preserve exact plain text format/parser/restore behavior.
-   - Not in this pass: CSV/JSON, merge restore, backup format changes, remote storage.
+8. v1.11.7 final accessibility/QA audit and docs wrap-up
+   - Implemented as a docs-only pass.
+   - Audited first-run notice semantics, add/edit form guidance, collapsible section ARIA, footer privacy affordance, live regions, touch targets, empty states, and live GitHub Pages behavior.
+   - No clear runtime accessibility/QA bug was found, so app shell/cache references remain `v1.11.6`.
+   - Not in this pass: new runtime work, backup format changes, spending calculation changes, schema/storage changes, CSV/JSON, remote storage.
 
-9. v1.11.8 spending overview polish
-   - Clarify normalized totals versus actual selected-range charges.
-   - Preserve current calculations, top-level normalized overview behavior, Range date behavior, and Range sub-mode behavior.
-   - Not in this pass: multi-currency grouped totals; that belongs to v1.12 planning.
-
-10. v1.11.9 accessibility/final QA
-   - Run keyboard, focus, contrast, aria/live-region, dialog, collapse, backup, and PWA continuity checks.
-   - Sweep docs and release notes after implementation passes.
-   - Not in this pass: new feature scope beyond final QA fixes.
+No further v1.11 runtime passes are recommended unless a real bug appears. Backup workflow semantics and spending overview calculation changes remain outside this completed UI/UX polish track; larger product changes should start as separate planning tracks.
 
 Optional separate planning track:
 
@@ -213,39 +206,31 @@ Optional separate planning track:
   - Preserve same live URL, installed PWA continuity, local data, localStorage keys, and text backup compatibility.
   - If a future backup header changes, parser compatibility must support the historical `Subscription Tracker Backup` header.
 
-## Recommended First Implementation Pass
+## Recommended Next Step
 
-The next Codex prompt after v1.11.0 should target only v1.11.1 collapsible Activity and Backup sections, non-persisted.
-
-Suggested scope:
-
-- Edit only the files needed for the collapsible Activity and Backup behavior.
-- Preserve all Activity and Backup content and behavior.
-- Do not persist collapsed state.
-- Do not change text backup format/parser/restore behavior.
-- Do not change localStorage keys, Range behavior, spending calculations, or top-level overview behavior.
-- Bump app shell/cache versions if runtime assets change.
+Stop v1.11 runtime work unless a real bug appears. Future product work should start as a separate feature track, with Bills rename compatibility and v1.12 grouped multi-currency totals remaining the most likely planning candidates.
 
 ## QA Checklist
 
-- [ ] v1.11.0 docs-only pass changes only Markdown documentation.
-- [ ] `git diff --check` passes.
-- [ ] Runtime files remain unchanged in v1.11.0.
+- [x] v1.11.0 docs-only pass changed only Markdown documentation.
+- [x] `git diff --check` passes for final v1.11.7 wrap-up.
+- [x] Runtime files remain unchanged in v1.11.0.
 - [x] v1.11.1 verifies Activity and Backup collapse/expand by pointer activation.
-- [ ] v1.11.1 verifies Activity and Backup collapse/expand by keyboard activation in a human browser pass.
+- [x] v1.11.7 verifies Subscriptions, Activity, and Backup collapse/expand by pointer activation on live GitHub Pages.
+- [ ] Keyboard Tab focus reachability remains a small human spot-check because browser automation did not expose active-focus markers during the final audit.
 - [x] v1.11.1 verifies collapsed state is not persisted across refresh.
 - [x] v1.11.3 adds non-persisted Subscriptions collapse/expand behavior without changing list rendering or add/edit/delete behavior.
 - [x] v1.11.4 uses only the new local-only notice acknowledgment key for notice persistence.
 - [x] v1.11.5 preserves form field names/data attributes while improving visible labels and helper text.
 - [x] v1.11.6 keeps empty-state/privacy-link polish behavior-preserving.
-- [ ] Backup copy/download/preview/confirmed restore behavior remains unchanged.
-- [ ] Plain text backup format and parser remain unchanged.
-- [ ] LocalStorage keys remain unchanged.
-- [ ] Range date and Range sub-mode behavior remain unchanged.
-- [ ] Top-level normalized overview behavior remains unchanged.
-- [ ] PWA installed/home-screen continuity is preserved.
+- [x] Backup copy/download/preview/confirmed restore behavior remains unchanged by v1.11 UI polish.
+- [x] Plain text backup format and parser remain unchanged.
+- [x] LocalStorage keys remain unchanged except the approved local-only notice acknowledgment key.
+- [x] Range date and Range sub-mode behavior remain unchanged.
+- [x] Top-level normalized overview behavior remains unchanged.
+- [x] PWA installed/home-screen continuity is preserved.
 - [x] v1.11.2 keeps visual changes CSS-first and behavior-preserving.
-- [ ] Accessibility/focus/contrast pass completed before final v1.11 release wrap-up.
+- [x] Accessibility/focus/contrast audit completed before final v1.11 release wrap-up; no runtime blocker found.
 
 ## Release / History
 
@@ -257,3 +242,5 @@ Suggested scope:
 - 2026-05-05: Implemented v1.11.5 form/input clarity locally. Add/edit form labels and helper text now clarify manual entry, price/currency expectations, optional fields, and payment-label safety without changing field names, data attributes, validation rules, storage schema, or preset wiring. The `Local-only privacy` reopen control moved to the bottom of the main app shell while preserving first-run notice behavior. Runtime app shell/cache moved to `v1.11.5`.
 - 2026-05-05: Implemented v1.11.6 final microcopy locally. Empty states now use concise next-step wording, the overview no-data copy avoids currency conversion implications, Activity and Backup empty states clarify what appears after records exist, and the bottom privacy reopen control now reads `Local-only privacy details` with a subtle pill affordance. Runtime app shell/cache moved to `v1.11.6`.
 - 2026-05-05: Implemented v1.11.6 footer copy follow-up locally. The minimal-design sentence moved from the top area to the footer below `Local-only privacy details`, and the privacy control keeps its pill styling without an underline. Runtime app shell/cache references remain `v1.11.6`.
+- 2026-05-06: Pushed v1.11.5 and v1.11.6 through commit `719e6b579da2635172b79cf8bc8fddababfd10a8` (`Center v1.11.6 footer privacy link`). GitHub Pages deployment succeeded, live assets reference `app.js?v=1.11.6`, the service worker uses `subscription-tracker-v1.11.6-static`, CSV/JSON controls remain absent, and live smoke passed for load, local-only notice, add form open/cancel, collapsibles, Range, backup controls, and console errors.
+- 2026-05-06: Completed v1.11.7 final accessibility/QA audit and docs wrap-up. No runtime accessibility/QA bug required a fix, so no app shell/cache bump was needed. Audit notes: first-run notice has dialog semantics with title/description, acknowledgment remains the only close path and keeps the app usable if localStorage writes fail, add/edit dialog labels/helper/safety copy remain clear, collapsibles keep `aria-expanded`/`aria-controls` and reset expanded after refresh, footer privacy control is native-button clickable, status messages use polite live regions, and global focus-visible styles remain in place. Browser automation could not expose active-focus markers for a full Tab-order claim, so keyboard reachability remains a human spot-check rather than a v1.11 runtime blocker.

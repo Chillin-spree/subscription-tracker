@@ -31,7 +31,7 @@
 
 <!-- v1.10.x is the final/simple stabilization line. Do not reopen runtime work unless a real bug appears. -->
 
-<!-- Active work lives in docs/STATUS.md. v1.11 UI/UX polish is active and tracked in docs/features/subscription-tracker-v1.11-ui-ux-polish.md. -->
+<!-- v1.11 UI/UX polish is complete through v1.11.6. Do not reopen v1.11 runtime work unless a real bug appears. -->
 
 ### Bills Rename Compatibility
 
@@ -46,7 +46,6 @@
 
 - `subscription-tracker-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
 - `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
-- `subscription-tracker-local-only-privacy-modal`: Turn the local-only privacy message into an accessible modal or detail view using the current wording as the source of truth.
 - `subscription-tracker-general-customization`: Explore user customization for labels, display preferences, categories, and summary views.
 - `subscription-tracker-empty-wallet-icon`: Consider an empty wallet icon as part of any future visual identity change; not decided.
 - `subscription-tracker-cloud-sync`: Sync records across devices.
