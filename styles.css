@@ -83,13 +83,34 @@ textarea {
   min-width: 0;
 }
 
-.header-brand-icon {
+.header-brand-button {
   width: clamp(52px, 18vw, 72px);
   aspect-ratio: 1;
   justify-self: center;
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.header-brand-button:hover {
+  transform: translateY(-1px);
+}
+
+.header-brand-icon {
+  display: block;
+  width: clamp(52px, 18vw, 72px);
+  aspect-ratio: 1;
   border-radius: 20px;
   box-shadow: 0 12px 24px rgba(32, 73, 61, 0.16);
   object-fit: cover;
+}
+
+.header-brand-button:hover .header-brand-icon,
+.header-brand-button:focus-visible .header-brand-icon {
+  box-shadow: 0 14px 26px rgba(32, 73, 61, 0.22);
 }
 
 .eyebrow {
@@ -264,12 +285,21 @@ h2 {
   text-align: center;
 }
 
+.app-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
 .app-footer-note p {
   max-width: 32rem;
   margin: 0;
 }
 
 .note-link {
+  display: inline-flex;
+  align-items: center;
   min-height: 44px;
   justify-self: center;
   border: 1px solid var(--line);
@@ -282,6 +312,10 @@ h2 {
   font-weight: 760;
   padding: 0 13px;
   text-align: left;
+}
+
+.footer-link {
+  text-decoration: none;
 }
 
 .panel {
@@ -1027,6 +1061,7 @@ h2 {
     gap: 10px;
   }
 
+  .header-brand-button,
   .header-brand-icon {
     width: 48px;
     border-radius: 16px;

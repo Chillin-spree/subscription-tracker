@@ -19,7 +19,9 @@
         <div class="app-title-block">
           <h1 id="app-title">Bills</h1>
         </div>
-        <img class="header-brand-icon" src="icons/icon-192.png" alt="" aria-hidden="true">
+        <button class="header-brand-button" type="button" aria-label="Open local-only privacy details" data-open-local-notice>
+          <img class="header-brand-icon" src="icons/icon-192.png" alt="" aria-hidden="true">
+        </button>
         <button class="icon-button" type="button" aria-label="Add subscription" data-open-form>
           +
         </button>
@@ -238,7 +240,10 @@
       <p class="placeholder-note" data-status-message role="status" aria-live="polite"></p>
 
       <div class="app-footer-note">
-        <button class="note-link" type="button" data-open-local-notice>Local-only privacy details</button>
+        <div class="app-footer-actions">
+          <button class="note-link" type="button" data-open-local-notice>Local-only privacy details</button>
+          <a class="note-link footer-link" href="https://github.com/Chillin-spree/bills" target="_blank" rel="noopener noreferrer">View project on GitHub</a>
+        </div>
         <p>Minimal by design: manual records, clear totals, readable backups, and no accounts or sync.</p>
       </div>
     </main>
@@ -406,6 +411,6 @@
       </section>
     </div>
 
-    <script src="app.js?v=1.14.0"></script>
+    <script src="app.js?v=1.14.1"></script>
   </body>
 </html>

@@ -6,9 +6,9 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 
 ## Current Release State
 
-- **Status**: local
-- **Latest pushed release/commit**: v1.13.2 at `116dca5613cd788f623f0ddf02d55b192e40302e`
-- **Runtime/app shell**: `app.js?v=1.14.0`, `bills-v1.14.3-static`
+- **Status**: v1.14.1 patch
+- **Base release/commit**: v1.14 at `1f5efc707dc0a6e41ed0fe13f12f4a140d14299d`
+- **Runtime/app shell**: `app.js?v=1.14.1`, `bills-v1.14.4-static`
 - **Notes**: This pass fixes no product behavior beyond obvious presentation residue.
 
 ## Scope
@@ -52,6 +52,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 - Pass 6 rebuilds icon PNG assets from the replacement source image, removes the old unreferenced favicon SVG, balances the top header grid, removes requested visible helper text, and caps visible Activity entries to 10 without truncating storage.
 - Corrective polish keeps the summary strip as two peer columns at narrow widths and top-aligns summary card contents so `Due soon` and `Active` remain on the same visual level.
 - Final verification audits docs/file integrity, old-name residue, PWA/icon references, backup/storage compatibility, Range behavior, multi-currency behavior, Activity display capping, and release push readiness.
+- v1.14.1 final polish makes the centered header icon open the existing local-only privacy modal and adds a minimal footer link to the GitHub repository.
 
 ## QA Checklist
 
@@ -71,6 +72,7 @@ Low. The runtime change is copy-only and the cache/app-shell bump is required to
 
 ## Release History
 
+- 2026-05-06: Implemented v1.14.1 final polish. The centered header icon is now a keyboard-accessible button that opens the existing local-only privacy details modal, the bottom privacy details control still opens the same modal path, and the footer includes a minimal external GitHub repository link. App shell references moved to `app.js?v=1.14.1` and `bills-v1.14.4-static` because cached shell files changed. No storage, backup, Range, multi-currency, or calculation behavior changed.
 - 2026-05-06: Performed final verification and docs/file-integrity cleanup. Removed stale readiness backlog wording, clarified completed versus active v1.13 decisions, trimmed `docs/STATUS.md` to current v1.14 state, and removed ignored `.DS_Store` local artifacts before rerunning the full verification suite. No app behavior, calculations, storage, backup, Range, Range sub-mode, or multi-currency behavior changed.
 - 2026-05-06: Implemented corrective summary-label alignment. Kept the summary strip as two peer columns at narrow widths, top-aligned summary card contents, and moved the service-worker cache namespace to `bills-v1.14.3-static` because cached CSS changed. No app behavior, calculations, storage, backup, Range, Range sub-mode, or multi-currency behavior changed. Verification: syntax checks, app safety scripts, peer-label source checks, static narrow-width layout review, `git diff --check`, and `git status --short`.
 - 2026-05-06: Implemented Pass 6 header/icon/copy/Activity polish. Rebuilt icon PNG assets from the provided replacement PNG, removed the old unreferenced favicon SVG, centered the header icon with balanced side columns, removed the header `Next 7 days` eyebrow, removed requested multi-currency helper text, capped visible Activity entries to the latest 10 without deleting stored activity log data, and moved the service-worker cache namespace to `bills-v1.14.2-static`. No localStorage key/schema, backup support, Range behavior, Range sub-mode behavior, or multi-currency calculations changed. Verification: syntax checks, manifest and icon reference checks, icon dimension checks, app safety scripts, requested copy searches, Activity cap source check, `git diff --check`, `git status --short`, and static narrow-header layout review.

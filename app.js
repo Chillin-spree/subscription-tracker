@@ -30,7 +30,7 @@ const formTitle = document.querySelector("#form-title");
 const formError = document.querySelector("[data-form-error]");
 const statusMessage = document.querySelector("[data-status-message]");
 const localOnlyNotice = document.querySelector("[data-local-notice]");
-const openLocalNoticeButton = document.querySelector("[data-open-local-notice]");
+const openLocalNoticeButtons = document.querySelectorAll("[data-open-local-notice]");
 const acknowledgeLocalNoticeButton = document.querySelector("[data-acknowledge-local-notice]");
 const subscriptionList = document.querySelector("[data-subscription-list]");
 const emptyState = document.querySelector("[data-empty-state]");
@@ -93,6 +93,7 @@ let validatedPlainTextBackupRecords = null;
 let selectedOverviewMode = "items";
 let selectedOverviewRange = getCurrentMonthRange();
 let selectedOverviewRangeMode = "items";
+let localOnlyNoticeReturnTarget = null;
 
 renderSubscriptions();
 renderActivityLog();
@@ -230,8 +231,10 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", closeForm);
 });
 
-openLocalNoticeButton.addEventListener("click", () => {
-  openLocalOnlyNotice();
+openLocalNoticeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    openLocalOnlyNotice(button);
+  });
 });
 
 acknowledgeLocalNoticeButton.addEventListener("click", acknowledgeLocalOnlyNotice);
@@ -366,7 +369,8 @@ function isLocalOnlyNoticeAcknowledged() {
   }
 }
 
-function openLocalOnlyNotice() {
+function openLocalOnlyNotice(returnTarget = null) {
+  localOnlyNoticeReturnTarget = returnTarget;
   localOnlyNotice.hidden = false;
   acknowledgeLocalNoticeButton.focus();
 }
@@ -379,7 +383,11 @@ function acknowledgeLocalOnlyNotice() {
   }
 
   localOnlyNotice.hidden = true;
-  openLocalNoticeButton.focus({ preventScroll: true });
+  const returnTarget = localOnlyNoticeReturnTarget || openLocalNoticeButtons[0];
+  if (returnTarget && document.contains(returnTarget)) {
+    returnTarget.focus({ preventScroll: true });
+  }
+  localOnlyNoticeReturnTarget = null;
 }
 
 function loadSubscriptions() {

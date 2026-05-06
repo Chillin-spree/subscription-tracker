@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 final verification, docs/file integrity, and release-readiness pass is active.
-- **Waiting on**: Final verification and push/live checks.
+- **Current step**: v1.14.1 final polish patch is implemented for release.
+- **Waiting on**: User review or next requested pass after v1.14.1 release.
 - **Blockers**: none
-- **Next recommended step**: Run the full final verification suite, commit only narrow docs/file-integrity fixes if needed, then push the verified v1.14 stack.
-- **Recent touch points**: Local `main` is ahead of `origin/main` by seven v1.14 commits. The latest corrective pass keeps the summary cards as peer columns at narrow widths and top-aligns their labels so `Due soon` and `Active` sit on the same visual level.
+- **Next recommended step**: Review v1.14.1 live polish and decide whether any follow-up patch is needed.
+- **Recent touch points**: v1.14 is pushed at `1f5efc707dc0a6e41ed0fe13f12f4a140d14299d`. v1.14.1 is a small final polish patch for privacy-modal access and footer project link only.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final verification and release readiness
-- **Summary**: Verify the full local v1.14 stack, clean docs/file-integrity issues if found, and push only after verification passes.
+- **Handoff type**: v1.14.1 final polish patch
+- **Summary**: Make the centered header icon open the existing local-only privacy modal and add a bottom GitHub repository link.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.14.1 final polish patch from clean pushed v1.14. The centered header icon opens the existing local-only privacy modal, the footer includes a minimal GitHub repository link, and app-shell/cache references moved to `app.js?v=1.14.1` and `bills-v1.14.4-static` for changed cached files.
 - 2026-05-06: Started v1.14 final verification, docs/file integrity, and release-readiness pass from clean local `main` ahead of `origin/main` by seven commits. Scope is verification-first; no new product features, storage/schema/key changes, backup behavior changes, Range changes, multi-currency changes, icon changes, or unrelated UI polish.
 - 2026-05-06: Implemented and verified a corrective v1.14 summary-label alignment pass locally. Kept the summary strip as two peer columns at narrow widths and top-aligned summary card contents so `Due soon` and `Active` sit on the same visual level. Service-worker cache namespace moved to `bills-v1.14.3-static` because cached CSS changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 6 header/icon/copy/Activity polish locally. Rebuilt icon assets from the provided replacement PNG, removed the old unreferenced favicon SVG, centered the header icon with balanced side columns, removed the header `Next 7 days` eyebrow, removed requested multi-currency helper text, and capped visible Activity rendering to the latest 10 entries without truncating stored activity data. Service-worker cache namespace moved to `bills-v1.14.2-static` because cached app-shell/icon assets changed.
