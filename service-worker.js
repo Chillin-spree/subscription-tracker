@@ -1,4 +1,4 @@
-const CACHE_NAME = "bills-v1.14.0-static";
+const CACHE_NAME = "bills-v1.14.1-static";
 const CACHE_PREFIXES = ["bills-", "subscription-tracker-"];
 const APP_SHELL_ASSETS = [
   "./",
@@ -10,7 +10,7 @@ const APP_SHELL_ASSETS = [
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/apple-touch-icon.png",
-  "icons/favicon.svg",
+  "icons/favicon.png",
 ];
 
 const APP_SHELL_URLS = new Set(

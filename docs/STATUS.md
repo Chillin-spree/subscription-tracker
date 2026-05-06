@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 Pass 4 v1.13 rename-doc consolidation is implemented and verified locally.
+- **Current step**: v1.14 Pass 5 icon and header branding update is implemented and verified locally.
 - **Waiting on**: User review before any push.
 - **Blockers**: none
-- **Next recommended step**: Review the local Pass 4 docs consolidation commit; do not push until explicitly approved.
-- **Recent touch points**: Local `main` is ahead of `origin/main` by three v1.14 commits. Pass 4 consolidates the v1.13 rename-track docs by making `bills-v1.13-app-rename.md` the summary and keeping v1.13.1/v1.13.2 as focused addenda.
+- **Next recommended step**: Review the local Pass 5 icon/header branding commit; do not push until explicitly approved.
+- **Recent touch points**: Local `main` is ahead of `origin/main` by four v1.14 commits. Pass 5 updates Bills icon assets from the provided source icon and places the icon in the center of the top header without changing app behavior.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final-build readiness Pass 4
-- **Summary**: Consolidate duplicated v1.13 rename-track documentation while preserving patch-specific history and compatibility rationale.
+- **Handoff type**: v1.14 final-build readiness Pass 5
+- **Summary**: Update Bills icon assets and add a centered header icon using the provided source image.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented and verified v1.14 Pass 5 icon/header branding update locally. Rebuilt favicon, PWA, and Apple touch PNG assets from the provided square source image, added a centered decorative header icon between the title and add button, and moved the service-worker cache namespace to `bills-v1.14.1-static` because cached app-shell/icon assets changed. No app behavior, storage, backup, Range, or multi-currency behavior changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 4 v1.13 rename-doc consolidation locally. `bills-v1.13-app-rename.md` is now the consolidated v1.13 rename-track summary, and the v1.13.1 GitHub rename and v1.13.2 final cleanup docs are focused addenda preserving unique patch scope, acceptance checks, compatibility rationale, and historical facts. No runtime files changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 3 README refresh locally. The README now presents Bills as a static, phone-first, local-only PWA with live link, principles, current capabilities, explicit non-goals, text-only backup/restore, offline/PWA behavior, development commands, project structure, release status, and documentation links. No runtime files, screenshots, icons, media, or new feature promises were added.
 - 2026-05-06: Implemented v1.14 Pass 2 backlog/docs integrity cleanup locally. The pass removes future-feature roadmap noise from `docs/BACKLOG.md`, keeps final-build readiness items only, preserves compatibility warnings for storage keys, historical backup headers, old cache cleanup, local-only/manual-only behavior, PWA continuity, Range, and multi-currency behavior, and does not change runtime files.
