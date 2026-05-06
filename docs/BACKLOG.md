@@ -35,11 +35,12 @@
 
 ### Bills Rename Compatibility
 
-- `subscription-tracker-bills-rename-compatibility`: Consider renaming the app to Bills as a dedicated compatibility pass, not casual copy churn. Preserve the same live URL, installed PWA continuity, local data, and text backup restore compatibility. If a future backup header changes, the parser should support both the historical `Subscription Tracker Backup` header and any new `Bills Backup` header.
+- `bills-v1.13-app-rename`: In progress locally. Runtime app/PWA identity now says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility. GitHub repository and Pages URL migration is intentionally not part of this local pass.
 
 ## Parked / Later
 
-- `subscription-tracker-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.
+- `bills-repo-pages-migration`: Decide whether and how to rename the GitHub repo slug from `subscription-tracker` to `bills` and move the Pages path from `/subscription-tracker/` to `/bills/`. Preserve installed PWA continuity, saved local data, restore compatibility, and redirects or user guidance if pursued.
+- `subscription-tracker-recurring-bills-scope`: Continue broadening behavior from subscriptions toward rent, bills, and other recurring payments without changing ordinary subscription UI terminology casually.
 - `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
 - `subscription-tracker-general-customization`: Explore user customization for labels, display preferences, categories, and summary views.
 - `subscription-tracker-empty-wallet-icon`: Consider an empty wallet icon as part of any future visual identity change; not decided.

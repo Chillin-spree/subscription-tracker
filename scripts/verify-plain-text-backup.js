@@ -5,6 +5,7 @@ const vm = require("node:vm");
 
 const projectRoot = path.resolve(__dirname, "..");
 const appSource = fs.readFileSync(path.join(projectRoot, "app.js"), "utf8");
+const localStorageStore = new Map();
 
 function createElementStub() {
   return {
@@ -73,11 +74,15 @@ const sandbox = {
     },
   },
   localStorage: {
-    getItem() {
-      return null;
+    getItem(key) {
+      return localStorageStore.has(key) ? localStorageStore.get(key) : null;
     },
-    removeItem() {},
-    setItem() {},
+    removeItem(key) {
+      localStorageStore.delete(key);
+    },
+    setItem(key, value) {
+      localStorageStore.set(key, String(value));
+    },
   },
   navigator: {},
   window: {
@@ -136,9 +141,14 @@ const verificationSource = `
   }];
 
   const singleText = buildPlainTextBackup(singleRecord);
-  assert.ok(singleText.startsWith("Subscription Tracker Backup\\nVersion: 1"));
+  assert.ok(singleText.startsWith("Bills Backup\\nVersion: 1"));
   assert.ok(singleText.includes("End date: 2026-12-31"));
   assert.deepEqual(expectValidBackup(singleText, "single record"), singleRecord);
+  assert.match(
+    buildPlainTextBackupFilename(),
+    /^bills-backup-v1\\.13-\\d{4}-\\d{2}-\\d{2}\\.txt$/,
+    "generated filename should use Bills v1.13 identity",
+  );
 
   const multiRecord = [
     singleRecord[0],
@@ -162,6 +172,28 @@ const verificationSource = `
     "blank currency",
   );
   assert.equal(blankCurrencyRecords[0].currency, "TRY", "blank currency should fall back to TRY");
+  assert.deepEqual(
+    expectValidBackup(
+      "Subscription Tracker Backup\\nVersion: 1\\n\\n---\\nLegacy\\nPrice: 8\\nCurrency: TRY\\nBilling date: 2026-01-10\\nOccurrence: monthly\\nPayment method: Cash\\nCategory:\\nEnd date:\\nNotes:",
+      "legacy Subscription Tracker header",
+    ),
+    [{
+      name: "Legacy",
+      price: 8,
+      currency: "TRY",
+      billingDate: "2026-01-10",
+      occurrence: "monthly",
+      paymentMethod: "Cash",
+      category: "",
+      endDate: "",
+      notes: "",
+    }],
+  );
+  expectInvalidBackup(
+    "Unknown Backup\\nVersion: 1\\n\\n---\\nBad\\nPrice: 10\\nCurrency: TRY\\nBilling date: 2026-02-28\\nOccurrence: monthly\\nPayment method: Cash\\nCategory:\\nEnd date:\\nNotes:",
+    "Backup header must be Bills Backup or Subscription Tracker Backup",
+    "invalid backup header",
+  );
 
   const noteRecord = [{
     name: "Notes check",
@@ -229,6 +261,39 @@ const verificationSource = `
     "Subscription Tracker Backup\\nVersion: 1\\n\\n---\\nMissing payment\\nPrice: 10\\nCurrency: USD\\nBilling date: 2026-02-28\\nOccurrence: monthly\\nPayment method:\\nCategory:\\nEnd date:\\nNotes:",
     "payment method is required",
     "missing required payment method",
+  );
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([{ id: "current-subscription" }]));
+  localStorage.setItem(ACTIVITY_STORAGE_KEY, JSON.stringify([{ id: "activity-entry" }]));
+  localStorage.setItem(PAYMENT_METHOD_PRESETS_STORAGE_KEY, JSON.stringify(["Main card"]));
+  localStorage.setItem(CATEGORY_PRESETS_STORAGE_KEY, JSON.stringify(["Streaming"]));
+  subscriptions = [{ id: "current-subscription" }];
+  activityLog = [{ id: "activity-entry" }];
+  paymentMethodPresets = ["Main card"];
+  categoryPresets = ["Streaming"];
+  validatedPlainTextBackupRecords = singleRecord;
+  window.confirm = () => true;
+
+  restoreValidatedPlainTextBackup();
+
+  const restoredSubscriptions = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  assert.equal(restoredSubscriptions.length, 1, "restore should replace subscriptions");
+  assert.equal(restoredSubscriptions[0].name, "Netflix", "restore should use backup subscription records");
+  assert.notEqual(restoredSubscriptions[0].id, "current-subscription", "restore should assign fresh subscription ids");
+  assert.deepEqual(
+    JSON.parse(localStorage.getItem(ACTIVITY_STORAGE_KEY)),
+    [{ id: "activity-entry" }],
+    "restore should preserve activity log storage",
+  );
+  assert.deepEqual(
+    JSON.parse(localStorage.getItem(PAYMENT_METHOD_PRESETS_STORAGE_KEY)),
+    ["Main card"],
+    "restore should preserve payment method presets",
+  );
+  assert.deepEqual(
+    JSON.parse(localStorage.getItem(CATEGORY_PRESETS_STORAGE_KEY)),
+    ["Streaming"],
+    "restore should preserve category presets",
   );
 })();
 `;

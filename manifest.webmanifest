@@ -1,6 +1,6 @@
 {
-  "name": "Subscription Tracker",
-  "short_name": "Subscriptions",
+  "name": "Bills",
+  "short_name": "Bills",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

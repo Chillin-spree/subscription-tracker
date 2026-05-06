@@ -3,6 +3,12 @@ const ACTIVITY_STORAGE_KEY = "subscription-tracker-v1-activity-log";
 const PAYMENT_METHOD_PRESETS_STORAGE_KEY = "subscription-tracker-v1-payment-method-presets";
 const CATEGORY_PRESETS_STORAGE_KEY = "subscription-tracker-v1-category-presets";
 const LOCAL_ONLY_NOTICE_ACKNOWLEDGED_KEY = "subscription-tracker-v1-local-only-notice-acknowledged";
+const PLAIN_TEXT_BACKUP_HEADER = "Bills Backup";
+const LEGACY_PLAIN_TEXT_BACKUP_HEADER = "Subscription Tracker Backup";
+const ACCEPTED_PLAIN_TEXT_BACKUP_HEADERS = [
+  PLAIN_TEXT_BACKUP_HEADER,
+  LEGACY_PLAIN_TEXT_BACKUP_HEADER,
+];
 const OCCURRENCE_LABELS = {
   weekly: "Weekly",
   monthly: "Monthly",
@@ -1397,7 +1403,7 @@ function sortBreakdownRows(a, b) {
 
 function buildPlainTextBackup(subscriptionRecords) {
   const lines = [
-    "Subscription Tracker Backup",
+    PLAIN_TEXT_BACKUP_HEADER,
     "Version: 1",
     "",
   ];
@@ -1423,7 +1429,7 @@ function buildPlainTextBackup(subscriptionRecords) {
 
 function buildPlainTextBackupFilename() {
   const date = new Date().toISOString().slice(0, 10);
-  return `subscription-tracker-backup-v1.8-${date}.txt`;
+  return `bills-backup-v1.13-${date}.txt`;
 }
 
 function parsePlainTextBackup(text) {
@@ -1431,11 +1437,13 @@ function parsePlainTextBackup(text) {
   const lines = normalizedText.split("\n");
   const errors = [];
 
-  if (normalize(lines[0]) !== "Subscription Tracker Backup") {
+  const header = normalize(lines[0]);
+
+  if (!ACCEPTED_PLAIN_TEXT_BACKUP_HEADERS.includes(header)) {
     return {
       ok: false,
       records: [],
-      errors: ["Backup header must be Subscription Tracker Backup."],
+      errors: ["Backup header must be Bills Backup or Subscription Tracker Backup."],
     };
   }
 

@@ -18,29 +18,30 @@
 ## Workflow State
 
 - **Mode**: implementation
-- **Active feature**: v1.12 grouped multi-currency totals, final UI consistency polish
-- **Feature file**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
+- **Active feature**: v1.13 Bills app identity rename
+- **Feature file**: `docs/features/bills-v1.13-app-rename.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: Align grouped currency total typography and color.
-- **Waiting on**: User review of local v1.12.4 UI consistency polish implementation.
+- **Current step**: Complete docs sweep/status update for the local v1.13 rename package.
+- **Waiting on**: User review of local v1.13 rename implementation and docs.
 - **Blockers**: none
-- **Next recommended step**: Review v1.12.4 locally, then push the bundled v1.12 commits if no blocker appears.
-- **Recent touch points**: v1.12.4 aligns currency total typography and color across Spending Overview, Due soon chips, Actual range chips, and Upcoming payments. No calculation, storage, backup, recurrence, Range date, or Range sub-mode behavior changes were introduced. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, PWA continuity, and local-only data behavior.
+- **Next recommended step**: Run final local QA/release prep for v1.13, then commit/push only after explicit approval.
+- **Recent touch points**: v1.13 renames runtime app/browser/PWA identity to Bills, changes newly generated text backup identity to `Bills Backup`, keeps historical `Subscription Tracker Backup` restore compatibility, keeps ordinary UI terminology such as `Subscriptions`, preserves `subscription-tracker-v1-*` localStorage keys, and leaves the GitHub repo and Pages URL unchanged for a later migration decision.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.12 final polish implementation
-- **Summary**: Align grouped currency total typography and color while preserving existing calculations and behavior.
-- **Where full handoff lives**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
+- **Handoff type**: v1.13 compatibility-sensitive rename
+- **Summary**: Rename app identity to Bills while preserving local data, PWA continuity, backup compatibility, and ordinary subscription terminology.
+- **Where full handoff lives**: `docs/features/bills-v1.13-app-rename.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.13 rename locally through docs pass. Runtime app/browser/PWA identity now says Bills, app shell/cache references moved to v1.13.0, generated text backups use `Bills Backup`, parser accepts both `Bills Backup` and historical `Subscription Tracker Backup`, generated backup filenames use `bills-backup-v1.13-YYYY-MM-DD.txt`, localStorage keys/schema and restore semantics remain unchanged, ordinary subscription UI terminology remains unchanged, and repo/Pages migration is deferred.
 - 2026-05-06: Implemented v1.12.4 UI consistency polish locally. Spending Overview totals, Due soon chips, Actual range chips, and Upcoming payment amounts now share the same accent color, strong weight, and tabular numeric treatment. App shell/cache references moved to v1.12.4; calculations and data behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.3 final polish locally. Selected Range Actual range mixed-currency totals now render as compact grouped chips without plus signs, single-currency Actual range totals remain compact, and app shell/cache references moved to v1.12.3. Range calculations, Range dates/sub-modes, breakdown rows, storage, backup, and local-only behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.2 Pass 2 locally. Header Due soon totals now show mixed currencies as compact grouped chips without plus signs, single-currency due-soon totals remain compact, and the Active summary count includes a small `tracked records` detail. App shell/cache references moved to v1.12.2; calculations, storage, backup, Range, and local-only behavior remain unchanged.

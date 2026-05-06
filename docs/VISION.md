@@ -6,11 +6,11 @@
 
 ## Project Name
 
-Subscription Tracker
+Bills, formerly Subscription Tracker
 
 ## Problem
 
-People often lose track of small recurring charges until they add up. Subscription Tracker should make those commitments visible without requiring bank access, account creation, or a heavy budgeting workflow.
+People often lose track of small recurring charges until they add up. Bills should make those commitments visible without requiring bank access, account creation, or a heavy budgeting workflow.
 
 ## Target Users
 
@@ -20,11 +20,11 @@ People often lose track of small recurring charges until they add up. Subscripti
 
 ## v1 Goal
 
-Create a minimalist subscription tracker where users manually add, edit, delete, review, summarize, and export subscription records.
+Create a minimalist recurring payment tracker where users manually add, edit, delete, review, summarize, and export subscription records.
 
 ## Product Direction
 
-Subscription Tracker may broaden from subscriptions toward recurring bills and payments such as rent, utilities, software, and other regular commitments. That direction is exploratory: any rename, icon change, or broader bill-tracking identity should be decided in a future design pass, while preserving the existing live URL, installed-PWA continuity, local data, and local-only privacy stance.
+Bills broadens the app identity from subscriptions toward recurring bills and payments such as rent, utilities, software, and other regular commitments. The v1.13 rename is compatibility-sensitive: existing localStorage keys may retain `subscription-tracker` names, historical `Subscription Tracker Backup` text remains restorable, ordinary UI terms such as `Subscriptions` remain valid domain terminology, and the GitHub Pages URL remains `/subscription-tracker/` until a dedicated migration pass.
 
 ## Out of Scope
 
@@ -71,3 +71,4 @@ Subscription Tracker may broaden from subscriptions toward recurring bills and p
 - Payment-related fields are labels/nicknames only, not card, bank, login, identity, or authorization details.
 - Preserve installed PWA continuity: same live URL, relative manifest start/scope, root service worker registration, offline shell behavior, saved local data, and supported plain text backup behavior.
 - Storage changes require backward-compatible migration; cached app shell changes require a static cache name bump.
+- Rename work must preserve compatibility names where they are data or deployment contracts, including localStorage keys, historical backup headers, and the current GitHub Pages path until an explicit migration pass changes them.

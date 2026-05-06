@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-05-06 — Rename app identity to Bills while preserving compatibility contracts
+
+- **Type**: Product
+- **Status**: active
+- **Context**: v1.13 renames the app identity from Subscription Tracker to Bills after the product direction broadened toward recurring bills and payments. The app already has installed PWA users, local-only browser storage, and a supported plain text backup format.
+- **Decision**: Current runtime app, browser, PWA, and generated text-backup identity use Bills. Historical `Subscription Tracker Backup` text remains valid for restore. Existing `subscription-tracker-v1-*` localStorage keys, manifest `start_url: "./"`, manifest `scope: "./"`, root service worker registration, and the current GitHub Pages path remain unchanged unless a later dedicated migration pass explicitly changes them. Ordinary UI terms such as `Subscriptions` and `Add subscription` are domain terminology, not app identity, and remain valid.
+- **Why**: The rename should clarify product identity without breaking saved local data, installed/home-screen app continuity, or user backups.
+- **Consequences**: Future repo/Pages migration must be planned separately. Future backup changes must keep dual header support unless a versioned compatibility decision replaces it. Future docs should distinguish current Bills identity from historical Subscription Tracker release records.
+- **Related**: `docs/features/bills-v1.13-app-rename.md`
+
 ### 2026-04-30 — Make plain text the only supported backup workflow
 
 - **Type**: Product
