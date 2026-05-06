@@ -18,29 +18,31 @@
 ## Workflow State
 
 - **Mode**: implementation
-- **Active feature**: v1.13.1 Bills GitHub repo/Pages identity migration
-- **Feature file**: `docs/features/bills-v1.13.1-github-rename.md`
+- **Active feature**: v1.13.2 Bills final rename cleanup
+- **Feature file**: `docs/features/bills-v1.13.2-final-rename-cleanup.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: Rename GitHub repo, update local remote, push v1.13.1, and verify the new Pages URL.
-- **Waiting on**: GitHub repo rename and live Pages verification.
+- **Current step**: Final local cleanup is implemented and committed; wait for user approval before pushing v1.13.2.
+- **Waiting on**: User approval to push v1.13.2.
 - **Blockers**: none
-- **Next recommended step**: Complete v1.13.1 GitHub-facing identity migration, then verify `https://chillin-spree.github.io/bills/`.
-- **Recent touch points**: v1.13.1 moves canonical GitHub-facing identity toward `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/` while preserving the v1.13 runtime app identity, relative PWA paths, `subscription-tracker-v1-*` localStorage keys, text backup compatibility, ordinary subscription UI terminology, Range behavior, and multi-currency behavior.
+- **Next recommended step**: Push v1.13.2 after review, then verify `https://chillin-spree.github.io/bills/`.
+- **Recent touch points**: v1.13.2 finishes safe rename cleanup by moving the service worker cache namespace to `bills-v1.13.2-static`, keeping legacy `subscription-tracker-*` cache cleanup, preserving `subscription-tracker-v1-*` localStorage keys as compatibility keys, and leaving text backup compatibility, ordinary subscription UI terminology, Range behavior, and multi-currency behavior unchanged.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.13.1 GitHub-facing identity migration
-- **Summary**: Rename GitHub repo and Pages identity to Bills while preserving runtime behavior and compatibility contracts.
-- **Where full handoff lives**: `docs/features/bills-v1.13.1-github-rename.md`
+- **Handoff type**: v1.13.2 final rename cleanup
+- **Summary**: Complete safe Bills rename cleanup while preserving durable compatibility contracts.
+- **Where full handoff lives**: `docs/features/bills-v1.13.2-final-rename-cleanup.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.13.2 final rename cleanup locally. App shell references moved to `app.js?v=1.13.2`, the service worker cache namespace moved to `bills-v1.13.2-static`, cleanup still removes old `subscription-tracker-*` app-shell caches, localStorage keys remain `subscription-tracker-v1-*` for compatibility, and repo/Pages identity remains `Chillin-spree/bills` at `https://chillin-spree.github.io/bills/`.
+- 2026-05-06: Released v1.13.1 GitHub repo/Pages identity migration. Canonical repo is `Chillin-spree/bills`, local `origin` uses `https://github.com/Chillin-spree/bills.git`, live Pages is `https://chillin-spree.github.io/bills/`, and runtime behavior, storage keys, backup parser, Range, multi-currency, and ordinary UI terminology remained unchanged.
 - 2026-05-06: Started v1.13.1 GitHub repo/Pages identity migration. Planned canonical repo is `Chillin-spree/bills`, planned live URL is `https://chillin-spree.github.io/bills/`, and the former `/subscription-tracker/` path remains historical. No runtime behavior, storage key, backup parser, Range, multi-currency, or ordinary UI terminology changes are in scope.
 - 2026-05-06: Implemented v1.13 rename locally through docs pass. Runtime app/browser/PWA identity now says Bills, app shell/cache references moved to v1.13.0, generated text backups use `Bills Backup`, parser accepts both `Bills Backup` and historical `Subscription Tracker Backup`, generated backup filenames use `bills-backup-v1.13-YYYY-MM-DD.txt`, localStorage keys/schema and restore semantics remain unchanged, ordinary subscription UI terminology remains unchanged, and repo/Pages migration is deferred.
 - 2026-05-06: Implemented v1.12.4 UI consistency polish locally. Spending Overview totals, Due soon chips, Actual range chips, and Upcoming payment amounts now share the same accent color, strong weight, and tabular numeric treatment. App shell/cache references moved to v1.12.4; calculations and data behavior remain unchanged.

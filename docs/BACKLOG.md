@@ -35,8 +35,7 @@
 
 ### Bills Rename Compatibility
 
-- `bills-v1.13-app-rename`: Runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
-- `bills-v1.13.1-github-rename`: In progress locally. Canonical GitHub project identity moves to `Chillin-spree/bills` and the live Pages URL moves to `https://chillin-spree.github.io/bills/`; the former `/subscription-tracker/` path is historical.
+- v1.13 rename work is complete through local v1.13.2 cleanup: runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, canonical GitHub identity is `Chillin-spree/bills`, live Pages is `https://chillin-spree.github.io/bills/`, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
 
 ## Parked / Later
 

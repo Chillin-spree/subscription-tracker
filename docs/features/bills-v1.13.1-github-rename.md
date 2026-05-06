@@ -2,15 +2,15 @@
 
 ## Summary
 
-Move the GitHub-facing project identity from Subscription Tracker to Bills after the v1.13 runtime app rename.
+Moved the GitHub-facing project identity from Subscription Tracker to Bills after the v1.13 runtime app rename.
 
 ## Current State
 
-- Runtime/app shell remains `v1.13.0`.
+- Runtime/app shell remained `v1.13.0` during this pass.
 - App/browser/PWA identity already says Bills.
-- Canonical GitHub repo is moving from `Chillin-spree/subscription-tracker` to `Chillin-spree/bills`.
-- Canonical live GitHub Pages URL is moving from `https://chillin-spree.github.io/subscription-tracker/` to `https://chillin-spree.github.io/bills/`.
-- The old repo and Pages path are historical references after this pass.
+- Canonical GitHub repo moved from `Chillin-spree/subscription-tracker` to `Chillin-spree/bills`.
+- Canonical live GitHub Pages URL moved from `https://chillin-spree.github.io/subscription-tracker/` to `https://chillin-spree.github.io/bills/`.
+- The old repo and Pages path are historical references.
 
 ## Scope
 
@@ -40,12 +40,12 @@ Move the GitHub-facing project identity from Subscription Tracker to Bills after
 
 ## Acceptance
 
-- [ ] GitHub repo is renamed to `Chillin-spree/bills`.
-- [ ] Local `origin` points to `https://github.com/Chillin-spree/bills.git`.
-- [ ] v1.13.1 docs/config commit is pushed to the renamed repo.
-- [ ] GitHub Pages deploys successfully.
-- [ ] Live app works at `https://chillin-spree.github.io/bills/`.
-- [ ] Live HTML loads `app.js?v=1.13.0`.
-- [ ] Live `service-worker.js` is reachable under `/bills/`.
-- [ ] Live manifest says `Bills` for `name` and `short_name`.
-- [ ] Live manifest keeps `start_url` and `scope` as `"./"`.
+- [x] GitHub repo is renamed to `Chillin-spree/bills`.
+- [x] Local `origin` points to `https://github.com/Chillin-spree/bills.git`.
+- [x] v1.13.1 docs/config commit is pushed to the renamed repo.
+- [x] GitHub Pages deploys successfully.
+- [x] Live app works at `https://chillin-spree.github.io/bills/`.
+- [x] Live HTML loads `app.js?v=1.13.0`.
+- [x] Live `service-worker.js` is reachable under `/bills/`.
+- [x] Live manifest says `Bills` for `name` and `short_name`.
+- [x] Live manifest keeps `start_url` and `scope` as `"./"`.

@@ -1,11 +1,11 @@
-const CACHE_NAME = "subscription-tracker-v1.13.0-static";
-const CACHE_PREFIX = "subscription-tracker-";
+const CACHE_NAME = "bills-v1.13.2-static";
+const CACHE_PREFIXES = ["bills-", "subscription-tracker-"];
 const APP_SHELL_ASSETS = [
   "./",
   "index.html",
   "styles.css",
   "app.js",
-  "app.js?v=1.13.0",
+  "app.js?v=1.13.2",
   "manifest.webmanifest",
   "icons/icon-192.png",
   "icons/icon-512.png",
@@ -30,7 +30,9 @@ self.addEventListener("activate", (event) => {
       .keys()
       .then((cacheNames) => Promise.all(
         cacheNames
-          .filter((cacheName) => cacheName.startsWith(CACHE_PREFIX) && cacheName !== CACHE_NAME)
+          .filter((cacheName) => (
+            CACHE_PREFIXES.some((prefix) => cacheName.startsWith(prefix)) && cacheName !== CACHE_NAME
+          ))
           .map((cacheName) => caches.delete(cacheName)),
       ))
       .then(() => self.clients.claim()),

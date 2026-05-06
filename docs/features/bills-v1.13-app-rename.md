@@ -6,14 +6,14 @@ Rename the app identity from Subscription Tracker to Bills while preserving loca
 
 ## Current State
 
-- Runtime/app shell: `v1.13.0`, local implementation pending user review.
+- Runtime/app shell moved to `v1.13.0` for the original app rename and to `v1.13.2` for final cache-identity cleanup.
 - Browser title, visible app title, Apple mobile web app title, PWA manifest `name`, PWA manifest `short_name`, and favicon accessible label now use `Bills`.
-- Service worker cache and app script references are bumped to `v1.13.0`.
+- Service worker cache and app script references were bumped to `v1.13.0`; v1.13.2 later moved the cache namespace to Bills with `bills-v1.13.2-static`.
 - Newly generated plain text backups start with `Bills Backup`.
 - Pasted restore accepts both `Bills Backup` and historical `Subscription Tracker Backup`.
 - Generated backup filenames use `bills-backup-v1.13-YYYY-MM-DD.txt`.
 - v1.13 originally left the GitHub repository as `Chillin-spree/subscription-tracker` and the live GitHub Pages URL as `https://chillin-spree.github.io/subscription-tracker/`.
-- v1.13.1 moves canonical GitHub-facing identity to `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`.
+- v1.13.1 moved canonical GitHub-facing identity to `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`.
 
 ## Product Direction
 
@@ -73,6 +73,7 @@ Rename the app identity from Subscription Tracker to Bills while preserving loca
 - Redirect or installed-PWA migration strategy for a future Pages path change.
 - Broader UI terminology rename from subscriptions to bills.
 - Storage key or schema migration.
+- Service worker cache namespace cleanup, handled separately in v1.13.2.
 - Backup format version change beyond the accepted header identity.
 - Range behavior, Range sub-mode behavior, multi-currency behavior, or recurrence changes.
 - Cloud sync, accounts, analytics, payments, bank/card import, OCR/email scanning, notifications, paid services, or remote storage.

@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-05-06 — Keep legacy storage keys during Bills cleanup
+
+- **Type**: Technical
+- **Status**: active
+- **Context**: v1.13.2 final rename cleanup considered whether remaining `subscription-tracker-v1-*` localStorage keys should migrate to Bills-based names after the app, backup, repository, Pages, and cache identities moved to Bills.
+- **Decision**: Keep all existing `subscription-tracker-v1-*` localStorage keys as legacy compatibility keys. Move only the disposable service worker cache namespace to Bills with `bills-v1.13.2-static`, and keep cache cleanup for old `subscription-tracker-*` app-shell caches.
+- **Why**: localStorage keys are durable user-data contracts, while service worker caches are disposable app-shell implementation details. Avoiding a storage migration removes unnecessary data-loss risk.
+- **Consequences**: Remaining `subscription-tracker-v1-*` references in app code, storage verification scripts, AGENTS.md, and compatibility docs are intentional. Future storage key changes require an explicit backward-compatible migration plan and tests.
+- **Related**: `docs/features/bills-v1.13.2-final-rename-cleanup.md`, `docs/features/bills-v1.13-app-rename.md`
+
 ### 2026-05-06 — Move canonical GitHub project identity to Bills
 
 - **Type**: Workflow
