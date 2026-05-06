@@ -37,11 +37,6 @@
 
 - `subscription-tracker-bills-rename-compatibility`: Consider renaming the app to Bills as a dedicated compatibility pass, not casual copy churn. Preserve the same live URL, installed PWA continuity, local data, and text backup restore compatibility. If a future backup header changes, the parser should support both the historical `Subscription Tracker Backup` header and any new `Bills Backup` header.
 
-### v1.12 Grouped Multi-Currency Totals
-
-- `subscription-tracker-v1.12-grouped-multi-currency-totals`: Explore grouped totals by currency as a separate v1.12 track. Chosen direction is Option A: no exchange rates, no live currency data, no converted grand total, and no base currency setting in the first pass. Show TRY, USD, EUR, and other entered-currency totals separately where relevant.
-- Must preserve local-only behavior, text backup compatibility, localStorage keys, the existing per-subscription currency field, Range date/sub-mode behavior, PWA continuity, and current manual-entry privacy boundaries.
-
 ## Parked / Later
 
 - `subscription-tracker-recurring-bills-scope`: Broaden identity from subscriptions toward rent, bills, and other recurring payments; preserve the same GitHub Pages URL and installed PWA continuity.

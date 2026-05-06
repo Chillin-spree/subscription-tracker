@@ -17,30 +17,31 @@
 
 ## Workflow State
 
-- **Mode**: wrap-up
-- **Active feature**: v1.11 UI/UX polish, complete through v1.11.6
-- **Feature file**: `docs/features/subscription-tracker-v1.11-ui-ux-polish.md`
+- **Mode**: implementation
+- **Active feature**: v1.12 grouped multi-currency totals, Pass 1
+- **Feature file**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.11.7 final accessibility/QA audit and docs wrap-up.
-- **Waiting on**: User review of the docs-only wrap-up.
+- **Current step**: Implement Spending Overview Monthly/Yearly grouped totals by currency.
+- **Waiting on**: User review of local v1.12.1 Pass 1 implementation.
 - **Blockers**: none
-- **Next recommended step**: Stop v1.11 runtime work unless a real bug appears; future product work should start as a separate Bills rename compatibility or v1.12 grouped multi-currency totals planning track.
-- **Recent touch points**: v1.11.6 is pushed and live. Final audit found no runtime blocker requiring a v1.11.7 app shell bump. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, normalized overview behavior, PWA continuity, and local-only data behavior.
+- **Next recommended step**: Review v1.12.1 locally, then decide whether to commit or run a browser smoke pass.
+- **Recent touch points**: v1.12.1 updates Spending Overview Monthly and Yearly totals to show separate currency groups without exchange rates, converted grand totals, storage changes, backup changes, or Range behavior changes. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, PWA continuity, and local-only data behavior.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.11 final accessibility/QA audit and wrap-up
-- **Summary**: Audit the v1.11 UI/UX polish changes, update docs to close the track, and avoid runtime changes unless a clear QA/accessibility bug is found.
-- **Where full handoff lives**: `docs/features/subscription-tracker-v1.11-ui-ux-polish.md`
+- **Handoff type**: v1.12 Pass 1 implementation
+- **Summary**: Update Spending Overview Monthly and Yearly totals to display grouped totals by currency while preserving existing storage, backup, Range, and local-only behavior.
+- **Where full handoff lives**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.12.1 Pass 1 locally. Spending Overview Monthly and Yearly totals now display grouped currency totals, single-currency totals stay compact, and app shell/cache references moved to v1.12.1. Backup format/parser/restore behavior, storage keys/schema, Range date/sub-mode behavior, upcoming totals, and local-only behavior remain unchanged.
 - 2026-05-06: Completed v1.11.7 final accessibility/QA audit and docs wrap-up as a docs-only pass. Live v1.11.6 smoke passed for load, local-only notice reopen, add-form validation/cancel, collapsibles with refresh reset, Range, backup controls, and app console errors; keyboard Tab focus reporting was inconclusive in automation and remains a small human spot-check, not a runtime blocker.
 - 2026-05-06: Pushed v1.11.5 and v1.11.6 package through commit `719e6b5`. GitHub Pages deployment succeeded, live assets reference `app.js?v=1.11.6`, the service worker uses `subscription-tracker-v1.11.6-static`, and live smoke passed.
 - 2026-05-05: Implemented v1.11.6 final microcopy locally. Empty states now give shorter next-step guidance, the bottom privacy reopen control reads `Local-only privacy details`, and the link has a subtle pill affordance; app shell/cache references moved to v1.11.6.
@@ -49,4 +50,3 @@
 - 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the existing non-persisted collapse pattern and the top add control is a rounded-square accent button; app shell/cache references moved to v1.11.3.
 - 2026-04-30: Implemented v1.11.2 visual hierarchy/mobile spacing polish locally. CSS refinements improve panel rhythm, section action alignment, row/card readability, empty-state weight, and overview/collapse touch targets while preserving behavior.
 - 2026-04-30: Implemented v1.11.1 collapsible Activity and Backup sections locally. Both sections remain expanded by default, collapse state is non-persisted, and app shell/cache references moved to v1.11.1.
-- 2026-04-30: Started v1.11.0 audit/planning docs pass for UI/UX polish. v1.11 is now the active planning track; next recommended implementation pass is v1.11.1 collapsible Activity and Backup sections, non-persisted.

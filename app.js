@@ -774,10 +774,8 @@ function renderSpendingOverview() {
   const currencies = [...new Set(subscriptions.map((subscription) => subscription.currency || "TRY"))];
   const hasSingleCurrency = currencies.length === 1;
   const showsRangeOverview = selectedOverviewMode === "this-month";
-  const totalMonthly = subscriptions.reduce(
-    (total, subscription) => total + getMonthlyEquivalent(subscription),
-    0,
-  );
+  const monthlyTotalsByCurrency = getMonthlyTotalsByCurrency(subscriptions);
+  const yearlyTotalsByCurrency = scaleCurrencyTotals(monthlyTotalsByCurrency, 12);
   const breakdownRows = getOverviewBreakdownRows(selectedOverviewMode);
   const hasBreakdownRows = breakdownRows.length > 0;
   const rangeState = getSelectedOverviewRangeState();
@@ -792,12 +790,8 @@ function renderSpendingOverview() {
   overviewCurrency.textContent = showsRangeOverview
     ? "Range"
     : hasSingleCurrency ? currencies[0] || "TRY" : "Multiple currencies";
-  monthlyTotal.textContent = hasSingleCurrency
-    ? `${currencies[0] || "TRY"} ${totalMonthly.toFixed(2)}`
-    : "Multiple currencies";
-  yearlyTotal.textContent = hasSingleCurrency
-    ? `${currencies[0] || "TRY"} ${(totalMonthly * 12).toFixed(2)}`
-    : "Multiple currencies";
+  monthlyTotal.textContent = formatCurrencyTotalsLines(monthlyTotalsByCurrency);
+  yearlyTotal.textContent = formatCurrencyTotalsLines(yearlyTotalsByCurrency);
   overviewCount.textContent = String(subscriptions.length);
   overviewNote.hidden = !hasSubscriptions || (hasSingleCurrency && !showsRangeOverview);
   overviewNote.textContent = getOverviewNoteText(hasSingleCurrency, showsRangeOverview, rangeState);
@@ -1952,6 +1946,37 @@ function formatCurrencyBreakdown(currencyTotals) {
     .join(" + ");
 }
 
+function formatCurrencyTotalsLines(currencyTotals) {
+  const entries = Object.entries(currencyTotals);
+
+  if (!entries.length) {
+    return "TRY 0.00";
+  }
+
+  return entries
+    .map(([currency, total]) => `${currency} ${total.toFixed(2)}`)
+    .join("\n");
+}
+
+function getMonthlyTotalsByCurrency(subscriptionRecords) {
+  if (!Array.isArray(subscriptionRecords)) {
+    return {};
+  }
+
+  return subscriptionRecords.reduce((totals, subscription) => {
+    const currency = subscription.currency || "TRY";
+    totals[currency] = (totals[currency] || 0) + getMonthlyEquivalent(subscription);
+    return totals;
+  }, {});
+}
+
+function scaleCurrencyTotals(currencyTotals, multiplier) {
+  return Object.entries(currencyTotals).reduce((scaledTotals, [currency, total]) => {
+    scaledTotals[currency] = total * multiplier;
+    return scaledTotals;
+  }, {});
+}
+
 function getMonthlyEquivalent(subscription) {
   const price = Number(subscription.price || 0);
 
@@ -1972,16 +1997,16 @@ function getMonthlyEquivalent(subscription) {
 
 function getOverviewTotals() {
   const currencies = [...new Set(subscriptions.map((subscription) => subscription.currency || "TRY"))];
-  const totalMonthly = subscriptions.reduce(
-    (total, subscription) => total + getMonthlyEquivalent(subscription),
-    0,
-  );
+  const monthlyTotalsByCurrency = getMonthlyTotalsByCurrency(subscriptions);
+  const yearlyTotalsByCurrency = scaleCurrencyTotals(monthlyTotalsByCurrency, 12);
 
   return {
     currency: currencies[0] || "TRY",
     hasSingleCurrency: currencies.length <= 1,
-    totalMonthly,
-    totalYearly: totalMonthly * 12,
+    monthlyTotalsByCurrency,
+    yearlyTotalsByCurrency,
+    totalMonthly: currencies.length <= 1 ? Object.values(monthlyTotalsByCurrency)[0] || 0 : null,
+    totalYearly: currencies.length <= 1 ? Object.values(yearlyTotalsByCurrency)[0] || 0 : null,
   };
 }
 
