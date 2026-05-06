@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 Pass 6 header, icon, copy, and Activity polish is implemented and verified locally.
+- **Current step**: v1.14 corrective summary-label alignment pass is implemented and verified locally.
 - **Waiting on**: User review before any push.
 - **Blockers**: none
-- **Next recommended step**: Review the local Pass 6 polish commit; do not push until explicitly approved.
-- **Recent touch points**: Local `main` is ahead of `origin/main` by five v1.14 commits. Pass 6 replaces icon assets again from the provided source, centers the header icon, removes requested helper text, and limits visible Activity entries to the latest 10 without deleting stored activity data.
+- **Next recommended step**: Review the local summary-label alignment commit; do not push until explicitly approved.
+- **Recent touch points**: Local `main` is ahead of `origin/main` by seven v1.14 commits. The corrective pass keeps the summary cards as peer columns at narrow widths and top-aligns their labels so `Due soon` and `Active` sit on the same visual level.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final-build readiness Pass 6
-- **Summary**: Replace icon assets, align the top header, remove requested helper text, and cap visible Activity entries.
+- **Handoff type**: v1.14 final-build readiness corrective polish
+- **Summary**: Align the `Due soon` summary label with `Active` without changing app behavior.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented and verified a corrective v1.14 summary-label alignment pass locally. Kept the summary strip as two peer columns at narrow widths and top-aligned summary card contents so `Due soon` and `Active` sit on the same visual level. Service-worker cache namespace moved to `bills-v1.14.3-static` because cached CSS changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 6 header/icon/copy/Activity polish locally. Rebuilt icon assets from the provided replacement PNG, removed the old unreferenced favicon SVG, centered the header icon with balanced side columns, removed the header `Next 7 days` eyebrow, removed requested multi-currency helper text, and capped visible Activity rendering to the latest 10 entries without truncating stored activity data. Service-worker cache namespace moved to `bills-v1.14.2-static` because cached app-shell/icon assets changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 5 icon/header branding update locally. Rebuilt favicon, PWA, and Apple touch PNG assets from the provided square source image, added a centered decorative header icon between the title and add button, and moved the service-worker cache namespace to `bills-v1.14.1-static` because cached app-shell/icon assets changed. No app behavior, storage, backup, Range, or multi-currency behavior changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 4 v1.13 rename-doc consolidation locally. `bills-v1.13-app-rename.md` is now the consolidated v1.13 rename-track summary, and the v1.13.1 GitHub rename and v1.13.2 final cleanup docs are focused addenda preserving unique patch scope, acceptance checks, compatibility rationale, and historical facts. No runtime files changed.
