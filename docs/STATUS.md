@@ -18,15 +18,15 @@
 ## Workflow State
 
 - **Mode**: implementation
-- **Active feature**: v1.12 grouped multi-currency totals, Pass 3
+- **Active feature**: v1.12 grouped multi-currency totals, final UI consistency polish
 - **Feature file**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: Polish Selected Range Actual range grouped totals.
-- **Waiting on**: User review of local v1.12.3 final polish implementation.
+- **Current step**: Align grouped currency total typography and color.
+- **Waiting on**: User review of local v1.12.4 UI consistency polish implementation.
 - **Blockers**: none
-- **Next recommended step**: Review v1.12.3 locally, then push the bundled v1.12 commits if no blocker appears.
-- **Recent touch points**: v1.12.3 polishes the Selected Range Actual range total: mixed-currency range totals render as grouped chips instead of an equation-like string while single-currency totals stay compact. No calculation, storage, backup, recurrence, Range date, or Range sub-mode behavior changes were introduced. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, PWA continuity, and local-only data behavior.
+- **Next recommended step**: Review v1.12.4 locally, then push the bundled v1.12 commits if no blocker appears.
+- **Recent touch points**: v1.12.4 aligns currency total typography and color across Spending Overview, Due soon chips, Actual range chips, and Upcoming payments. No calculation, storage, backup, recurrence, Range date, or Range sub-mode behavior changes were introduced. Preserve form field names/data attributes, subscription/activity/preset localStorage keys, the local-only notice acknowledgment key, text-only backup behavior, Range behavior, PWA continuity, and local-only data behavior.
 
 ## Latest Handoff
 
@@ -34,13 +34,14 @@
 - **To**: Implementation
 - **Date**: 2026-05-06
 - **Handoff type**: v1.12 final polish implementation
-- **Summary**: Polish the Selected Range Actual range grouped total presentation while preserving existing calculations and behavior.
+- **Summary**: Align grouped currency total typography and color while preserving existing calculations and behavior.
 - **Where full handoff lives**: `docs/features/subscription-tracker-v1.12-grouped-multi-currency-totals.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.12.4 UI consistency polish locally. Spending Overview totals, Due soon chips, Actual range chips, and Upcoming payment amounts now share the same accent color, strong weight, and tabular numeric treatment. App shell/cache references moved to v1.12.4; calculations and data behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.3 final polish locally. Selected Range Actual range mixed-currency totals now render as compact grouped chips without plus signs, single-currency Actual range totals remain compact, and app shell/cache references moved to v1.12.3. Range calculations, Range dates/sub-modes, breakdown rows, storage, backup, and local-only behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.2 Pass 2 locally. Header Due soon totals now show mixed currencies as compact grouped chips without plus signs, single-currency due-soon totals remain compact, and the Active summary count includes a small `tracked records` detail. App shell/cache references moved to v1.12.2; calculations, storage, backup, Range, and local-only behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.1 Pass 1 locally. Spending Overview Monthly and Yearly totals now display grouped currency totals, single-currency totals stay compact, and app shell/cache references moved to v1.12.1. Backup format/parser/restore behavior, storage keys/schema, Range date/sub-mode behavior, upcoming totals, and local-only behavior remain unchanged.

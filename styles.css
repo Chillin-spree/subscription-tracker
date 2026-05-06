@@ -201,6 +201,16 @@ h2 {
   line-height: 1.2;
 }
 
+[data-due-soon-total],
+[data-monthly-total],
+[data-yearly-total],
+[data-overview-range-total],
+.upcoming-price {
+  color: var(--accent);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
 .summary-detail {
   display: block;
   color: var(--muted);
@@ -223,8 +233,9 @@ h2 {
   border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent);
-  font-size: 0.82rem;
-  font-weight: 760;
+  font-size: 0.86rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
   line-height: 1;
 }
 
@@ -611,8 +622,6 @@ h2 {
 .upcoming-price {
   flex: 0 0 auto;
   white-space: nowrap;
-  color: var(--accent);
-  font-weight: 800;
   text-align: right;
 }
 
