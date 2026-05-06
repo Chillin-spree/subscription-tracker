@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 corrective summary-label alignment pass is implemented and verified locally.
-- **Waiting on**: User review before any push.
+- **Current step**: v1.14 final verification, docs/file integrity, and release-readiness pass is active.
+- **Waiting on**: Final verification and push/live checks.
 - **Blockers**: none
-- **Next recommended step**: Review the local summary-label alignment commit; do not push until explicitly approved.
-- **Recent touch points**: Local `main` is ahead of `origin/main` by seven v1.14 commits. The corrective pass keeps the summary cards as peer columns at narrow widths and top-aligns their labels so `Due soon` and `Active` sit on the same visual level.
+- **Next recommended step**: Run the full final verification suite, commit only narrow docs/file-integrity fixes if needed, then push the verified v1.14 stack.
+- **Recent touch points**: Local `main` is ahead of `origin/main` by seven v1.14 commits. The latest corrective pass keeps the summary cards as peer columns at narrow widths and top-aligns their labels so `Due soon` and `Active` sit on the same visual level.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final-build readiness corrective polish
-- **Summary**: Align the `Due soon` summary label with `Active` without changing app behavior.
+- **Handoff type**: v1.14 final verification and release readiness
+- **Summary**: Verify the full local v1.14 stack, clean docs/file-integrity issues if found, and push only after verification passes.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Started v1.14 final verification, docs/file integrity, and release-readiness pass from clean local `main` ahead of `origin/main` by seven commits. Scope is verification-first; no new product features, storage/schema/key changes, backup behavior changes, Range changes, multi-currency changes, icon changes, or unrelated UI polish.
 - 2026-05-06: Implemented and verified a corrective v1.14 summary-label alignment pass locally. Kept the summary strip as two peer columns at narrow widths and top-aligned summary card contents so `Due soon` and `Active` sit on the same visual level. Service-worker cache namespace moved to `bills-v1.14.3-static` because cached CSS changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 6 header/icon/copy/Activity polish locally. Rebuilt icon assets from the provided replacement PNG, removed the old unreferenced favicon SVG, centered the header icon with balanced side columns, removed the header `Next 7 days` eyebrow, removed requested multi-currency helper text, and capped visible Activity rendering to the latest 10 entries without truncating stored activity data. Service-worker cache namespace moved to `bills-v1.14.2-static` because cached app-shell/icon assets changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 5 icon/header branding update locally. Rebuilt favicon, PWA, and Apple touch PNG assets from the provided square source image, added a centered decorative header icon between the title and add button, and moved the service-worker cache namespace to `bills-v1.14.1-static` because cached app-shell/icon assets changed. No app behavior, storage, backup, Range, or multi-currency behavior changed.
@@ -48,17 +49,3 @@
 - 2026-05-06: Implemented and verified v1.14 Pass 3 README refresh locally. The README now presents Bills as a static, phone-first, local-only PWA with live link, principles, current capabilities, explicit non-goals, text-only backup/restore, offline/PWA behavior, development commands, project structure, release status, and documentation links. No runtime files, screenshots, icons, media, or new feature promises were added.
 - 2026-05-06: Implemented v1.14 Pass 2 backlog/docs integrity cleanup locally. The pass removes future-feature roadmap noise from `docs/BACKLOG.md`, keeps final-build readiness items only, preserves compatibility warnings for storage keys, historical backup headers, old cache cleanup, local-only/manual-only behavior, PWA continuity, Range, and multi-currency behavior, and does not change runtime files.
 - 2026-05-06: Started v1.14 final-build readiness locally from pushed v1.13.2. Scope is audit-first with no new features, no workflow redesign, no storage/schema/key changes, no CSV/JSON backup/restore, and no PWA contract changes. Found and fixed only obvious current-facing rename residue where billing-date labels said `Bills` instead of `Billed`; app shell/cache references moved to `v1.14.0`.
-- 2026-05-06: Implemented v1.13.2 final rename cleanup locally. App shell references moved to `app.js?v=1.13.2`, the service worker cache namespace moved to `bills-v1.13.2-static`, cleanup still removes old `subscription-tracker-*` app-shell caches, localStorage keys remain `subscription-tracker-v1-*` for compatibility, and repo/Pages identity remains `Chillin-spree/bills` at `https://chillin-spree.github.io/bills/`.
-- 2026-05-06: Released v1.13.1 GitHub repo/Pages identity migration. Canonical repo is `Chillin-spree/bills`, local `origin` uses `https://github.com/Chillin-spree/bills.git`, live Pages is `https://chillin-spree.github.io/bills/`, and runtime behavior, storage keys, backup parser, Range, multi-currency, and ordinary UI terminology remained unchanged.
-- 2026-05-06: Started v1.13.1 GitHub repo/Pages identity migration. Planned canonical repo is `Chillin-spree/bills`, planned live URL is `https://chillin-spree.github.io/bills/`, and the former `/subscription-tracker/` path remains historical. No runtime behavior, storage key, backup parser, Range, multi-currency, or ordinary UI terminology changes are in scope.
-- 2026-05-06: Implemented v1.13 rename locally through docs pass. Runtime app/browser/PWA identity now says Bills, app shell/cache references moved to v1.13.0, generated text backups use `Bills Backup`, parser accepts both `Bills Backup` and historical `Subscription Tracker Backup`, generated backup filenames use `bills-backup-v1.13-YYYY-MM-DD.txt`, localStorage keys/schema and restore semantics remain unchanged, ordinary subscription UI terminology remains unchanged, and repo/Pages migration is deferred.
-- 2026-05-06: Implemented v1.12.4 UI consistency polish locally. Spending Overview totals, Due soon chips, Actual range chips, and Upcoming payment amounts now share the same accent color, strong weight, and tabular numeric treatment. App shell/cache references moved to v1.12.4; calculations and data behavior remain unchanged.
-- 2026-05-06: Implemented v1.12.3 final polish locally. Selected Range Actual range mixed-currency totals now render as compact grouped chips without plus signs, single-currency Actual range totals remain compact, and app shell/cache references moved to v1.12.3. Range calculations, Range dates/sub-modes, breakdown rows, storage, backup, and local-only behavior remain unchanged.
-- 2026-05-06: Implemented v1.12.2 Pass 2 locally. Header Due soon totals now show mixed currencies as compact grouped chips without plus signs, single-currency due-soon totals remain compact, and the Active summary count includes a small `tracked records` detail. App shell/cache references moved to v1.12.2; calculations, storage, backup, Range, and local-only behavior remain unchanged.
-- 2026-05-06: Implemented v1.12.1 Pass 1 locally. Spending Overview Monthly and Yearly totals now display grouped currency totals, single-currency totals stay compact, and app shell/cache references moved to v1.12.1. Backup format/parser/restore behavior, storage keys/schema, Range date/sub-mode behavior, upcoming totals, and local-only behavior remain unchanged.
-- 2026-05-06: Completed v1.11.7 final accessibility/QA audit and docs wrap-up as a docs-only pass. Live v1.11.6 smoke passed for load, local-only notice reopen, add-form validation/cancel, collapsibles with refresh reset, Range, backup controls, and app console errors; keyboard Tab focus reporting was inconclusive in automation and remains a small human spot-check, not a runtime blocker.
-- 2026-05-06: Pushed v1.11.5 and v1.11.6 package through commit `719e6b5`. GitHub Pages deployment succeeded, live assets reference `app.js?v=1.11.6`, the service worker uses `subscription-tracker-v1.11.6-static`, and live smoke passed.
-- 2026-05-05: Implemented v1.11.6 final microcopy locally. Empty states now give shorter next-step guidance, the bottom privacy reopen control reads `Local-only privacy details`, and the link has a subtle pill affordance; app shell/cache references moved to v1.11.6.
-- 2026-05-05: Implemented v1.11.5 form/input clarity locally. Clarified manual-entry helper copy, optional field guidance, payment-label safety wording, and moved the `Local-only privacy` reopen control to the bottom of the main app shell; app shell/cache references moved to v1.11.5.
-- 2026-05-05: Implemented v1.11.4 local-only first-run notice locally. Added one acknowledgment key, `subscription-tracker-v1-local-only-notice-acknowledged`, kept the app usable if that write fails, and moved app shell/cache references to v1.11.4.
-- 2026-04-30: Implemented v1.11.3 Subscriptions collapse and Add button polish locally. The Subscriptions panel now uses the existing non-persisted collapse pattern and the top add control is a rounded-square accent button; app shell/cache references moved to v1.11.3.

@@ -20,12 +20,11 @@
 - v1.14 is final-build readiness only. No new product features are currently planned for v1.14.
 - v1.13 rename work is complete through pushed v1.13.2: runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, canonical GitHub identity is `Chillin-spree/bills`, live Pages is `https://chillin-spree.github.io/bills/`, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
 
-## Remaining Readiness Work
+## Current Readiness State
 
-- `bills-readme-public-presentation`: Do a small README/public presentation pass for final-build wording without broad rewrite or new feature claims.
-- `bills-docs-integrity`: Keep `README.md`, `docs/STATUS.md`, `docs/VISION.md`, `docs/DECISIONS.md`, `docs/HANDOFFS.md`, `docs/BUGS.md`, and `docs/features/*` aligned with current Bills identity and final-build scope.
-- `bills-rename-residue-cleanup`: Remove only unintended current-facing old-name residue. Preserve compatibility and historical references.
-- `bills-final-release-verification`: Before any v1.14 push, verify local-only behavior, PWA continuity, backup compatibility, Range behavior, Range sub-modes, multi-currency totals, and clean git state.
+- README/public presentation, icon/brand assets, small UI polish, rename residue cleanup, v1.13 doc consolidation, and docs integrity work have been completed locally for v1.14.
+- Final release verification is the active readiness item. Before any v1.14 push, verify local-only behavior, PWA continuity, backup compatibility, Range behavior, Range sub-modes, multi-currency totals, docs/file integrity, and clean git state.
+- No new product features are planned for v1.14.
 
 ## Compatibility Warnings
 
