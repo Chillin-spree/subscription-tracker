@@ -277,24 +277,11 @@ h2 {
 .app-footer-note {
   display: grid;
   justify-items: center;
-  gap: 8px;
   margin-top: 8px;
   padding: 4px 12px 6px;
   color: var(--muted);
   font-size: 0.8rem;
   text-align: center;
-}
-
-.app-footer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-
-.app-footer-note p {
-  max-width: 32rem;
-  margin: 0;
 }
 
 .note-link {

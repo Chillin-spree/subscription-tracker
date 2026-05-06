@@ -96,7 +96,7 @@ node scripts/verify-grouped-currency-totals.js
 
 ## Current Status
 
-Current app script is `app.js?v=1.14.1`, and the current service-worker cache is `bills-v1.14.4-static`.
+Current app script is `app.js?v=1.14.2`, and the current service-worker cache is `bills-v1.14.5-static`.
 
 The current app identity is Bills. The GitHub repository is `https://github.com/Chillin-spree/bills`, and the live app is served at `https://chillin-spree.github.io/bills/`. The project was formerly hosted at `https://chillin-spree.github.io/subscription-tracker/`.
 

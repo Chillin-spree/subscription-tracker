@@ -36,11 +36,11 @@
 ### 2026-05-06 — Limit v1.14 backlog to final-build readiness
 
 - **Type**: Workflow
-- **Status**: active
+- **Status**: completed
 - **Context**: v1.14 final-build readiness should prepare the existing Bills app for review and release without reopening a future feature roadmap.
 - **Decision**: `docs/BACKLOG.md` tracks only final-build readiness work: README/public presentation, icon/brand asset review, small UI polish or fixes, docs integrity, rename residue cleanup, version-doc consolidation, and final release verification. New product features are not planned for v1.14.
 - **Why**: A short readiness checklist keeps the final build focused and prevents parked feature ideas from being mistaken for current scope.
-- **Consequences**: Ideas such as accounts, auth, cloud sync, analytics, paid services, remote storage, payment processing, bank/card import, OCR/email scanning, push notifications, native app wrappers, new export formats, major dashboard expansion, broad customization, and new tracking workflows remain explicitly out of scope unless a future post-final-build decision reopens them.
+- **Consequences**: v1.14 readiness closed through the v1.14.2 cleanup patch without adding new product features. Ideas such as accounts, auth, cloud sync, analytics, paid services, remote storage, payment processing, bank/card import, OCR/email scanning, push notifications, native app wrappers, new export formats, major dashboard expansion, broad customization, and new tracking workflows remain explicitly out of scope unless a future post-final-build decision reopens them.
 - **Related**: `docs/BACKLOG.md`, `docs/features/bills-v1.14-final-build-readiness.md`
 
 ### 2026-05-06 — Keep legacy storage keys during Bills cleanup
