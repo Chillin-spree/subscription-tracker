@@ -1685,7 +1685,7 @@ function renderPlainTextBackupPreviewRecord(record) {
     <div class="backup-preview-record">
       <span class="backup-preview-record-title">${escapeHtml(record.name)}</span>
       <span class="backup-preview-record-meta">
-        ${escapeHtml(price)} · ${escapeHtml(occurrence)} · Bills ${escapeHtml(billingDate)}${escapeHtml(endDate)}
+        ${escapeHtml(price)} · ${escapeHtml(occurrence)} · Billed ${escapeHtml(billingDate)}${escapeHtml(endDate)}
       </span>
     </div>
   `;
@@ -1889,7 +1889,7 @@ function renderSubscriptionCard(subscription) {
           <span class="subscription-price">${escapeHtml(formatPrice(subscription))}</span>
         </div>
         <p class="subscription-detail">
-          ${escapeHtml(OCCURRENCE_LABELS[subscription.occurrence])} · Bills ${formatDate(subscription.billingDate)}
+          ${escapeHtml(OCCURRENCE_LABELS[subscription.occurrence])} · Billed ${formatDate(subscription.billingDate)}
         </p>
         <p class="subscription-detail">
           ${escapeHtml(subscription.paymentMethod)}

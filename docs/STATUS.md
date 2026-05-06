@@ -18,29 +18,30 @@
 ## Workflow State
 
 - **Mode**: implementation
-- **Active feature**: v1.13.2 Bills final rename cleanup
-- **Feature file**: `docs/features/bills-v1.13.2-final-rename-cleanup.md`
-- **Risk**: medium
+- **Active feature**: v1.14 final-build readiness
+- **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
+- **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: Final local cleanup is implemented and committed; wait for user approval before pushing v1.13.2.
-- **Waiting on**: User approval to push v1.13.2.
+- **Current step**: v1.14 readiness cleanup is implemented and verified locally.
+- **Waiting on**: User review before any push.
 - **Blockers**: none
-- **Next recommended step**: Push v1.13.2 after review, then verify `https://chillin-spree.github.io/bills/`.
-- **Recent touch points**: v1.13.2 finishes safe rename cleanup by moving the service worker cache namespace to `bills-v1.13.2-static`, keeping legacy `subscription-tracker-*` cache cleanup, preserving `subscription-tracker-v1-*` localStorage keys as compatibility keys, and leaving text backup compatibility, ordinary subscription UI terminology, Range behavior, and multi-currency behavior unchanged.
+- **Next recommended step**: Review the local v1.14 readiness commit; do not push until explicitly approved.
+- **Recent touch points**: v1.14 readiness starts from pushed v1.13.2 and keeps final-build scope narrow: no new features, no storage/schema changes, no CSV/JSON restore, no PWA contract changes, and only obvious current-facing residue cleanup.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.13.2 final rename cleanup
-- **Summary**: Complete safe Bills rename cleanup while preserving durable compatibility contracts.
-- **Where full handoff lives**: `docs/features/bills-v1.13.2-final-rename-cleanup.md`
+- **Handoff type**: v1.14 final-build readiness audit
+- **Summary**: Audit current docs, old-name residue, and app/PWA metadata; clean only obvious low-risk current residue.
+- **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Started v1.14 final-build readiness locally from pushed v1.13.2. Scope is audit-first with no new features, no workflow redesign, no storage/schema/key changes, no CSV/JSON backup/restore, and no PWA contract changes. Found and fixed only obvious current-facing rename residue where billing-date labels said `Bills` instead of `Billed`; app shell/cache references moved to `v1.14.0`.
 - 2026-05-06: Implemented v1.13.2 final rename cleanup locally. App shell references moved to `app.js?v=1.13.2`, the service worker cache namespace moved to `bills-v1.13.2-static`, cleanup still removes old `subscription-tracker-*` app-shell caches, localStorage keys remain `subscription-tracker-v1-*` for compatibility, and repo/Pages identity remains `Chillin-spree/bills` at `https://chillin-spree.github.io/bills/`.
 - 2026-05-06: Released v1.13.1 GitHub repo/Pages identity migration. Canonical repo is `Chillin-spree/bills`, local `origin` uses `https://github.com/Chillin-spree/bills.git`, live Pages is `https://chillin-spree.github.io/bills/`, and runtime behavior, storage keys, backup parser, Range, multi-currency, and ordinary UI terminology remained unchanged.
 - 2026-05-06: Started v1.13.1 GitHub repo/Pages identity migration. Planned canonical repo is `Chillin-spree/bills`, planned live URL is `https://chillin-spree.github.io/bills/`, and the former `/subscription-tracker/` path remains historical. No runtime behavior, storage key, backup parser, Range, multi-currency, or ordinary UI terminology changes are in scope.
