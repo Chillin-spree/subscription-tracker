@@ -1,6 +1,6 @@
 # Backlog
 
-> Not-now work. Use this file to prevent scope creep.
+> v1.14 final-build readiness checklist. Use this file to prevent scope creep.
 
 <!-- Move active work into docs/STATUS.md and a feature file. Keep backlog items short. -->
 
@@ -15,41 +15,29 @@
 - Obsolete backlog ideas may be deleted.
 - Do not let Parked / later grow unbounded.
 
-## Ready for Design
+## Current Direction
 
-<!-- Empty. -->
+- v1.14 is final-build readiness only. No new product features are currently planned for v1.14.
+- v1.13 rename work is complete through pushed v1.13.2: runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, canonical GitHub identity is `Chillin-spree/bills`, live Pages is `https://chillin-spree.github.io/bills/`, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
 
-## Designed, Not Scheduled
+## Remaining Readiness Work
 
-<!-- Empty. -->
+- `bills-readme-public-presentation`: Do a small README/public presentation pass for final-build wording without broad rewrite or new feature claims.
+- `bills-icon-brand-assets`: Review current icon/favicon/apple-touch assets and decide whether a later visual asset pass is needed; do not update icons in the current docs-trim pass.
+- `bills-small-ui-polish`: Track only obvious low-risk visual or copy fixes found during final verification; no workflow redesign.
+- `bills-docs-integrity`: Keep `README.md`, `docs/STATUS.md`, `docs/VISION.md`, `docs/DECISIONS.md`, `docs/HANDOFFS.md`, `docs/BUGS.md`, and `docs/features/*` aligned with current Bills identity and final-build scope.
+- `bills-rename-residue-cleanup`: Remove only unintended current-facing old-name residue. Preserve compatibility and historical references.
+- `bills-version-doc-consolidation`: Later, consider consolidating duplicated v1.13, v1.13.1, and v1.13.2 rename docs without deleting historical release facts.
+- `bills-final-release-verification`: Before any v1.14 push, verify local-only behavior, PWA continuity, backup compatibility, Range behavior, Range sub-modes, multi-currency totals, and clean git state.
 
-## Ready for Build
+## Compatibility Warnings
 
-<!-- Empty. -->
+- Keep `subscription-tracker-v1-*` localStorage keys unless a future explicit backward-compatible migration is designed and tested.
+- Keep historical `Subscription Tracker Backup` restore support.
+- Keep old `subscription-tracker-*` service-worker cache cleanup.
+- Do not reintroduce CSV or JSON backup/restore.
+- Preserve local-only/manual-only behavior, existing local data, PWA continuity, Range behavior, Range sub-mode behavior, and multi-currency behavior.
 
-## Roadmap
+## Explicitly Out Of Scope For Final Build
 
-<!-- v1.10.x is the final/simple stabilization line. Do not reopen runtime work unless a real bug appears. -->
-
-<!-- v1.11 UI/UX polish is complete through v1.11.6. Do not reopen v1.11 runtime work unless a real bug appears. -->
-
-### Bills Rename Compatibility
-
-- v1.13 rename work is complete through local v1.13.2 cleanup: runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, canonical GitHub identity is `Chillin-spree/bills`, live Pages is `https://chillin-spree.github.io/bills/`, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
-
-## Parked / Later
-
-- `subscription-tracker-recurring-bills-scope`: Continue broadening behavior from subscriptions toward rent, bills, and other recurring payments without changing ordinary subscription UI terminology casually.
-- `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
-- `subscription-tracker-general-customization`: Explore user customization for labels, display preferences, categories, and summary views.
-- `subscription-tracker-empty-wallet-icon`: Consider an empty wallet icon as part of any future visual identity change; not decided.
-- `subscription-tracker-cloud-sync`: Sync records across devices.
-- `subscription-tracker-bank-import`: Automatically import subscription charges from banks or cards; remains out of scope unless explicitly redesigned with privacy/security review.
-- `subscription-tracker-auth`: Add accounts, sign-in, and user identity.
-- `subscription-tracker-native-wrapper`: Package the app for app-store distribution.
-- `subscription-tracker-ocr-email-scanning`: Detect subscriptions from screenshots, receipts, or email.
-- `subscription-tracker-notifications`: Investigate browser/PWA notification feasibility, permission UX, and offline expectations before adding reminders.
-- `subscription-tracker-pdf-export`: Export subscription records as PDF.
-- `subscription-tracker-xlsx-export`: Explore a real `.xlsx` workbook as a separate future export.
-- `subscription-tracker-merge-restore`: Add an explicit merge/deduplicate restore mode instead of full replacement only.
-- `subscription-tracker-data-import`: Import subscription records from portable text-based formats beyond the supported plain text backup template.
+- Accounts, auth, cloud sync, analytics, paid services, remote storage, payment processing, bank/card import, OCR/email scanning, push notifications, native app wrappers, new export formats, major dashboards, broad customization, and new tracking workflows.

@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 readiness cleanup is implemented and verified locally.
+- **Current step**: v1.14 Pass 2 backlog trim and docs integrity cleanup is implemented and verified locally.
 - **Waiting on**: User review before any push.
 - **Blockers**: none
-- **Next recommended step**: Review the local v1.14 readiness commit; do not push until explicitly approved.
-- **Recent touch points**: v1.14 readiness starts from pushed v1.13.2 and keeps final-build scope narrow: no new features, no storage/schema changes, no CSV/JSON restore, no PWA contract changes, and only obvious current-facing residue cleanup.
+- **Next recommended step**: Review the local Pass 2 docs cleanup commit; do not push until explicitly approved.
+- **Recent touch points**: Local `main` is ahead of `origin/main` by the v1.14 readiness commit. Pass 2 trims the backlog from a future-feature roadmap into a final-build readiness checklist while preserving compatibility warnings and no-new-features scope.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final-build readiness audit
-- **Summary**: Audit current docs, old-name residue, and app/PWA metadata; clean only obvious low-risk current residue.
+- **Handoff type**: v1.14 final-build readiness Pass 2
+- **Summary**: Trim backlog and align current docs so the project roadmap reflects final-build readiness only.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented v1.14 Pass 2 backlog/docs integrity cleanup locally. The pass removes future-feature roadmap noise from `docs/BACKLOG.md`, keeps final-build readiness items only, preserves compatibility warnings for storage keys, historical backup headers, old cache cleanup, local-only/manual-only behavior, PWA continuity, Range, and multi-currency behavior, and does not change runtime files.
 - 2026-05-06: Started v1.14 final-build readiness locally from pushed v1.13.2. Scope is audit-first with no new features, no workflow redesign, no storage/schema/key changes, no CSV/JSON backup/restore, and no PWA contract changes. Found and fixed only obvious current-facing rename residue where billing-date labels said `Bills` instead of `Billed`; app shell/cache references moved to `v1.14.0`.
 - 2026-05-06: Implemented v1.13.2 final rename cleanup locally. App shell references moved to `app.js?v=1.13.2`, the service worker cache namespace moved to `bills-v1.13.2-static`, cleanup still removes old `subscription-tracker-*` app-shell caches, localStorage keys remain `subscription-tracker-v1-*` for compatibility, and repo/Pages identity remains `Chillin-spree/bills` at `https://chillin-spree.github.io/bills/`.
 - 2026-05-06: Released v1.13.1 GitHub repo/Pages identity migration. Canonical repo is `Chillin-spree/bills`, local `origin` uses `https://github.com/Chillin-spree/bills.git`, live Pages is `https://chillin-spree.github.io/bills/`, and runtime behavior, storage keys, backup parser, Range, multi-currency, and ordinary UI terminology remained unchanged.
