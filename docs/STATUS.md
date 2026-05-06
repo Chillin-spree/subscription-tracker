@@ -22,25 +22,26 @@
 - **Feature file**: `docs/features/bills-v1.14-final-build-readiness.md`
 - **Risk**: low
 - **Owned by**: Product/design review and implementation
-- **Current step**: v1.14 Pass 5 icon and header branding update is implemented and verified locally.
+- **Current step**: v1.14 Pass 6 header, icon, copy, and Activity polish is implemented and verified locally.
 - **Waiting on**: User review before any push.
 - **Blockers**: none
-- **Next recommended step**: Review the local Pass 5 icon/header branding commit; do not push until explicitly approved.
-- **Recent touch points**: Local `main` is ahead of `origin/main` by four v1.14 commits. Pass 5 updates Bills icon assets from the provided source icon and places the icon in the center of the top header without changing app behavior.
+- **Next recommended step**: Review the local Pass 6 polish commit; do not push until explicitly approved.
+- **Recent touch points**: Local `main` is ahead of `origin/main` by five v1.14 commits. Pass 6 replaces icon assets again from the provided source, centers the header icon, removes requested helper text, and limits visible Activity entries to the latest 10 without deleting stored activity data.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.14 final-build readiness Pass 5
-- **Summary**: Update Bills icon assets and add a centered header icon using the provided source image.
+- **Handoff type**: v1.14 final-build readiness Pass 6
+- **Summary**: Replace icon assets, align the top header, remove requested helper text, and cap visible Activity entries.
 - **Where full handoff lives**: `docs/features/bills-v1.14-final-build-readiness.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Implemented and verified v1.14 Pass 6 header/icon/copy/Activity polish locally. Rebuilt icon assets from the provided replacement PNG, removed the old unreferenced favicon SVG, centered the header icon with balanced side columns, removed the header `Next 7 days` eyebrow, removed requested multi-currency helper text, and capped visible Activity rendering to the latest 10 entries without truncating stored activity data. Service-worker cache namespace moved to `bills-v1.14.2-static` because cached app-shell/icon assets changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 5 icon/header branding update locally. Rebuilt favicon, PWA, and Apple touch PNG assets from the provided square source image, added a centered decorative header icon between the title and add button, and moved the service-worker cache namespace to `bills-v1.14.1-static` because cached app-shell/icon assets changed. No app behavior, storage, backup, Range, or multi-currency behavior changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 4 v1.13 rename-doc consolidation locally. `bills-v1.13-app-rename.md` is now the consolidated v1.13 rename-track summary, and the v1.13.1 GitHub rename and v1.13.2 final cleanup docs are focused addenda preserving unique patch scope, acceptance checks, compatibility rationale, and historical facts. No runtime files changed.
 - 2026-05-06: Implemented and verified v1.14 Pass 3 README refresh locally. The README now presents Bills as a static, phone-first, local-only PWA with live link, principles, current capabilities, explicit non-goals, text-only backup/restore, offline/PWA behavior, development commands, project structure, release status, and documentation links. No runtime files, screenshots, icons, media, or new feature promises were added.

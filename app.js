@@ -20,6 +20,7 @@ const EVENT_LABELS = {
   subscription_updated: "Updated",
   subscription_deleted: "Deleted",
 };
+const MAX_VISIBLE_ACTIVITY_ENTRIES = 10;
 
 const openButtons = document.querySelectorAll("[data-open-form]");
 const closeButtons = document.querySelectorAll("[data-close-form]");
@@ -793,14 +794,17 @@ function renderSpendingOverview() {
   overviewRangeModes.hidden = !hasSubscriptions || !showsRangeOverview;
   overviewRangeSummary.hidden = !hasSubscriptions || !showsRangeOverview;
   spendingBar.hidden = !hasSubscriptions || !hasSingleCurrency || !hasBreakdownRows;
-  overviewCurrency.textContent = showsRangeOverview
-    ? "Range"
-    : hasSingleCurrency ? currencies[0] || "TRY" : "Multiple currencies";
+  if (overviewCurrency) {
+    overviewCurrency.textContent = showsRangeOverview
+      ? "Range"
+      : hasSingleCurrency ? currencies[0] || "TRY" : "";
+  }
   monthlyTotal.textContent = formatCurrencyTotalsLines(monthlyTotalsByCurrency);
   yearlyTotal.textContent = formatCurrencyTotalsLines(yearlyTotalsByCurrency);
   overviewCount.textContent = String(subscriptions.length);
-  overviewNote.hidden = !hasSubscriptions || (hasSingleCurrency && !showsRangeOverview);
-  overviewNote.textContent = getOverviewNoteText(hasSingleCurrency, showsRangeOverview, rangeState);
+  const overviewNoteText = getOverviewNoteText(hasSingleCurrency, showsRangeOverview, rangeState);
+  overviewNote.hidden = !overviewNoteText;
+  overviewNote.textContent = overviewNoteText;
   renderOverviewRangeControls();
   renderOverviewRangeSummary(breakdownRows, rangeState);
   renderOverviewTabs();
@@ -1068,10 +1072,6 @@ function getOverviewNoteText(hasSingleCurrency, showsRangeOverview, rangeState =
     } else {
       notes.push("Choose a valid start and end date to show actual scheduled charges.");
     }
-  }
-
-  if (!hasSingleCurrency) {
-    notes.push("Multiple currencies are shown separately instead of combined into one total.");
   }
 
   return notes.join(" ");
@@ -1844,7 +1844,8 @@ function isLeapYear(year) {
 
 function renderActivityLog() {
   activityEmpty.hidden = activityLog.length > 0;
-  activityList.innerHTML = activityLog.map(renderActivityEntry).join("");
+  const visibleActivityEntries = activityLog.slice(0, MAX_VISIBLE_ACTIVITY_ENTRIES);
+  activityList.innerHTML = visibleActivityEntries.map(renderActivityEntry).join("");
 }
 
 function renderActivityEntry(entry) {

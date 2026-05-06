@@ -96,7 +96,7 @@ node scripts/verify-grouped-currency-totals.js
 
 ## Current Status
 
-Current local app script is `app.js?v=1.14.0`, and the current local service-worker cache is `bills-v1.14.1-static`. The latest pushed release is v1.13.2, and v1.14 final-build readiness work is local until explicitly pushed.
+Current local app script is `app.js?v=1.14.0`, and the current local service-worker cache is `bills-v1.14.2-static`. The latest pushed release is v1.13.2, and v1.14 final-build readiness work is local until explicitly pushed.
 
 The current app identity is Bills. The GitHub repository is `https://github.com/Chillin-spree/bills`, and the live app is served at `https://chillin-spree.github.io/bills/`. The project was formerly hosted at `https://chillin-spree.github.io/subscription-tracker/`.
 

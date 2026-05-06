@@ -1,4 +1,4 @@
-const CACHE_NAME = "bills-v1.14.1-static";
+const CACHE_NAME = "bills-v1.14.2-static";
 const CACHE_PREFIXES = ["bills-", "subscription-tracker-"];
 const APP_SHELL_ASSETS = [
   "./",

@@ -8,7 +8,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 
 - **Status**: local
 - **Latest pushed release/commit**: v1.13.2 at `116dca5613cd788f623f0ddf02d55b192e40302e`
-- **Runtime/app shell**: `app.js?v=1.14.0`, `bills-v1.14.1-static`
+- **Runtime/app shell**: `app.js?v=1.14.0`, `bills-v1.14.2-static`
 - **Notes**: This pass fixes no product behavior beyond obvious presentation residue.
 
 ## Scope
@@ -20,6 +20,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 - Refresh the README into a polished public-facing finished-product overview without screenshots, media assets, or new feature promises.
 - Consolidate duplicated v1.13 rename-track documentation where it improves clarity while preserving patch-specific release history.
 - Update Bills icon assets and place the icon in the centered top header area using the provided source image.
+- Polish the top header, remove requested helper text, and cap visible Activity entries without deleting stored activity data.
 - Clean only obvious low-risk current-facing residue.
 
 ## Non-Goals
@@ -48,6 +49,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 - Pass 3 refreshes `README.md` structure and presentation while preserving local-only, backup, PWA, compatibility, and no-new-features boundaries.
 - Pass 4 makes `docs/features/bills-v1.13-app-rename.md` the consolidated v1.13 rename-track summary and keeps v1.13.1/v1.13.2 docs as focused addenda.
 - Pass 5 rebuilds icon PNG assets from the provided source image, adds a centered decorative header icon, and bumps the service-worker cache namespace for changed cached assets.
+- Pass 6 rebuilds icon PNG assets from the replacement source image, removes the old unreferenced favicon SVG, balances the top header grid, removes requested visible helper text, and caps visible Activity entries to 10 without truncating storage.
 
 ## QA Checklist
 
@@ -67,6 +69,7 @@ Low. The runtime change is copy-only and the cache/app-shell bump is required to
 
 ## Release History
 
+- 2026-05-06: Implemented Pass 6 header/icon/copy/Activity polish. Rebuilt icon PNG assets from the provided replacement PNG, removed the old unreferenced favicon SVG, centered the header icon with balanced side columns, removed the header `Next 7 days` eyebrow, removed requested multi-currency helper text, capped visible Activity entries to the latest 10 without deleting stored activity log data, and moved the service-worker cache namespace to `bills-v1.14.2-static`. No localStorage key/schema, backup support, Range behavior, Range sub-mode behavior, or multi-currency calculations changed. Verification: syntax checks, manifest and icon reference checks, icon dimension checks, app safety scripts, requested copy searches, Activity cap source check, `git diff --check`, `git status --short`, and static narrow-header layout review.
 - 2026-05-06: Implemented Pass 5 icon/header branding update. Rebuilt `icons/icon-512.png`, `icons/icon-192.png`, `icons/apple-touch-icon.png`, and `icons/favicon.png` from the provided square PNG; changed the favicon reference from SVG to PNG; added a centered decorative header icon using `icons/icon-192.png`; and moved the service-worker cache namespace to `bills-v1.14.1-static`. No app behavior, storage, backup, Range, or multi-currency behavior changed. Verification: syntax checks, icon reference checks, manifest JSON check, app safety scripts, `git diff --check`, `git status --short`, and static narrow-header layout review.
 - 2026-05-06: Implemented Pass 4 v1.13 rename-doc consolidation. The main v1.13 rename doc now holds the final v1.13.2 state, compatibility guardrails, intentional legacy references, pass history, acceptance, and verification notes. The v1.13.1 and v1.13.2 docs now preserve patch-specific scope and checks without repeating the whole rename story. Verification: `git diff --check`, `git status --short`, and reference search for the consolidated docs.
 - 2026-05-06: Implemented Pass 3 README refresh. The README now presents the live app, local-only principles, current capabilities, explicit non-goals, text-only backup/restore, offline/PWA behavior, development usage, project structure, current status, and documentation links. No runtime files, screenshots, icons, media, or new feature promises were added. Verification: `git diff --check` and `git status --short`.
