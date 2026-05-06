@@ -215,7 +215,7 @@ h2 {
 
 .note-link {
   min-height: 44px;
-  justify-self: start;
+  justify-self: center;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
