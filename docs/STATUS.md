@@ -18,29 +18,30 @@
 ## Workflow State
 
 - **Mode**: implementation
-- **Active feature**: v1.13 Bills app identity rename
-- **Feature file**: `docs/features/bills-v1.13-app-rename.md`
+- **Active feature**: v1.13.1 Bills GitHub repo/Pages identity migration
+- **Feature file**: `docs/features/bills-v1.13.1-github-rename.md`
 - **Risk**: medium
 - **Owned by**: Product/design review and implementation
-- **Current step**: Complete docs sweep/status update for the local v1.13 rename package.
-- **Waiting on**: User review of local v1.13 rename implementation and docs.
+- **Current step**: Rename GitHub repo, update local remote, push v1.13.1, and verify the new Pages URL.
+- **Waiting on**: GitHub repo rename and live Pages verification.
 - **Blockers**: none
-- **Next recommended step**: Run final local QA/release prep for v1.13, then commit/push only after explicit approval.
-- **Recent touch points**: v1.13 renames runtime app/browser/PWA identity to Bills, changes newly generated text backup identity to `Bills Backup`, keeps historical `Subscription Tracker Backup` restore compatibility, keeps ordinary UI terminology such as `Subscriptions`, preserves `subscription-tracker-v1-*` localStorage keys, and leaves the GitHub repo and Pages URL unchanged for a later migration decision.
+- **Next recommended step**: Complete v1.13.1 GitHub-facing identity migration, then verify `https://chillin-spree.github.io/bills/`.
+- **Recent touch points**: v1.13.1 moves canonical GitHub-facing identity toward `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/` while preserving the v1.13 runtime app identity, relative PWA paths, `subscription-tracker-v1-*` localStorage keys, text backup compatibility, ordinary subscription UI terminology, Range behavior, and multi-currency behavior.
 
 ## Latest Handoff
 
 - **From**: User
 - **To**: Implementation
 - **Date**: 2026-05-06
-- **Handoff type**: v1.13 compatibility-sensitive rename
-- **Summary**: Rename app identity to Bills while preserving local data, PWA continuity, backup compatibility, and ordinary subscription terminology.
-- **Where full handoff lives**: `docs/features/bills-v1.13-app-rename.md`
+- **Handoff type**: v1.13.1 GitHub-facing identity migration
+- **Summary**: Rename GitHub repo and Pages identity to Bills while preserving runtime behavior and compatibility contracts.
+- **Where full handoff lives**: `docs/features/bills-v1.13.1-github-rename.md`
 
 ## Session Log
 
 <!-- Add future entries most recent first. Keep last 5-8 entries only. -->
 
+- 2026-05-06: Started v1.13.1 GitHub repo/Pages identity migration. Planned canonical repo is `Chillin-spree/bills`, planned live URL is `https://chillin-spree.github.io/bills/`, and the former `/subscription-tracker/` path remains historical. No runtime behavior, storage key, backup parser, Range, multi-currency, or ordinary UI terminology changes are in scope.
 - 2026-05-06: Implemented v1.13 rename locally through docs pass. Runtime app/browser/PWA identity now says Bills, app shell/cache references moved to v1.13.0, generated text backups use `Bills Backup`, parser accepts both `Bills Backup` and historical `Subscription Tracker Backup`, generated backup filenames use `bills-backup-v1.13-YYYY-MM-DD.txt`, localStorage keys/schema and restore semantics remain unchanged, ordinary subscription UI terminology remains unchanged, and repo/Pages migration is deferred.
 - 2026-05-06: Implemented v1.12.4 UI consistency polish locally. Spending Overview totals, Due soon chips, Actual range chips, and Upcoming payment amounts now share the same accent color, strong weight, and tabular numeric treatment. App shell/cache references moved to v1.12.4; calculations and data behavior remain unchanged.
 - 2026-05-06: Implemented v1.12.3 final polish locally. Selected Range Actual range mixed-currency totals now render as compact grouped chips without plus signs, single-currency Actual range totals remain compact, and app shell/cache references moved to v1.12.3. Range calculations, Range dates/sub-modes, breakdown rows, storage, backup, and local-only behavior remain unchanged.

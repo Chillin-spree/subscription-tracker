@@ -33,6 +33,16 @@
 
 <!-- Add durable project decisions here, most recent first. -->
 
+### 2026-05-06 — Move canonical GitHub project identity to Bills
+
+- **Type**: Workflow
+- **Status**: active
+- **Context**: v1.13 renamed the runtime app identity from Subscription Tracker to Bills while intentionally deferring GitHub repository and Pages URL migration.
+- **Decision**: The canonical GitHub repository and live GitHub Pages identity move from `Chillin-spree/subscription-tracker` and `https://chillin-spree.github.io/subscription-tracker/` to `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`. Runtime app paths remain relative, manifest `start_url: "./"` and `scope: "./"` stay unchanged, and localStorage/backup compatibility names are not migrated.
+- **Why**: Aligning the GitHub-facing project identity with the app name completes the public rename while keeping data and PWA contracts stable.
+- **Consequences**: Historical docs may still mention the old repo or Pages path when describing old releases. Future canonical docs and handoffs should use `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`.
+- **Related**: `docs/features/bills-v1.13.1-github-rename.md`, `docs/features/bills-v1.13-app-rename.md`
+
 ### 2026-05-06 — Rename app identity to Bills while preserving compatibility contracts
 
 - **Type**: Product

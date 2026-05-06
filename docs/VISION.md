@@ -24,7 +24,7 @@ Create a minimalist recurring payment tracker where users manually add, edit, de
 
 ## Product Direction
 
-Bills broadens the app identity from subscriptions toward recurring bills and payments such as rent, utilities, software, and other regular commitments. The v1.13 rename is compatibility-sensitive: existing localStorage keys may retain `subscription-tracker` names, historical `Subscription Tracker Backup` text remains restorable, ordinary UI terms such as `Subscriptions` remain valid domain terminology, and the GitHub Pages URL remains `/subscription-tracker/` until a dedicated migration pass.
+Bills broadens the app identity from subscriptions toward recurring bills and payments such as rent, utilities, software, and other regular commitments. The v1.13 rename is compatibility-sensitive: existing localStorage keys may retain `subscription-tracker` names, historical `Subscription Tracker Backup` text remains restorable, and ordinary UI terms such as `Subscriptions` remain valid domain terminology. v1.13.1 moves the canonical GitHub project identity to `Chillin-spree/bills` and the live GitHub Pages path to `/bills/`; the project was formerly hosted under `/subscription-tracker/`.
 
 ## Out of Scope
 
@@ -71,4 +71,4 @@ Bills broadens the app identity from subscriptions toward recurring bills and pa
 - Payment-related fields are labels/nicknames only, not card, bank, login, identity, or authorization details.
 - Preserve installed PWA continuity: same live URL, relative manifest start/scope, root service worker registration, offline shell behavior, saved local data, and supported plain text backup behavior.
 - Storage changes require backward-compatible migration; cached app shell changes require a static cache name bump.
-- Rename work must preserve compatibility names where they are data or deployment contracts, including localStorage keys, historical backup headers, and the current GitHub Pages path until an explicit migration pass changes them.
+- Rename work must preserve compatibility names where they are data contracts, including localStorage keys and historical backup headers. GitHub Pages path changes require a dedicated migration pass with live verification.

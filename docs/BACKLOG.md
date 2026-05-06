@@ -35,11 +35,11 @@
 
 ### Bills Rename Compatibility
 
-- `bills-v1.13-app-rename`: In progress locally. Runtime app/PWA identity now says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility. GitHub repository and Pages URL migration is intentionally not part of this local pass.
+- `bills-v1.13-app-rename`: Runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
+- `bills-v1.13.1-github-rename`: In progress locally. Canonical GitHub project identity moves to `Chillin-spree/bills` and the live Pages URL moves to `https://chillin-spree.github.io/bills/`; the former `/subscription-tracker/` path is historical.
 
 ## Parked / Later
 
-- `bills-repo-pages-migration`: Decide whether and how to rename the GitHub repo slug from `subscription-tracker` to `bills` and move the Pages path from `/subscription-tracker/` to `/bills/`. Preserve installed PWA continuity, saved local data, restore compatibility, and redirects or user guidance if pursued.
 - `subscription-tracker-recurring-bills-scope`: Continue broadening behavior from subscriptions toward rent, bills, and other recurring payments without changing ordinary subscription UI terminology casually.
 - `subscription-tracker-local-storage-explainer`: Clarify what happens to local records when the app is removed from a phone, reinstalled, updated, opened offline, or restored from backup.
 - `subscription-tracker-general-customization`: Explore user customization for labels, display preferences, categories, and summary views.

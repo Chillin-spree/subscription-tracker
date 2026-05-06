@@ -12,8 +12,8 @@ Rename the app identity from Subscription Tracker to Bills while preserving loca
 - Newly generated plain text backups start with `Bills Backup`.
 - Pasted restore accepts both `Bills Backup` and historical `Subscription Tracker Backup`.
 - Generated backup filenames use `bills-backup-v1.13-YYYY-MM-DD.txt`.
-- The GitHub repository remains `Chillin-spree/subscription-tracker`.
-- The live GitHub Pages URL remains `https://chillin-spree.github.io/subscription-tracker/`.
+- v1.13 originally left the GitHub repository as `Chillin-spree/subscription-tracker` and the live GitHub Pages URL as `https://chillin-spree.github.io/subscription-tracker/`.
+- v1.13.1 moves canonical GitHub-facing identity to `Chillin-spree/bills` and `https://chillin-spree.github.io/bills/`.
 
 ## Product Direction
 
@@ -68,8 +68,8 @@ Rename the app identity from Subscription Tracker to Bills while preserving loca
 
 ## Not In v1.13 Local Rename
 
-- GitHub repository rename.
-- GitHub Pages URL migration.
+- GitHub repository rename, completed separately in v1.13.1.
+- GitHub Pages URL migration, completed separately in v1.13.1.
 - Redirect or installed-PWA migration strategy for a future Pages path change.
 - Broader UI terminology rename from subscriptions to bills.
 - Storage key or schema migration.
@@ -88,7 +88,7 @@ Rename the app identity from Subscription Tracker to Bills while preserving loca
 - [x] Pasted restore still replaces subscriptions only and preserves activity log and saved presets.
 - [x] Existing localStorage keys/schema remain unchanged.
 - [x] Ordinary subscription UI terminology remains unchanged.
-- [x] GitHub repo and Pages URL remain unchanged.
+- [x] GitHub repo and Pages URL remain unchanged in v1.13; v1.13.1 handles that migration separately.
 - [x] CSV and JSON backup/restore remain absent from the runtime.
 
 ## QA Notes
