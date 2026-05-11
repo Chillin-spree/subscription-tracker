@@ -17,12 +17,12 @@
 
 ## Current Direction
 
-- v1.14 final-build readiness is closed through the v1.14.2 cleanup patch. No new product features are currently planned for v1.14.
+- v1.14 final-build readiness is closed through the v1.14.3 icon platform polish patch. No new product features are currently planned for v1.14.
 - v1.13 rename work is complete through pushed v1.13.2: runtime app/PWA identity says Bills, generated text backups use `Bills Backup`, historical `Subscription Tracker Backup` text remains valid, canonical GitHub identity is `Chillin-spree/bills`, live Pages is `https://chillin-spree.github.io/bills/`, and `subscription-tracker-v1-*` localStorage keys remain unchanged for compatibility.
 
 ## Current Readiness State
 
-- README/public presentation, icon/brand assets, small UI polish, rename residue cleanup, v1.13 doc consolidation, footer cleanup, and docs integrity work are complete through v1.14.2.
+- README/public presentation, icon/brand assets, small UI polish, rename residue cleanup, v1.13 doc consolidation, footer cleanup, icon platform polish, and docs integrity work are complete through v1.14.3.
 - No active v1.14 readiness backlog items remain after final verification and release.
 - Future work should start from a new scoped feature brief instead of reopening the v1.14 final-build checklist.
 

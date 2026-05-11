@@ -6,9 +6,9 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 
 ## Current Release State
 
-- **Status**: v1.14.2 cleanup patch
-- **Base release/commit**: v1.14.1 at `3d768b4e4a75b86f3c4a1ad11a34807fec46100b`
-- **Runtime/app shell**: `app.js?v=1.14.2`, `bills-v1.14.5-static`
+- **Status**: v1.14.3 icon platform polish patch
+- **Base release/commit**: v1.14.2 at `d3f41f6439e4f650b6527242f0dfe07f5caebd98`
+- **Runtime/app shell**: `app.js?v=1.14.3`, `bills-v1.14.6-static`
 - **Notes**: This pass fixes no product behavior beyond obvious presentation residue.
 
 ## Scope
@@ -54,6 +54,7 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 - Final verification audits docs/file integrity, old-name residue, PWA/icon references, backup/storage compatibility, Range behavior, multi-currency behavior, Activity display capping, and release push readiness.
 - v1.14.1 final polish makes the centered header icon open the existing local-only privacy modal and adds a minimal footer link to the GitHub repository.
 - v1.14.2 final cleanup removes the bottom privacy-details control and minimal-design footer sentence, keeps the GitHub footer link, and preserves header-icon privacy access through the existing modal.
+- v1.14.3 icon platform polish regenerates fuller regular icons and adds dedicated maskable 192/512 PWA icons for platform masks.
 
 ## QA Checklist
 
@@ -69,10 +70,11 @@ Start v1.14 with an audit-only readiness pass and allow only obvious low-risk cl
 
 ## Risks
 
-Low. The final cleanup changes only footer presentation, docs, and app-shell cache references. No storage, backup, Range, multi-currency, or calculation behavior changes.
+Low. The icon platform polish changes only icon assets, manifest icon purposes, docs, and app-shell cache references. No storage, backup, Range, multi-currency, or calculation behavior changes.
 
 ## Release History
 
+- 2026-05-11: Implemented v1.14.3 icon platform polish. Regenerated regular favicon, Apple touch, and PWA icons from a tighter centered crop of the existing 512 source so the bill graphic fills more of the canvas, added dedicated maskable 192/512 icons with safer margin, updated manifest icon purposes, and moved app shell references to `app.js?v=1.14.3` and `bills-v1.14.6-static` because cached shell/icon assets changed. No storage, backup, Range, multi-currency, or calculation behavior changed.
 - 2026-05-07: Implemented v1.14.2 final cleanup. Removed the bottom privacy-details control and minimal-design footer sentence, kept the footer GitHub repository link, preserved the centered header icon as the privacy-details entry point, and moved app shell references to `app.js?v=1.14.2` and `bills-v1.14.5-static` because cached shell files changed. No storage, backup, Range, multi-currency, or calculation behavior changed.
 - 2026-05-06: Implemented v1.14.1 final polish. The centered header icon is now a keyboard-accessible button that opens the existing local-only privacy details modal, and the footer includes a minimal external GitHub repository link. App shell references moved to `app.js?v=1.14.1` and `bills-v1.14.4-static` because cached shell files changed. No storage, backup, Range, multi-currency, or calculation behavior changed.
 - 2026-05-06: Performed final verification and docs/file-integrity cleanup. Removed stale readiness backlog wording, clarified completed versus active v1.13 decisions, trimmed `docs/STATUS.md` to current v1.14 state, and removed ignored `.DS_Store` local artifacts before rerunning the full verification suite. No app behavior, calculations, storage, backup, Range, Range sub-mode, or multi-currency behavior changed.
